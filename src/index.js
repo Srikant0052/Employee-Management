@@ -1,32 +1,25 @@
-const express = require("express");
-const mongoose = require("mongoose");
+
+require('dotenv').config()
+const express = require("express")
 const app = express();
-// const dotenv = require("dotenv");
-const route = require("./routes/route");
-const cors = require("cors");
+const morgan = require('morgan')
+const { notFound, errorHandler } = require('./utils/errors')
+let port = process.env.PORT || 4000
+const employeeRoutes = require("./routes/employeeRoutes")
+const worklogRoutes = require('./routes/worklogRoutes')
+const cors = require("cors")
+require('./db/connect')
 
-// dotenv.config();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(morgan('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
-let port = 4000;
-const Data_Base_Url =
-  "mongodb+srv://admin:admin123@siamaq.h4fjfrg.mongodb.net/employee";
 
-//MongoDB Connection
-mongoose
-  .connect(Data_Base_Url, {
-    useNewUrlParser: true,
-  })
+app.use("/", employeeRoutes)
+app.use('/', worklogRoutes)
 
-  .then(() => console.log("mongoDb Is Connected"))
-  .catch((err) => console.log(err));
+app.use(notFound)
+app.use(errorHandler)
 
-app.get("/", (req, res) => {
-  res.send("hello from server");
-});
-
-app.use("/", route);
-
-app.listen(port, (_) => console.log(`Server is running on port ${port}`));
+app.listen(port, _ => console.log(`Server is running on port ${port}`));

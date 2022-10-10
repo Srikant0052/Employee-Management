@@ -1,98 +1,110 @@
-const empModel = require("../models/employeeModel");
+const createError = require("http-errors");
+const empCollection = require("../models/employee");
 const { isValid, isValidRequestBody } = require("../utils/validator");
 
-const addEmployee = async (req, res) => {
+const addEmployee = async (req, res, next) => {
+
   try {
-    const requestBody = req.body;
+    const requestBody = req.body
 
     if (!isValidRequestBody(requestBody)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "All fields are Mandatory!" });
+      throw createError(400, `All fields are Mandatory!`)
     }
 
-    const { employeeId, firstName, lastName, designation, email, date } =
-      requestBody;
+    const { empCode, firstName, lastName, userName, designation, dateOfJoining, password } = requestBody
 
-    if (!isValid(employeeId)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Please Enter employeeId " });
+    if (!isValid(empCode)) {
+      throw createError(400, `Please Enter employee Id`)
+    }
+
+    const isEmpCodeExist = await empCollection.findOne({ empCode })
+
+    if (isEmpCodeExist) {
+      throw createError(400, `This Employee id is Already In Use`)
     }
 
     if (!isValid(firstName)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Please Enter firstName " });
+      throw createError(400, `Please Enter firstName`)
+    }
+
+    if (!isValid(lastName)) {
+      throw createError(400, `Please Enter lastname`)
+    }
+
+    if (!userName || !isValid(userName)) {
+      throw createError(400, `Please Enter useranme`)
+    }
+
+    const isUserNameExist = await empCollection.findOne({ userName })
+
+    if (isUserNameExist) {
+      throw createError(409, `username already exist`)
+    }
+
+    if (!isValid(password)) {
+      throw createError(400, `Please Enter Password`)
     }
 
     if (!isValid(designation)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Please Enter Designation " });
-    }
-    if (!isValid(email)) {
-      return res
-        .status(400)
-        .send({ status: false, message: "Please Enter email " });
+      throw createError(400, `Please Enter Designation`)
     }
 
-    const employeeExists = await empModel.findOne({ employeeId: employeeId });
+    const employeeExists = await empCollection.findOne({ empCode: empCode });
 
     if (employeeExists) {
-      return res.status(400).send({
-        status: false,
-        message: "EmployeeId  Already registered",
-      });
-    }
-
-    const employeeEmail = await empModel.findOne({ email: email });
-
-    if (employeeEmail) {
-      return res.status(400).send({
-        status: false,
-        message: "Email  Already registered",
-      });
+      throw createError(400, `Employee already registerd`)
     }
 
     const employeeData = {
-      employeeId,
+
+      empCode,
       firstName,
       lastName,
+      userName,
+      password,
       designation,
       email,
-      dateOfJoining: date,
-    };
+      dateOfJoining: dateOfJoining || null
 
-    const empAdded = await empModel.create(employeeData);
+    }
+
+    const empAdded = await empCollection.create(employeeData);
 
     return res.status(201).send({
       status: true,
       message: "Employee Added Successfully",
       data: empAdded,
-    });
+    })
+
   } catch (error) {
-    return res.status(500).send({ status: false, message: error.message });
+    next(error)
   }
-};
 
-const getGmployeeList = async (req, res) => {
+}
+
+
+const getEmployeeList = async (req, res, next) => {
+
   try {
-    const requestBody = req.body;
 
-    const employeeList = await empModel.find();
+    const employeeList = await empCollection.find()
 
     if (!employeeList) {
-      return res.status(400).send({ status: false, message: "Data Not Found" });
+      throw createError(400, 'Data Not Found')
     }
 
-    return res
-      .status(200)
-      .send({ status: true, message: "Success", data: employeeList });
-      
-  } catch (error) {
-    return res.status(500).send({ status: false, message: error.message });
-  }
-};
+    return res.status(200).send({
 
-module.exports = { addEmployee, getGmployeeList };
+      status: true,
+      message: "Success",
+      data: employeeList
+
+    })
+
+
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { addEmployee, getEmployeeList };
