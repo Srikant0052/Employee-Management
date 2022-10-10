@@ -6,7 +6,7 @@ const { generateId } = require('../utils/helpers')
 
 
 const addCustomer = async (req, res, next) => {
-    
+
     try {
 
         if (!isValidRequestBody(req.body)) {
@@ -38,4 +38,8 @@ const addCustomer = async (req, res, next) => {
         next(error)
     }
 
+}
+
+module.exports = {
+    addCustomer
 }

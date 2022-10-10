@@ -34,3 +34,7 @@ const addProject = async (req, res, next) => {
         next(error)
     }
 }
+
+module.exports = {
+    addProject
+}

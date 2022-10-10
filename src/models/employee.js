@@ -7,7 +7,7 @@ const employeeSchema = new Schema(
       type: Number,
     },
 
-    empCode: {
+    employeeId: {
 
       type: String,
       required: true,
@@ -32,6 +32,11 @@ const employeeSchema = new Schema(
       required: true
     },
 
+    email: {
+      type: String,
+      required: true
+    },
+
     designation: {
       type: String,
       required: true,
@@ -51,7 +56,7 @@ const employeeSchema = new Schema(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
       minlength: 8,
       maxlength: 15,
-      
+
     },
 
   },

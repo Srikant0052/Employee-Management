@@ -8,6 +8,22 @@ const generateId = () => {
     return result;
 }
 
+//propper Format
+const getTimeFromMins = (mins) => {
+    let hours = Math.trunc(mins / 60)
+    let minutes = mins % 60
+    return hours + ' hr ' + minutes + ' min '
+}
+
+//another Format
+const getTimeFromMin2 = (mins) => {
+    let hours = Math.trunc(mins / 60)
+    let minutes = mins % 60
+    return hours + ':' + minutes
+}
+
 module.exports = {
-    generateId
+    generateId,
+    getTimeFromMins,
+    getTimeFromMin2
 }

@@ -11,34 +11,43 @@ const addEmployee = async (req, res, next) => {
       throw createError(400, `All fields are Mandatory!`)
     }
 
-    const { empCode, firstName, lastName, userName, designation, dateOfJoining, password } = requestBody
+    const { employeeId, firstName, lastName, userName, designation, dateOfJoining, password, email } = requestBody
 
-    if (!isValid(empCode)) {
+    if (!isValid(employeeId)) {
       throw createError(400, `Please Enter employee Id`)
     }
 
-    const isEmpCodeExist = await empCollection.findOne({ empCode })
+    const isemployeeIdExist = await empCollection.findOne({ employeeId })
 
-    if (isEmpCodeExist) {
-      throw createError(400, `This Employee id is Already In Use`)
+    if (isemployeeIdExist) {
+      throw createError(40, `Employee id ${employeeId} is Already In Use`)
     }
 
     if (!isValid(firstName)) {
-      throw createError(400, `Please Enter firstName`)
+      throw createError(400, `Please Enter a valid firstName`)
     }
 
     if (!isValid(lastName)) {
-      throw createError(400, `Please Enter lastname`)
+      throw createError(400, `Please Enter a Valid lastname`)
+    }
+
+    if (!isValid(email)) {
+      throw createError(400, `Please Enter a Valid email`)
     }
 
     if (!userName || !isValid(userName)) {
-      throw createError(400, `Please Enter useranme`)
+      throw createError(400, `Please Enter a valid userName`)
     }
 
     const isUserNameExist = await empCollection.findOne({ userName })
 
     if (isUserNameExist) {
       throw createError(409, `username already exist`)
+    }
+
+    const isMailExist = await empCollection.findOne({ email })
+    if (isMailExist) {
+      throw createError(409, `Email is Already In use`)
     }
 
     if (!isValid(password)) {
@@ -49,15 +58,9 @@ const addEmployee = async (req, res, next) => {
       throw createError(400, `Please Enter Designation`)
     }
 
-    const employeeExists = await empCollection.findOne({ empCode: empCode });
-
-    if (employeeExists) {
-      throw createError(400, `Employee already registerd`)
-    }
-
     const employeeData = {
 
-      empCode,
+      employeeId,
       firstName,
       lastName,
       userName,
@@ -71,9 +74,11 @@ const addEmployee = async (req, res, next) => {
     const empAdded = await empCollection.create(employeeData);
 
     return res.status(201).send({
+      
       status: true,
       message: "Employee Added Successfully",
       data: empAdded,
+
     })
 
   } catch (error) {

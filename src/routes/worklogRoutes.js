@@ -4,7 +4,7 @@ const router = Router()
 
 router
     .post('/addTask', addTask)
-    .put('/updateTask/:empCode/:status', updateTask)
+    .put('/updateTask/:id/:empId/:status', updateTask)
 
 module.exports = router
 

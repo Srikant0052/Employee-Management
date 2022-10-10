@@ -3,7 +3,7 @@ const { Schema, model } = require('mongoose')
 
 const worklogSchema = new Schema({
 
-    empCode: {
+    employeeId: {
         type: String,
         ref: 'Employee'
     },
@@ -25,7 +25,6 @@ const worklogSchema = new Schema({
 
     endingTime: {
         type: String,
-        required: true
     },
 
     status: {
