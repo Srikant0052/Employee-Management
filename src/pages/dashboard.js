@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link,useNavigate  } from "react-router-dom";
 import axios from "axios";
-import Edit from './updateEmployee';
 
 
 function Dashboard({ employees, handleEdit, handleDelete }) {
@@ -12,7 +11,7 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
   //     currency: 'USD',
   //     minimumFractionDigits: null
   // });
-  
+  console.log(employeeData)
 
   
   async function getEmployeeData() {
@@ -43,12 +42,12 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
             <th>Employee ID</th>
             <th>First Name</th>
             {/* <th>Last Name</th> */}
-            {/* <th>Designation</th> */}
-            {/* <th>Email</th> */}
-            {/* <th>DOJ</th> */}
-            <th>Task</th>
-            <th>Status</th>
-            <th>Message</th>
+            <th>Designation</th>
+            <th>Email</th>
+            <th>DOJ</th>
+            <th>User Name</th>
+            {/* <th>Status</th> */}
+            {/* <th>Message</th> */}
             <th colSpan={2} className="text-center">
               Actions
             </th>
@@ -63,13 +62,13 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
 
                 <td>{employee.firstName}</td>
                 {/* <td>{employee.lastName}</td> */}
-                {/* <td>{employee.designation}</td> */}
-                {/* <td>{employee.email}</td> */}
+                <td>{employee.designation}</td>
+                <td>{employee.email}</td>
                 {/* <td>{formatter.format(employee.salary)}</td> */}
-                {/* <td>{employee.dateOfJoining} </td> */}
-                <td>{employee.task} </td>
-                <td>{employee.status} </td>
-                <td>{employee.message} </td>
+                <td>{employee.dateOfJoining} </td>
+                <td>{employee.userName} </td>
+                {/* <td>{employee.status} </td> */}
+                {/* <td>{employee.message} </td> */}
                 <td className="text-right">
                   <button
                     onClick={() => handleEdit(employeeData,employee.employeeId)}

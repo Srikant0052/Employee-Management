@@ -4,10 +4,13 @@ import Header from "./header";
 import Dashboard from "./dashboard";
 import Add from "./addEmployee";
 import Edit from "./updateEmployee";
-
+import AddTask from "./addTask";
+import WorkLog from "./workLog";
 
 function Nav() {
   const [employees, setEmployees] = useState(null);
+  const [tasks, setTasks] = useState(null);
+
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -16,7 +19,7 @@ function Nav() {
     let id = employeeId;
     console.log(employeeData);
     console.log(id);
-    
+
     let employee = employeeData.filter(
       (employee) => employee["employeeId"] === id
     );
@@ -51,37 +54,61 @@ function Nav() {
   // }
 
   return (
-    <div className="container">
-      {/* Dashboard */}
+    <>
+      <div className="container">
+        {/* Dashboard */}
 
-      {!isAdding && !isEditing && (
-        <div>
-          <Header setIsAdding={setIsAdding} />
-          <Dashboard
+        {!isAdding && !isEditing && (
+          <div>
+            <Header setIsAdding={setIsAdding} />
+            <Dashboard
+              employees={employees}
+              handleEdit={handleEdit}
+              // handleDelete={handleDelete}
+            />
+          </div>
+        )}
+
+        {!isAdding && !isEditing && (
+          <div>
+            
+            <WorkLog
+              // employees={employees}
+              handleEdit={handleEdit}
+              // handleDelete={handleDelete}
+            />
+          </div>
+        )}
+
+        {/* Add */}
+        {isAdding && (
+          <Add
             employees={employees}
-            handleEdit={handleEdit}
-            // handleDelete={handleDelete}
+            setEmployees={setEmployees}
+            setIsAdding={setIsAdding}
           />
-        </div>
-      )}
-      {/* Add */}
-      {isAdding && (
-        <Add
-          employees={employees}
-          setEmployees={setEmployees}
-          setIsAdding={setIsAdding}
-        />
-      )}
-      {/* Edit */}
-      {isEditing && (
-        <Edit
-          employees={employees}
-          selectedEmployee={selectedEmployee}
-          setEmployees={setEmployees}
-          setIsEditing={setIsEditing}
-        />
-      )}
-    </div>
+        )}
+        {/* AddTask
+        {isAdding && (
+          <AddTask
+            tasks={tasks}
+            setTasks={setTasks}
+            setIsAdding={setIsAdding}
+          />
+        )} */}
+        {/* Edit */}
+        {isEditing && (
+          <Edit
+            employees={employees}
+            selectedEmployee={selectedEmployee}
+            setEmployees={setEmployees}
+            setIsEditing={setIsEditing}
+          />
+        )}
+      </div>
+
+      
+    </>
   );
 }
 

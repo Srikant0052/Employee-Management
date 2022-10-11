@@ -8,11 +8,11 @@ function Add({ employees, setEmployees, setIsAdding }) {
   const [lastName, setLastName] = useState("");
   const [designation, setDesignation] = useState("");
   const [email, setEmail] = useState("");
-  const [task, setTask] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState("");
-  const [date, setDate] = useState("");
-
+  const [password, setPassword] = useState("");
+  // const [message, setMessage] = useState("");
+  const [userName, setUserName] = useState("");
+  const [dateOfJoining, setDate] = useState("");
+  localStorage.setItem("employeeId", employeeId);
   const textInput = useRef(null);
 
   useEffect(() => {
@@ -22,7 +22,14 @@ function Add({ employees, setEmployees, setIsAdding }) {
   const handleAdd = (e) => {
     e.preventDefault();
 
-    if (!employeeId || !firstName || !email || !date || !task) {
+    if (
+      !employeeId ||
+      !firstName ||
+      !userName ||
+      !email ||
+      !designation ||
+      !password
+    ) {
       return Swal.fire({
         icon: "error",
         title: "Error!",
@@ -37,10 +44,9 @@ function Add({ employees, setEmployees, setIsAdding }) {
       lastName,
       designation,
       email,
-      date,
-      task,
-      status,
-      message,
+      dateOfJoining,
+      userName,
+      password,
     };
 
     async function saveDataInDb() {
@@ -74,7 +80,15 @@ function Add({ employees, setEmployees, setIsAdding }) {
   return (
     <div className="small-container">
       <form onSubmit={handleAdd}>
-        <h1>Add Employee</h1>
+        <div
+          style={{
+            marginTop: "30px",
+            marginBottom: "18px",
+            textAlign: "center",
+          }}
+        >
+          <h1>Add Employee </h1>
+        </div>
         <label htmlFor="employeeId">Employee ID</label>
         <input
           id="employeeId"
@@ -83,6 +97,7 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="employeeId"
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
+          placeholder="Employee ID"
         />
         <label htmlFor="firstName">First Name</label>
         <input
@@ -92,6 +107,7 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="firstName"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First Name"
         />
         <label htmlFor="lastName">Last Name</label>
         <input
@@ -100,6 +116,7 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="lastName"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
+          placeholder="Last Name"
         />
         <label htmlFor="Designation">Designation</label>
         <input
@@ -108,6 +125,7 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="designation"
           value={designation}
           onChange={(e) => setDesignation(e.target.value)}
+          placeholder="Description"
         />
         <label htmlFor="email">Email</label>
         <input
@@ -116,33 +134,37 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
         />
 
-        <label htmlFor="date">Date Of Joining</label>
+        <label htmlFor="dateOfJoining">Date Of Joining</label>
         <input
-          id="date"
+          id="dateOfJoining"
           type="date"
-          name="date"
-          value={date}
+          name="dateOfJoining"
+          value={dateOfJoining}
           onChange={(e) => setDate(e.target.value)}
+          placeholder="Date"
         />
 
-        <label htmlFor="task">Task</label>
+        <label htmlFor="username">UserName</label>
         <input
-          id="task"
+          id="username"
           type="text"
-          name="task"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
+          name="username"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="User Name"
         />
 
-        <label htmlFor="message">Message</label>
+        <label htmlFor="password">Password</label>
         <input
-          id="message"
-          type="text"
-          name="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          id="password"
+          type="password"
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
         />
         <div style={{ marginTop: "30px" }}>
           <input type="submit" value="Add" />

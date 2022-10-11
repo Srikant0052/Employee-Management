@@ -1,5 +1,7 @@
 import React, { useState, setState } from "react";
-import "./style.css";
+import { Link } from "react-router-dom";
+
+// import "./style.css";
 function RegistrationForm() {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
@@ -105,6 +107,13 @@ function RegistrationForm() {
           Register
         </button>
       </div>
+      <p>
+        Have an Account?
+        <br />
+        <span className="line">
+        <Link to="/login">Sign In</Link>
+        </span>
+      </p>
     </div>
   );
 }
