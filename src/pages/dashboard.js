@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link,useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 
 function Dashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
@@ -11,9 +10,8 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
   //     currency: 'USD',
   //     minimumFractionDigits: null
   // });
-  console.log(employeeData)
+  console.log(employeeData);
 
-  
   async function getEmployeeData() {
     try {
       let resp = await axios({
@@ -29,9 +27,8 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
     }
   }
   useEffect(() => {
-    
     getEmployeeData();
-}, [])
+  }, []);
 
   return (
     <div className="contain-table">
@@ -71,7 +68,9 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
                 {/* <td>{employee.message} </td> */}
                 <td className="text-right">
                   <button
-                    onClick={() => handleEdit(employeeData,employee.employeeId)}
+                    onClick={() =>
+                      handleEdit(employeeData, employee.employeeId)
+                    }
                     className="button muted-button"
                   >
                     Edit

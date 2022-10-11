@@ -71,7 +71,6 @@ function Nav() {
 
         {!isAdding && !isEditing && (
           <div>
-            
             <WorkLog
               // employees={employees}
               handleEdit={handleEdit}
@@ -106,8 +105,6 @@ function Nav() {
           />
         )}
       </div>
-
-      
     </>
   );
 }

@@ -6,7 +6,7 @@ import Select from "react-dropdown-select";
 function WorkLog({ handleEdit }) {
   const [employeeTask, setTask] = useState("");
   const [value, setValues] = useState("");
-  console.log(employeeTask);
+  // console.log(employeeTask);
   async function getTask() {
     try {
       let resp = await axios({
@@ -17,7 +17,7 @@ function WorkLog({ handleEdit }) {
       if (resp.data.data) {
         setTask(resp.data.data);
       }
-      console.log(resp.data.data);
+      // console.log(resp.data.data);
     } catch (error) {
       console.log(error.response.data.message);
     }
@@ -26,7 +26,7 @@ function WorkLog({ handleEdit }) {
     getTask();
   }, []);
 
-  let options = [
+  let options1 = [
     { value: "pending", label: "Pending" },
     { value: "completed", label: "Completed" },
   ];
@@ -42,7 +42,13 @@ function WorkLog({ handleEdit }) {
             <th>Description</th>
             <th>Start Time</th>
             <th>End Time</th>
-            <th>Status</th>
+            <th>
+              Status
+              {/* <Select
+                options={options}
+                onChange={(value) => this.setValues(value)}
+              /> */}
+            </th>
             <th>Time Taken</th>
             <th colSpan={2} className="text-center">
               Actions
@@ -56,14 +62,20 @@ function WorkLog({ handleEdit }) {
                 <td>{i + 1}</td>
                 <td>{task.employeeId}</td>
 
-                <td>{task.projectCode}</td>
+                {/* <td>{task.projectCode}</td> */}
+                <td>
+                <Select
+                    options={task.projectCode}
+                    
+                  />
+                </td>
                 <td>{task.description}</td>
                 <td>{task.startingTime}</td>
                 <td>{task.endingTime} </td>
                 <td>
                   <Select
-                    options={options}
-                    onChange={(value) => this.setValues(value)}
+                    options={options1}
+                    onChange={(value) => (value)}
                   />
                 </td>
                 {/* <td>{task.status} </td> */}

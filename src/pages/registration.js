@@ -111,7 +111,7 @@ function RegistrationForm() {
         Have an Account?
         <br />
         <span className="line">
-        <Link to="/login">Sign In</Link>
+          <Link to="/login">Sign In</Link>
         </span>
       </p>
     </div>

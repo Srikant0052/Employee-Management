@@ -1,11 +1,13 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const Login = () => {
   const userRef = useRef();
   const errRef = useRef();
   const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [password, setpassword] = useState("");
+  const [passwordType, setPasswordType] = useState("password");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
   useEffect(() => {
@@ -13,24 +15,40 @@ const Login = () => {
   }, []);
   useEffect(() => {
     setErrMsg("");
-  }, [user, pwd]);
+  }, [user, password]);
+
+  const togglePassword =()=>{
+    if(passwordType==="password")
+    {
+     setPasswordType("text")
+     return;
+    }
+    setPasswordType("password")
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ user, pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      // const accessToken = response?.data?.accessToken;
+      const response = await axios({
+        method: "post",
+        url: "http://localhost:4000/login",
+        data: {
+          email:user,
+          password,
+        },
+        // {
+        //   headers: { "Content-Type": "application/json" },
+        //   withCredentials: true,
+        // }
+      });
+      console.log(response.data)
+      const accessToken = response?.data?.token;
+      console.log(accessToken)
+
       // const roles = response?.data?.roles;
-      setAuth({ user, pwd, roles, accessToken });
+      // setAuth({ user, password,  accessToken });
       setUser("");
-      setPwd("");
+      setpassword("");
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
@@ -43,6 +61,7 @@ const Login = () => {
         setErrMsg("Login Failed");
       }
       errRef.current.focus();
+      // console.log(err)
     }
   };
 
@@ -53,7 +72,7 @@ const Login = () => {
           <h1>You are logged in!</h1>
           <br />
           <p>
-            <a href="#">Go to Home</a>
+            <a href="/workLog">Go to Home</a>
           </p>
         </section>
       ) : (
@@ -81,10 +100,12 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
+              onChange={(e) => setpassword(e.target.value)}
+              value={password}
               required
+              
             />
+            
             <button>Sign In</button>
           </form>
           <p>
