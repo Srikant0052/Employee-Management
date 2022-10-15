@@ -7,7 +7,7 @@ function Header({ setIsAdding }) {
       <div
         style={{ marginTop: "30px", marginBottom: "18px", textAlign: "center" }}
       >
-        <button onClick={() => setIsAdding(true)} className="round-button">
+        {/* <button onClick={() => setIsAdding(true)} className="round-button">
           Add Employee
         </button>
       </div>
@@ -16,7 +16,7 @@ function Header({ setIsAdding }) {
       >
         <button onClick={() => setIsAdding(true)} className="round-button">
           Add Task
-        </button>
+        </button> */}
       </div>
     </header>
   );

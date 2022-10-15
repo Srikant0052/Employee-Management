@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 // import "./style.css";
 function RegistrationForm() {
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -35,8 +35,11 @@ function RegistrationForm() {
   return (
     <div className="form">
       <div className="form-body">
+        <div>
+          <h2>Register Here!</h2>
+        </div>
         <div className="username">
-          <label className="form__label" for="firstName">
+          <label className="form__label" htmlFor="firstName">
             First Name{" "}
           </label>
           <input
@@ -49,7 +52,7 @@ function RegistrationForm() {
           />
         </div>
         <div className="lastname">
-          <label className="form__label" for="lastName">
+          <label className="form__label" htmlFor="lastName">
             Last Name{" "}
           </label>
           <input
@@ -63,7 +66,7 @@ function RegistrationForm() {
           />
         </div>
         <div className="email">
-          <label className="form__label" for="email">
+          <label className="form__label" htmlFor="email">
             Email{" "}
           </label>
           <input
@@ -76,7 +79,7 @@ function RegistrationForm() {
           />
         </div>
         <div className="password">
-          <label className="form__label" for="password">
+          <label className="form__label" htmlFor="password">
             Password{" "}
           </label>
           <input
@@ -89,7 +92,7 @@ function RegistrationForm() {
           />
         </div>
         <div className="confirm-password">
-          <label className="form__label" for="confirmPassword">
+          <label className="form__label" htmlFor="confirmPassword">
             Confirm Password{" "}
           </label>
           <input
@@ -102,8 +105,8 @@ function RegistrationForm() {
           />
         </div>
       </div>
-      <div class="footer">
-        <button onClick={() => handleSubmit()} type="submit" class="btn">
+      <div className="footer">
+        <button onClick={() => handleSubmit()} type="submit" className="btn">
           Register
         </button>
       </div>

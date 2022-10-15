@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 
 const Login = () => {
   const userRef = useRef();
@@ -17,14 +17,13 @@ const Login = () => {
     setErrMsg("");
   }, [user, password]);
 
-  const togglePassword =()=>{
-    if(passwordType==="password")
-    {
-     setPasswordType("text")
-     return;
+  const togglePassword = () => {
+    if (passwordType === "password") {
+      setPasswordType("text");
+      return;
     }
-    setPasswordType("password")
-  }
+    setPasswordType("password");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +32,7 @@ const Login = () => {
         method: "post",
         url: "http://localhost:4000/login",
         data: {
-          email:user,
+          email: user,
           password,
         },
         // {
@@ -41,9 +40,9 @@ const Login = () => {
         //   withCredentials: true,
         // }
       });
-      console.log(response.data)
+      console.log(response.data);
       const accessToken = response?.data?.token;
-      console.log(accessToken)
+      console.log(accessToken);
 
       // const roles = response?.data?.roles;
       // setAuth({ user, password,  accessToken });
@@ -72,7 +71,7 @@ const Login = () => {
           <h1>You are logged in!</h1>
           <br />
           <p>
-            <a href="/workLog">Go to Home</a>
+            <a href="/">Go to Home</a>
           </p>
         </section>
       ) : (
@@ -103,9 +102,8 @@ const Login = () => {
               onChange={(e) => setpassword(e.target.value)}
               value={password}
               required
-              
             />
-            
+
             <button>Sign In</button>
           </form>
           <p>

@@ -53,8 +53,8 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
         <tbody>
           {employeeData.length > 0 ? (
             employeeData.map((employee, i) => (
-              <tr key={employee.employeeId}>
-                <td>{i + 1}</td>
+              <tr key={i} >
+                <td >{i + 1}</td>
                 <td>{employee.employeeId}</td>
 
                 <td>{employee.firstName}</td>

@@ -78,8 +78,12 @@ function Add({ employees, setEmployees, setIsAdding }) {
   };
 
   return (
-    <div className="small-container">
+    <div className="container">
+      
       <form onSubmit={handleAdd}>
+      <div className="=row">
+      <div className="col-xl-4 col-md-3"></div>
+      <div className="col-xl-4 col-md-6">
         <div
           style={{
             marginTop: "30px",
@@ -144,7 +148,7 @@ function Add({ employees, setEmployees, setIsAdding }) {
           name="dateOfJoining"
           value={dateOfJoining}
           onChange={(e) => setDate(e.target.value)}
-          placeholder="Date"
+          // placeholder="Date"
         />
 
         <label htmlFor="username">UserName</label>
@@ -176,7 +180,11 @@ function Add({ employees, setEmployees, setIsAdding }) {
             onClick={() => setIsAdding(false)}
           />
         </div>
+        </div>
+        <div className="col-xl-4 col-md-3"></div>
+      </div>
       </form>
+      
     </div>
   );
 }

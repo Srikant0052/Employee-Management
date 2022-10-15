@@ -7,7 +7,7 @@ export default function Navbar() {
         Home
       </Link>
       <ul>
-        <CustomLink to="/workLog">Task Dashboard</CustomLink>
+        <CustomLink to="/employees">Employee Dashboard</CustomLink>
         <CustomLink to="/addEmployee">Add Employee</CustomLink>
         <CustomLink to="/addTask">Add Task</CustomLink>
         <CustomLink to="/register">Sign Up</CustomLink>

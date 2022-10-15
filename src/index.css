@@ -34,6 +34,7 @@
  */
 body {
   margin: 0;
+  
 }
 
 /**
@@ -568,6 +569,7 @@ dd {
   padding:  1rem;
   margin-left: 0;
   margin-right: auto;
+
 }
 
 .small-container {
@@ -679,6 +681,7 @@ dd {
 
 .text-right {
   text-align: right;
+  
 }
 
 .text-center {
