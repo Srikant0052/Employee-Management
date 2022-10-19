@@ -1,19 +1,16 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const employeeSchema = new Schema(
   {
-
     slNo: {
       type: Number,
     },
 
-    empCode: {
-
+    employeeId: {
       type: String,
       required: true,
       unique: true,
       trim: true,
-
     },
 
     firstName: {
@@ -29,7 +26,7 @@ const employeeSchema = new Schema(
 
     userName: {
       type: String,
-      required: true
+      required: true,
     },
 
     designation: {
@@ -37,13 +34,15 @@ const employeeSchema = new Schema(
       required: true,
       trim: true,
     },
+    email: {
+      type: String,
+    },
 
     dateOfJoining: {
       type: String,
     },
 
     password: {
-
       type: String,
       required: true,
       trim: true,
@@ -51,11 +50,9 @@ const employeeSchema = new Schema(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
       minlength: 8,
       maxlength: 15,
-      
     },
-
   },
   { timestamps: true }
 );
 
-module.exports = model("Employee", employeeSchema)
+module.exports = model("Employee", employeeSchema);
