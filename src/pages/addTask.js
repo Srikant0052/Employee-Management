@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useForm } from "react-hook-form";
 
 function AddTask({ tasks, setTasks, setIsAdding }) {
-  const [employeeId, setEmployeeId] = useState("");
   const [projectCode, setprojectCode] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
   const [description, setDescription] = useState("");
-  //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
+  const { register, handleSubmit, reset } = useForm();
 
   useEffect(() => {
     textInput.current.focus();
@@ -40,6 +41,10 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
             ...newTask,
           },
         });
+        if (resp.data.status == true) {
+          const reload = window.location.reload();
+          setTimeout(reload, 2000);
+        }
 
         console.log(resp);
       } catch (error) {
@@ -47,15 +52,15 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
       }
     }
     saveDataInDb();
-    setTasks(tasks);
-    setIsAdding(false);
+    // setTasks(tasks);
+    // setIsAdding(false);
 
     Swal.fire({
       icon: "success",
       title: "Added!",
       text: `Task has been Added.`,
       showConfirmButton: false,
-      timer: 1500,
+      timer: 1000,
     });
   };
 

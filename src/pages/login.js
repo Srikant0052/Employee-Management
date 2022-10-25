@@ -1,29 +1,24 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const userRef = useRef();
   const errRef = useRef();
   const [user, setUser] = useState("");
-  const [password, setpassword] = useState("");
-  const [passwordType, setPasswordType] = useState("password");
+  const [password, setPassword] = useState("");
+  const [isLogined, setIsLogined] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const nav = useNavigate();
+
   useEffect(() => {
     userRef.current.focus();
   }, []);
   useEffect(() => {
     setErrMsg("");
   }, [user, password]);
-
-  const togglePassword = () => {
-    if (passwordType === "password") {
-      setPasswordType("text");
-      return;
-    }
-    setPasswordType("password");
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,19 +30,23 @@ const Login = () => {
           email: user,
           password,
         },
+
         // {
         //   headers: { "Content-Type": "application/json" },
         //   withCredentials: true,
         // }
       });
-      console.log(response.data);
+      // console.log(response.data.data);
       const accessToken = response?.data?.token;
-      console.log(accessToken);
-
+      // console.log(accessToken);
+      localStorage.setItem("userName", response.data.data.firstName);
+      localStorage.setItem("userId", response.data.data.userName);
+      localStorage.setItem("employeeId", response.data.data.employeeId);
+      localStorage.setItem("accessToken", response?.data?.token);
       // const roles = response?.data?.roles;
       // setAuth({ user, password,  accessToken });
       setUser("");
-      setpassword("");
+      setPassword("");
       setSuccess(true);
     } catch (err) {
       if (!err?.response) {
@@ -64,15 +63,26 @@ const Login = () => {
     }
   };
 
+  if (success == true) {
+    Swal.fire({
+      icon: "success",
+      title: "Login Successfully!",
+      showConfirmButton: true,
+      timer: 2000,
+    });
+    const reload = window.location.reload();
+    setTimeout(reload, 2000);
+    return nav("/updatetask");
+  }
   return (
     <>
       {success ? (
         <section>
           <h1>You are logged in!</h1>
           <br />
-          <p>
-            <a href="/">Go to Home</a>
-          </p>
+          {/* <p>
+            <Link to="/user">Go to Profile</Link>
+          </p> */}
         </section>
       ) : (
         <section>
@@ -99,7 +109,7 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              onChange={(e) => setpassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
               required
             />

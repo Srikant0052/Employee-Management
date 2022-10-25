@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Dashboard({ employees, handleEdit, handleDelete }) {
+function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // const formatter = new Intl.NumberFormat('en-US', {
   //     style: 'currency',
@@ -24,11 +25,17 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
       }
     } catch (error) {
       console.log(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   }
   useEffect(() => {
     getEmployeeData();
   }, []);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className="contain-table">
@@ -38,13 +45,11 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
             <th>Sl. No.</th>
             <th>Employee ID</th>
             <th>First Name</th>
-            {/* <th>Last Name</th> */}
             <th>Designation</th>
             <th>Email</th>
             <th>DOJ</th>
             <th>User Name</th>
-            {/* <th>Status</th> */}
-            {/* <th>Message</th> */}
+            
             <th colSpan={2} className="text-center">
               Actions
             </th>
@@ -52,20 +57,16 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
         </thead>
         <tbody>
           {employeeData.length > 0 ? (
-            employeeData.map((employee, i) => (
-              <tr key={i} >
-                <td >{i + 1}</td>
+            employeeData.map((employee, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
                 <td>{employee.employeeId}</td>
-
                 <td>{employee.firstName}</td>
-                {/* <td>{employee.lastName}</td> */}
                 <td>{employee.designation}</td>
                 <td>{employee.email}</td>
-                {/* <td>{formatter.format(employee.salary)}</td> */}
                 <td>{employee.dateOfJoining} </td>
                 <td>{employee.userName} </td>
-                {/* <td>{employee.status} </td> */}
-                {/* <td>{employee.message} </td> */}
+                
                 <td className="text-right">
                   <button
                     onClick={() =>
@@ -97,4 +98,4 @@ function Dashboard({ employees, handleEdit, handleDelete }) {
   );
 }
 
-export default Dashboard;
+export default EmployeeDashboard;

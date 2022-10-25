@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function AddProject({ tasks, setTasks, setIsAdding }) {
   const [name, setName] = useState("");
@@ -9,6 +10,7 @@ function AddProject({ tasks, setTasks, setIsAdding }) {
   const [date, setDate] = useState("");
   //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     textInput.current.focus();
@@ -42,7 +44,10 @@ function AddProject({ tasks, setTasks, setIsAdding }) {
             ...newProject,
           },
         });
-
+        if (resp.data.status == true) {
+          const reload = window.location.reload();
+          setTimeout(reload, 2000);
+        }
         console.log(resp);
       } catch (error) {
         console.log(error);
@@ -50,14 +55,13 @@ function AddProject({ tasks, setTasks, setIsAdding }) {
     }
     saveDataInDb();
     // setTasks(tasks);
-    setIsAdding(false);
-
+    // setIsAdding(false);
     Swal.fire({
       icon: "success",
       title: "Added!",
       text: `Project has been Added.`,
       showConfirmButton: false,
-      timer: 1500,
+      timer: 1000,
     });
   };
 
@@ -113,7 +117,7 @@ function AddProject({ tasks, setTasks, setIsAdding }) {
             className="muted-button"
             type="button"
             value="Cancel"
-            onClick={() => setIsAdding(false)}
+            onClick={() => navigate("/updatetask")}
           />
         </div>
       </form>

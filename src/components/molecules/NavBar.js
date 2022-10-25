@@ -1,4 +1,5 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
+import { NAV_DATA } from "../../const";
 
 export default function Navbar() {
   return (
@@ -7,11 +8,13 @@ export default function Navbar() {
         Home
       </Link>
       <ul>
-        <CustomLink to="/employees">Employee Dashboard</CustomLink>
-        <CustomLink to="/addEmployee">Add Employee</CustomLink>
-        <CustomLink to="/addTask">Add Task</CustomLink>
-        <CustomLink to="/register">Sign Up</CustomLink>
-        <CustomLink to="/login">Sign In</CustomLink>
+        {NAV_DATA.map(({ path, heading }, index) => {
+          return (
+            <CustomLink to={path} key={index}>
+              {heading}
+            </CustomLink>
+          );
+        })}
       </ul>
     </nav>
   );

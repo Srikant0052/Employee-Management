@@ -1,0 +1,38 @@
+.dateContainer{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
+    color: rgb(214, 38, 38);
+    text-decoration: solid underline ;
+    font-size: larger;
+}
+
+.description{
+
+  width: 150% !important;
+}
+
+.duration{
+  width:108px;
+}
+
+.sl{
+    width: 44px;
+}
+
+.projectCode{
+    width: 135px;
+}
+
+.desc{
+    width: 300px;
+}
+
+.status{
+    width: 140px;
+}
+
+.dmTo{
+    width: 189px;
+}
