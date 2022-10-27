@@ -129,7 +129,6 @@ function UpdateTask() {
                       className="form-check-input"
                       type="checkbox"
                       value=""
-                      id="flexCheckChecked"
                       // checked
                     />
                     <label
@@ -140,7 +139,7 @@ function UpdateTask() {
                 </td>
                 {/* <td>{task.employeeId}</td> */}
                 <td>
-                  <select
+                  <select className={customStyle.projectCode}
                     defaultValue="n/a"
                     onChange={(e) => setProjectCode(e.target.value)}
                   >
@@ -165,7 +164,9 @@ function UpdateTask() {
                 </td>
 
                 <td>
-                  <select onChange={(e) => setStatus(e.target.value)}>
+                  <select  
+                    className={customStyle.status}
+                    onChange={(e) => setStatus(e.target.value)}>
                     {options1.map((option, index) => (
                       <option key={index} value={option.value}>
                         {option.label}
@@ -173,10 +174,11 @@ function UpdateTask() {
                     ))}
                   </select>
                 </td>
-                <td className={customStyle.duration}>
-                  <div className="col-10">
+                <td >
+                  <div className={customStyle.duration}>
                     <input
                       type="text"
+                      
                       name="duration"
                       value={duration}
                       onChange={(e) => setDuration(e.target.value)}
@@ -186,7 +188,9 @@ function UpdateTask() {
                 </td>
 
                 <td>
-                  <select
+                  <select 
+                    className={customStyle.dmTo}
+
                     defaultValue="n/a"
                     onChange={(e) => setUserName(e.target.value)}
                   >
@@ -243,7 +247,7 @@ function UpdateTask() {
                   <td className={customStyle.status}>{task.status} </td>
                   <td className={customStyle.duration}>{task.spendTime} </td>
                   <td className={customStyle.dmTo}>{task.DM_To}</td>
-                  <td></td>
+                  {/* <td></td> */}
                 </tr>
               ))
             ) : (

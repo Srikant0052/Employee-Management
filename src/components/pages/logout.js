@@ -13,15 +13,5 @@ export default function logout() {
     }
   }, []);
 
-  return (
-    <>
-      <button
-        type="button"
-        className="btn btn-danger"
-        onClick={localStorage.clear()}
-      >
-        logout
-      </button>
-    </>
-  );
+  return <div>{localStorage.clear()}</div>;
 }

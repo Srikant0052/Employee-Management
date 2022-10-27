@@ -7,11 +7,13 @@ import customStyle from "./project-details.module.css";
 
 function ProjectData() {
   const [projectData, setProjectData] = useState([]);
-
+  const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   let projectCode = localStorage.getItem("projectCode");
   let userName = localStorage.getItem("userName");
   let userId = localStorage.getItem("userId");
+
+  console.log(status);
 
   //get all tasks
   async function getProjectDetails() {
@@ -32,9 +34,38 @@ function ProjectData() {
     }
   }
 
+  //Update Project Status
+  async function updateProjectStatus() {
+    try {
+      let resp2 = await axios({
+        method: "put",
+        url: `http://localhost:4000/${projectCode}`,
+        data: { status },
+      });
+      console.log(resp2.data.data);
+
+      if (resp2.data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Updated Successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // const reload = window.location.reload();
+        // setTimeout(reload, 2000);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
+
   useEffect(() => {
     getProjectDetails();
   }, []);
+  let options1 = [
+    { value: "Pending", label: "Pending" },
+    { value: "Completed", label: "Completed" },
+  ];
 
   if (isLoading) {
     return null;
@@ -67,7 +98,15 @@ function ProjectData() {
                 <td>{projectData.projectCode}</td>
                 <td>{projectData.name}</td>
                 <td>{projectData.description}</td>
-                <td>{projectData.status}</td>
+                <td>
+                  <select onChange={(e) => setStatus(e.target.value)}>
+                    {options1.map((option, index) => (
+                      <option key={index} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </td>
                 <td>{projectData.customerId}</td>
                 <td>{projectData.date}</td>
               </tr>
@@ -83,7 +122,9 @@ function ProjectData() {
         <button className="btn mb-2">Edit</button>&nbsp;
         <button className="btn mb-2">Delete</button>&nbsp;
         <button className="btn mb-2">Add Note</button>&nbsp;
-        <button className="btn mb-2">Change Status</button>
+        <button onClick={() => updateProjectStatus()} className="btn mb-2">
+          Change Status
+        </button>
       </div>
     </>
   );

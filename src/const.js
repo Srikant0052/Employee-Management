@@ -1,5 +1,5 @@
 import Home from "./pages/workLog";
-// import Register from "./pages/registration";
+import Register from "./pages/registration";
 import Login from "./pages/login";
 import Logout from "./components/pages/logout";
 import AddEmployee from "./pages/addEmployee";
@@ -34,10 +34,10 @@ export const NAV_DATA = [
     path: "/addCustomer",
     heading: "Add Customer",
   },
-  // {
-  //   path: "/register",
-  //   heading: "Sign Up",
-  // },
+  {
+    path: "/register",
+    heading: "Sign Up",
+  },
   localStorage.getItem("accessToken")
     ? {
         path: "/logout",
@@ -54,10 +54,10 @@ export const ROUTES = [
     path: "/",
     page: <Home />,
   },
-  // {
-  //   path: "/register",
-  //   page: <Register />,
-  // },
+  {
+    path: "/register",
+    page: <Register />,
+  },
 
   {
     path: "/employees",

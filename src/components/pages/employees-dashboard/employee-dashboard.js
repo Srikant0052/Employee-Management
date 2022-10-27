@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import customStyle from './employee-dashboard.module.css'
 
 function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   // const formatter = new Intl.NumberFormat('en-US', {
   //     style: 'currency',
   //     currency: 'USD',
   //     minimumFractionDigits: null
   // });
-  console.log(employeeData);
+  // console.log(employeeData);
+
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    }
+  },[]);
 
   async function getEmployeeData() {
     try {
