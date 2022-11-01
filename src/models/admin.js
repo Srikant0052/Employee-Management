@@ -1,65 +1,58 @@
 const { Schema, model, default: mongoose } = require("mongoose");
 
-const worklogSchema = new Schema(
+const adminSchema = new Schema(
   {
     slNo: {
       type: Number,
-      unique:true
-    },
-
-    taskId: {
-      type: String,
-      unique: true,
     },
 
     employeeId: {
       type: String,
-      ref: "Employee",
-    },
-
-    projectCode: {
-      type: String,
-      ref: "Project",
+      required: true,
+      unique: true,
       trim: true,
     },
 
-    description: {
-      type: String,
-      requied: true,
-      trim: true,
-    },
-
-    startingTime: {
+    firstName: {
       type: String,
       required: true,
-    },
-
-    // endingTime: {
-    //   type: String,
-    //   // required: true,
-    //   default: null,
-    // },
-
-    status: {
-      type: String,
-      enum: ["Pending", "Completed", "Failed"],
-      default: "Pending",
       trim: true,
     },
 
-    spendTime: {
+    lastName: {
       type: String,
-      default: 0,
-    },
-
-    DM_To: {
-      type: String,
-      default: "n/a",
       trim: true,
     },
 
-    note: {
+    userName: {
       type: String,
+      required: true,
+      trim: true,
+    },
+
+    designation: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    email: {
+      type: String,
+      trim: true,
+    },
+
+    dateOfJoining: {
+      type: String,
+    },
+
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      match:
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
+      minlength: 8,
+      maxlength: 15,
     },
 
     isDeleted: {
@@ -69,10 +62,10 @@ const worklogSchema = new Schema(
 
     deletedAt: {
       type: Date,
-      default: null,
+      default:null
     },
   },
   { timestamps: true }
 );
 
-module.exports = model("Worklog", worklogSchema);
+module.exports = model("Admin", adminSchema);

@@ -27,6 +27,7 @@ const employeeSchema = new Schema(
     userName: {
       type: String,
       required: true,
+      trim: true,
     },
 
     designation: {
@@ -34,8 +35,10 @@ const employeeSchema = new Schema(
       required: true,
       trim: true,
     },
+
     email: {
       type: String,
+      trim: true,
     },
 
     dateOfJoining: {
@@ -50,6 +53,21 @@ const employeeSchema = new Schema(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
       minlength: 8,
       maxlength: 15,
+    },
+    
+    role: {
+      type: String,
+      enum: ["Employee", "Admin"],
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }

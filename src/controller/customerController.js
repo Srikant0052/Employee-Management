@@ -9,10 +9,10 @@ const addCustomer = async (req, res, next) => {
       throw createError(400, `invalid request Parameters`);
     }
 
-    let { name } = req.body;
+    let { name, address } = req.body;
 
     if (!isValid(name)) {
-      throw createError(400, `name should not be empty`);
+      throw createError(400, `Name should not be empty`);
     }
 
     let slNo = (await custCollection.find().count()) + 1;
@@ -21,6 +21,7 @@ const addCustomer = async (req, res, next) => {
     const customerAdded = await custCollection.create({
       slNo,
       name,
+      address,
       customerId,
     });
 
@@ -33,4 +34,24 @@ const addCustomer = async (req, res, next) => {
   }
 };
 
-module.exports = { addCustomer };
+const getAllCustomer = async (req, res, next) => {
+  try {
+    const customerList = await custCollection
+      .find({ isDeleted: false })
+      .sort({ slNo: -1 });
+    // console.log(taskList);
+    if (!customerList) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: customerList,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { addCustomer, getAllCustomer };

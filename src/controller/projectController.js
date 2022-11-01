@@ -1,6 +1,5 @@
 const createError = require("http-errors");
 const projectColl = require("../models/projects");
-const { generateId } = require("../utils/helpers");
 const { isValidRequestBody, isValid } = require("../utils/validator");
 
 const addProject = async (req, res, next) => {
@@ -8,26 +7,34 @@ const addProject = async (req, res, next) => {
     let requestBody = req.body;
 
     if (!isValidRequestBody(requestBody)) {
-      throw createError(400, `invalid request params`);
+      throw createError(400, `Invalid request Data`);
     }
 
-    let { name, description, customerId, date } = req.body;
-
-    // if (!isValidRequestBody(req.body)) {
-    //   throw createError(400, `invalid request params`);
-    // }
+    let { name, projectCode, description, customerId, companyName, date } =
+      req.body;
 
     if (!isValid(name)) {
-      throw createError(400, `Please Enter A Valid Project name`);
+      throw createError(400, `Please Enter Project name`);
     }
 
+    if (!isValid(projectCode)) {
+      throw createError(400, `Please Enter Project Code`);
+    }
     if (!isValid(description)) {
-      throw createError(400, `Please Enter A Valid Project description`);
+      throw createError(400, `Please Enter Project description`);
     }
 
-    let projectCode = generateId();
+    let slNo = (await projectColl.find().count()) + 1;
 
-    const projectData = { projectCode, name, description, customerId, date };
+    const projectData = {
+      slNo,
+      projectCode,
+      name,
+      description,
+      customerId,
+      companyName,
+      date,
+    };
 
     const project = await projectColl.create(projectData);
 
@@ -36,7 +43,7 @@ const addProject = async (req, res, next) => {
     }
 
     return res.status(201).send({
-      status: false,
+      status: true,
       message: "Project Successfully Added",
       data: project,
     });
@@ -45,4 +52,77 @@ const addProject = async (req, res, next) => {
   }
 };
 
-module.exports = { addProject };
+const getProjectDataById = async (req, res, next) => {
+  try {
+    const projectCode = req.params.projectCode;
+
+    const project = await projectColl.findOne({ projectCode: projectCode });
+
+    if (!project) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: project,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllProjects = async (req, res, next) => {
+  try {
+    const projectList = await projectColl.find();
+
+    if (!projectList) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: projectList,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateProject = async (req, res, next) => {
+  try {
+    const projectCode = req.params.projectCode;
+    const requestBody = req.body;
+
+    if (!isValidRequestBody(requestBody)) {
+      throw createError(400, `Invalid request Data`);
+    }
+    const { status } = requestBody;
+
+    const project = await projectColl.findOne({ projectCode: projectCode });
+
+    if (!project) {
+      throw createError(404, "Data Not Found");
+    }
+
+    const updatedProject = await projectColl.findOneAndUpdate(
+      { projectCode: projectCode },
+      { $set: { status: status } },
+      { new: true }
+    );
+
+    return res
+      .status(200)
+      .send({ status: true, message: "Success", data: updatedProject });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  addProject,
+  getProjectDataById,
+  updateProject,
+  getAllProjects,
+};

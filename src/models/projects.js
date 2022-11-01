@@ -8,17 +8,25 @@ const projectSchema = new Schema(
 
     projectCode: {
       type: String,
-      // requied: true,
+      requied: true,
     },
 
     name: {
       type: String,
       required: true,
+      trim: true,
+    },
+
+    companyName: {
+      type: String,
+      required: true,
+      trim: true,
     },
 
     description: {
       type: String,
       required: true,
+      trim: true,
     },
 
     status: {
@@ -30,9 +38,25 @@ const projectSchema = new Schema(
     customerId: {
       type: String,
       ref: "Customer",
+      trim: true,
     },
+
+    note: {
+      type: String,
+    },
+
     date: {
       type: String,
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }

@@ -20,6 +20,7 @@ const addEmployee = async (req, res, next) => {
       designation,
       dateOfJoining,
       password,
+      role,
     } = requestBody;
 
     if (!isValid(employeeId)) {
@@ -57,7 +58,12 @@ const addEmployee = async (req, res, next) => {
     if (!isValid(designation)) {
       throw createError(400, `Please Enter Designation`);
     }
-
+    if (!isValid(role)) {
+      throw createError(400, `Please Enter Role`);
+    }
+    if (["Employee", "Admin"].indexOf(role) === -1) {
+      throw createError(400, "Please choose a vaild Role");
+    }
     const employeeExists = await empCollection.findOne({
       employeeId: employeeId,
     });
@@ -66,12 +72,16 @@ const addEmployee = async (req, res, next) => {
       throw createError(400, `Employee already registerd`);
     }
 
+    let slNo = (await empCollection.find().count()) + 1;
+
     const employeeData = {
+      slNo,
       employeeId,
       firstName,
       lastName,
       userName,
       password,
+      role,
       designation,
       email,
       dateOfJoining: dateOfJoining || null,
@@ -117,16 +127,17 @@ const employeeLogin = async (req, res, next) => {
     if (!user) {
       throw createError(401, `Email or Password is Incorrect!`);
     }
-    // localStorage.setItem("UserName" ,user)
 
     const token = jwt.sign(
       {
         userId: user._id,
+        role: user.role,
       },
-      "Employee123"
-      // { expiresIn: 60 * 60 }
+      "Employee123",
+      { expiresIn: 60 * 60 }
     );
-    res.setHeader("Authorization", token);
+    // res.setHeader("Authorization", token);
+    res.cookie(`token`, token);
 
     return res.status(200).send({
       status: true,
@@ -141,7 +152,7 @@ const employeeLogin = async (req, res, next) => {
 
 const getEmployeeList = async (req, res, next) => {
   try {
-    const employeeList = await empCollection.find();
+    const employeeList = await empCollection.find().sort({ dateOfJoining: 1 });
 
     if (!employeeList) {
       throw createError(404, "Data Not Found");
@@ -161,7 +172,7 @@ const getEmployeeByEmployeeId = async (req, res, next) => {
   try {
     const employeeId = req.params.employeeId;
 
-    const employee = await empCollection.findOne({employeeId:employeeId});
+    const employee = await empCollection.findOne({ employeeId: employeeId });
 
     if (!employee) {
       throw createError(404, "Data Not Found");
@@ -177,9 +188,53 @@ const getEmployeeByEmployeeId = async (req, res, next) => {
   }
 };
 
+const updatePassword = async (req, res, next) => {
+  try {
+    const requestBody = req.body;
+
+    if (!isValidRequestBody(requestBody)) {
+      throw createError(400, `All fields are Mandatory!`);
+    }
+    const { email, oldPassword, newPassword } = requestBody;
+
+    if (!isValid(email)) {
+      throw createError(400, `Please Enter Email`);
+    }
+
+    if (!isValid(oldPassword)) {
+      throw createError(400, `Please Enter Old Password`);
+    }
+
+    if (!isValid(newPassword)) {
+      throw createError(400, `Please Enter New Password`);
+    }
+
+    const employee = await empCollection
+      .findOne({ email: email, password: oldPassword })
+      .lean();
+
+    if (!employee) {
+      throw createError(404, "Data Not Found");
+    }
+
+    const updatedPassword = await empCollection.findOneAndUpdate(
+      { email: email },
+      { $set: { password: newPassword } },
+      { new: true }
+    );
+
+    return res
+      .status(200)
+      .send({ status: true, message: "Password Updated Successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addEmployee,
   getEmployeeList,
   employeeLogin,
   getEmployeeByEmployeeId,
+  updatePassword,
 };

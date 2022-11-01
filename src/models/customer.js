@@ -15,6 +15,20 @@ const customerSchema = new Schema(
       type: String,
       required: true,
     },
+    
+    address: {
+      type: String,
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

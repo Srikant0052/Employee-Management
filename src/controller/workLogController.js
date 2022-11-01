@@ -4,11 +4,13 @@ const empCollection = require("../models/employee");
 const projects = require("../models/projects");
 const moment = require("moment");
 const { isValidRequestBody } = require("../utils/validator");
+const { generateId } = require("../utils/helpers");
 let now = moment();
 
 const addTask = async (req, res, next) => {
   try {
-    let { employeeId, projectCode, description, endingTime } = req.body;
+    let { employeeId, projectCode, description, spendTime, status, DM_To } =
+      req.body;
 
     if (!employeeId) {
       throw createError(400, "Employee id is required");
@@ -21,28 +23,38 @@ const addTask = async (req, res, next) => {
     }
 
     if (!projectCode) {
-      throw createError(400, "Employee id is required");
+      throw createError(400, "Project Code is required");
     }
 
-    // const isProjectExist = await projects.findOne({ projectCode: projectCode });
+    const isProjectExist = await projects.findOne({ projectCode: projectCode });
 
-    // if (!isProjectExist) {
-    //   throw createError(404, `project Not Exist`);
-    // }
+    if (!isProjectExist) {
+      throw createError(404, `Project Not Exist`);
+    }
 
     if (!description) {
-      throw createError(400, "Employee id is required");
+      throw createError(400, "Description is required");
     }
 
+    let taskId = generateId();
     const slNo = (await workLog.find().count()) + 1;
 
     const startingTime = now.format("lll");
 
+    // if (req.employee != isEmployee.userId) {
+    //   throw createError(401, "Unauthorized Access");
+    // }
+
     const worklogAdded = await workLog.create({
-      ...req.body,
       slNo,
+      employeeId,
+      projectCode,
+      taskId,
+      description,
       startingTime,
-      endingTime,
+      spendTime,
+      status,
+      DM_To,
     });
     return res.status(201).send({
       status: true,
@@ -56,8 +68,9 @@ const addTask = async (req, res, next) => {
 const updateTask = async (req, res, next) => {
   try {
     const requestBody = req.body;
-    let projectCode = req.params.projectCode;
-    const { status, description, spendTime } = requestBody;
+    let taskId = req.params.taskId;
+    let employeeId = req.params.employeeId;
+    const { status, description, spendTime, DM_To } = requestBody;
 
     if (!isValidRequestBody(requestBody)) {
       throw createError(400, "All fields are Mandatory!");
@@ -70,7 +83,10 @@ const updateTask = async (req, res, next) => {
     //   endingTime = now.format("lll");
     // }
 
-    const task = await workLog.findOne({ projectCode: projectCode });
+    const task = await workLog.findOne({
+      taskId: taskId,
+      employeeId: employeeId,
+    });
 
     if (!task) {
       throw createError(404, "Data Not Found!");
@@ -99,17 +115,24 @@ const updateTask = async (req, res, next) => {
       updateData["$set"]["spendTime"] = spendTime;
     }
 
-    const updatedWork = await workLog.findOneAndUpdate(
-      { projectCode: projectCode },
+    if ("DM_To" in requestBody) {
+      if (!("$set" in updateData)) {
+        updateData["$set"] = {};
+      }
+      updateData["$set"]["DM_To"] = DM_To;
+    }
+
+    const updatedTask = await workLog.findOneAndUpdate(
+      { taskId: taskId, employeeId: employeeId },
       updateData,
       { new: true }
     );
 
-    if (updatedWork) {
+    if (updatedTask) {
       res.status(200).send({
         status: true,
         message: `data updated SuccessFully`,
-        data: updatedWork,
+        data: updatedTask,
       });
     }
   } catch (error) {
@@ -119,8 +142,10 @@ const updateTask = async (req, res, next) => {
 
 const getTaskList = async (req, res, next) => {
   try {
-    const taskList = await workLog.find(); //.populate("employeeId");
-    console.log(taskList);
+    const taskList = await workLog
+      .find({ isDeleted: false })
+      .sort({ slNo: -1 });
+    // console.log(taskList);
     if (!taskList) {
       throw createError(404, "Data Not Found");
     }
@@ -138,8 +163,9 @@ const getTaskList = async (req, res, next) => {
 const getTaskByEmployeeId = async (req, res, next) => {
   try {
     const employeeId = req.params.employeeId;
-
-    const task = await workLog.find({ employeeId: employeeId });
+    const task = await workLog
+      .find({ employeeId: employeeId, isDeleted: false })
+      .sort({ slNo: -1 });
 
     if (!task) {
       throw createError(404, "Data Not Found");
@@ -155,9 +181,76 @@ const getTaskByEmployeeId = async (req, res, next) => {
   }
 };
 
+const getTaskByProjectCode = async (req, res, next) => {
+  try {
+    const projectCode = req.params.projectCode;
+
+    const task = await workLog.find({ projectCode: projectCode , isDeleted: false});
+
+    if (!task) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: task,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTaskByTaskId = async (req, res, next) => {
+  try {
+    const taskId = req.params.taskId;
+
+    const task = await workLog.findOne({ taskId: taskId , isDeleted: false});
+
+    if (!task) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: task,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteTaskByTaskId = async (req, res, next) => {
+  try {
+    const taskId = req.params.taskId;
+
+    const task = await workLog.findOne({ taskId: taskId, isDeleted: false });
+
+    if (!task) {
+      throw createError(404, "Data Not Found");
+    }
+
+    const deleteTask = await workLog.findOneAndUpdate(
+      { taskId: taskId, isDeleted: false },
+      { $set: { isDeleted: true, deletedAt: new Date() } }
+    );
+
+    return res.status(200).send({
+      status: true,
+      message: "Task Deleted Successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addTask,
   updateTask,
   getTaskList,
-  getTaskByEmployeeId
+  getTaskByEmployeeId,
+  getTaskByProjectCode,
+  getTaskByTaskId,
+  deleteTaskByTaskId,
 };
