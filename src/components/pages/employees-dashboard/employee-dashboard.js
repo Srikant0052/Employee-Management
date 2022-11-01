@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import customStyle from './employee-dashboard.module.css'
+import customStyle from "./employee-dashboard.module.css";
 
 function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
@@ -19,7 +19,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
-  },[]);
+  }, []);
 
   async function getEmployeeData() {
     try {
@@ -46,7 +46,10 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   }
 
   return (
-    <div className="contain-table">
+    <div className={customStyle.form}>
+      <u>
+        <h4>Employee</h4>
+      </u>
       <table className="striped-table">
         <thead>
           <tr>
@@ -57,7 +60,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
             <th>Email</th>
             <th>DOJ</th>
             <th>User Name</th>
-            
+
             <th colSpan={2} className="text-center">
               Actions
             </th>
@@ -74,12 +77,12 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
                 <td>{employee.email}</td>
                 <td>{employee.dateOfJoining} </td>
                 <td>{employee.userName} </td>
-                
+
                 <td className="text-right">
                   <button
-                    onClick={() =>
-                      handleEdit(employeeData, employee.employeeId)
-                    }
+                    // onClick={() =>
+                    //   handleEdit(employeeData, employee.employeeId)
+                    // }
                     className="button muted-button"
                   >
                     Edit

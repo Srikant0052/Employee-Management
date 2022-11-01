@@ -4,15 +4,20 @@ import Login from "./pages/login";
 import Logout from "./components/pages/logout";
 import AddEmployee from "./pages/addEmployee";
 import EmployeeDashboard from "./pages/employeeDashboard";
-import Task from "./pages/addTask";
+import Task from "./pages/updateTask";
 import AddProject from "./pages/addProject";
-import UserProfile from "./pages/userProfile";
+// import UserProfile from "./pages/userProfile";
 import AddCustomer from "./pages/addCustomer";
-import UpdateTaskPage from "./pages/updateTask";
-import GetTask from "./components/pages/get-project-data/project-details";
+// import UpdateTaskPage from "./pages/addTask";
+// import GetTask from "./components/pages/get-project-data/project-details";
 import ProjectDataPage from "./pages/projectDetails";
+import TaskData from "./pages/taskDataPage";
+import AddTaskPage from "./pages/addTask";
+// import ReactDataTable from "./components/pages/table/react-data-table";
 
-export const NAV_DATA = [
+
+export const ADMIN_NAV_DATA = [
+  
   {
     path: "/employees",
     heading: "Employee Dashboard",
@@ -25,19 +30,15 @@ export const NAV_DATA = [
     path: "/addProject",
     heading: "Add Project",
   },
-
-  {
-    path: "/addTask",
-    heading: "Add Task",
-  },
   {
     path: "/addCustomer",
     heading: "Add Customer",
   },
-  {
-    path: "/register",
-    heading: "Sign Up",
-  },
+  // {
+  //   path: "/register",
+  //   heading: "Sign Up",
+  // },
+
   localStorage.getItem("accessToken")
     ? {
         path: "/logout",
@@ -49,15 +50,35 @@ export const NAV_DATA = [
       },
 ];
 
-export const ROUTES = [
+export const NAV_DATA = [
+  {
+    path: "/addTask",
+    heading: "Add Task",
+  },
+  // {
+  //   path: "/table",
+  //   page: "Table",
+  // },
+
+  localStorage.getItem("accessToken")
+    ? {
+        path: "/logout",
+        heading: "Sign Out",
+      }
+    : {
+        path: "/login",
+        heading: "Sign In",
+      },
+];
+export const ADMIN_ROUTES = [
   {
     path: "/",
     page: <Home />,
   },
-  {
-    path: "/register",
-    page: <Register />,
-  },
+  // {
+  //   path: "/register",
+  //   page: <Register />,
+  // },
 
   {
     path: "/employees",
@@ -68,33 +89,51 @@ export const ROUTES = [
     page: <AddEmployee />,
   },
   {
-    path: "/addTask",
-    page: <Task />,
-  },
-  {
-    path: "/updatetask",
-    page: <UpdateTaskPage />,
-  },
-  {
     path: "/addProject",
     page: <AddProject />,
-  },
-  {
-    path: "/user",
-    page: <UserProfile />,
   },
   {
     path: "/addCustomer",
     page: <AddCustomer />,
   },
+  localStorage.getItem("accessToken")
+    ? {
+        path: "/logout",
+        page: <Logout />,
+      }
+    : {
+        path: "/login",
+        page: <Login />,
+      },
+];
+
+export const ROUTES = [
+  {
+    path: "/task",
+    page: <TaskData />,
+  },
+  {
+    path: "/addTask",
+    page: <AddTaskPage />,
+  },
+
+  // {
+  //   path: "/user",
+  //   page: <UserProfile />,
+  // },
+
   {
     path: "/project",
     page: <ProjectDataPage />,
   },
-  {
-    path: "/taskData",
-    page: <GetTask />,
-  },
+  // {
+  //   path: "/taskData",
+  //   page: <GetTask />,
+  // },
+  // {
+  //   path: "/table",
+  //   page: <ReactDataTable />,
+  // },
   localStorage.getItem("accessToken")
     ? {
         path: "/logout",

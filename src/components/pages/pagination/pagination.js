@@ -1,19 +1,68 @@
 import React from "react";
-import { useGlobalContext } from "./context";
+import Icon from "../icon/Icon";
+import { Pagination, PaginationLink, PaginationItem } from "reactstrap";
 
-const Pagination = () => {
-  const { page, nbPages, getPrevPage, getNextPage } = useGlobalContext();
+const PaginationComponent = ({ itemPerPage, totalItems, paginate, currentPage }) => {
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalItems / itemPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  const nextPage = () => {
+    paginate(currentPage + 1);
+  };
+
+  const prevPage = () => {
+    paginate(currentPage - 1);
+  };
+
   return (
-    <>
-      <div className="pagination-btn">
-        <button onClick={() => getPrevPage()}>PREV</button>
-        <p>
-          {page + 1} of {nbPages}
-        </p>
-        <button onClick={() => getNextPage()}>NEXT</button>
-      </div>
-    </>
+    <Pagination aria-label="Page navigation example">
+      <PaginationItem disabled={currentPage - 1 === 0 ? true : false}>
+        <PaginationLink
+          className="page-link-prev"
+          onClick={(ev) => {
+            ev.preventDefault();
+            prevPage();
+          }}
+          href="#prev"
+        >
+          <Icon name="chevrons-left" />
+          <span>Prev</span>
+        </PaginationLink>
+      </PaginationItem>
+      {pageNumbers.map((item) => {
+        return (
+          <PaginationItem className={currentPage === item ? "active" : ""} key={item}>
+            <PaginationLink
+              tag="a"
+              href="#pageitem"
+              onClick={(ev) => {
+                ev.preventDefault();
+                paginate(item);
+              }}
+            >
+              {item}
+            </PaginationLink>
+          </PaginationItem>
+        );
+      })}
+
+      <PaginationItem disabled={pageNumbers[pageNumbers.length - 1] === currentPage}>
+        <PaginationLink
+          className="page-link-next"
+          onClick={(ev) => {
+            ev.preventDefault();
+            nextPage();
+          }}
+          href="#next"
+        >
+          <span>Next</span>
+          <Icon name="chevrons-right" />
+        </PaginationLink>
+      </PaginationItem>
+    </Pagination>
   );
 };
-
-export default Pagination;
+export default PaginationComponent;

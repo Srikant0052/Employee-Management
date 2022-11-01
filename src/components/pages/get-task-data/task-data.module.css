@@ -1,0 +1,18 @@
+.dateContainer{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
+    color: rgb(214, 38, 38);
+    text-decoration: solid underline ;
+    font-size: larger;
+}
+.form{
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    width: 95%;
+    margin: 20px auto;
+    padding: 10px;
+    font-size: small;
+    /* height: 600px; */
+}

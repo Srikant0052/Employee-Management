@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function WorkLog() {
+function EmployeeProfile() {
   const [userTask, setTask] = useState("");
   // console.log(employeeTask);
   const navigate = useNavigate();
@@ -63,7 +63,7 @@ function WorkLog() {
                 <td>{task.startingTime}</td>
                 <td>{task.status} </td>
                 <td>{task.spendTime} </td>
-                <td className="text-right">
+                {/* <td className="text-right">
                   <button
                     onClick={() => navigate("/updateTask")}
                     className="button muted-button"
@@ -78,7 +78,7 @@ function WorkLog() {
                   >
                     Add Task
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))
           ) : (
@@ -92,4 +92,4 @@ function WorkLog() {
   );
 }
 
-export default WorkLog;
+export default EmployeeProfile;

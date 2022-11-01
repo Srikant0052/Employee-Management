@@ -2,17 +2,52 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import customStyle from './add-task.module.css'
+import customStyle from "./update-task.module.css";
 
-function AddTask({ tasks, setTasks, setIsAdding }) {
-  const [projectCode, setprojectCode] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
+function UpdateTask({ setIsAdding }) {
+  const [projectCode, setProjectCode] = useState("");
+  const [project, setProject] = useState("");
   const [description, setDescription] = useState("");
-  const textInput = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [date, setDate] = useState(true);
+
+  // const textInput = useRef(null);
   // const { register, handleSubmit, reset } = useForm();
+  const employeeId = localStorage.getItem("employeeId");
+  // console.log(employeeId)
+  // useEffect(() => {
+  //   textInput.current.focus();
+  // }, []);
+
+  async function getTask() {
+    try {
+      let resp = await axios({
+        method: "get",
+        url: `http://localhost:4000/getAllProject`,
+      });
+
+      if (resp.data.data) {
+        setProject(resp.data.data);
+      }
+
+      // let resp2 = await axios({
+      //   method: "get",
+      //   url: "http://localhost:4000/employeeList",
+      // });
+
+      // if (resp2.data.data) {
+      //   setEmployeeData(resp2.data.data);
+      // }
+      // console.log(resp.data.data);
+    } catch (error) {
+      console.log(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    textInput.current.focus();
+    getTask();
   }, []);
 
   const handleAdd = (e) => {
@@ -31,13 +66,14 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
       employeeId,
       projectCode,
       description,
+      startingTime: date,
     };
 
     async function saveDataInDb() {
       try {
         let resp = await axios({
           method: "post",
-          url: "http://localhost:4000/addTask",
+          url: "http://localhost:4000/UpdateTask",
           data: {
             ...newTask,
           },
@@ -70,17 +106,29 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
       <form onSubmit={handleAdd}>
         <h1>Add Task</h1>
         <label htmlFor="projectCode">ProjectCode</label>
-        <input
-          id="projectCode"
-          type="text"
-          ref={textInput}
-          name="projectCode"
-          value={projectCode}
-          onChange={(e) => setprojectCode(e.target.value)}
-          placeholder="Project Code"
-        />
+        <select
+          defaultValue="Select"
+          onChange={(e) => setProjectCode(e.target.value)}
+        >
+          <option value="Select"> Select </option>
+          {project.length > 0 &&
+            project.map((option, index) => (
+              <option key={index} value={option.projectCode}>
+                {option.projectCode}
+              </option>
+            ))}
+          {/* <input
+            // id="projectCode"
+            // type="text"
+            // ref={textInput}
+            // name="projectCode"
+            // value={projectCode}
+            // onChange={(e) => setprojectCode(e.target.value)}
+            // placeholder="Project Code"
+          /> */}
+        </select>
 
-        <label htmlFor="employeeId">Employee Id</label>
+        {/* <label htmlFor="employeeId">Employee Id</label>
         <input
           id="employeeId"
           type="text"
@@ -89,7 +137,7 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
           value={employeeId}
           onChange={(e) => setEmployeeId(e.target.value)}
           placeholder="Employee ID"
-        />
+        /> */}
 
         <label htmlFor="description">Description</label>
         <input
@@ -101,14 +149,13 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
           placeholder="Description"
         />
 
-        {/* <label htmlFor="dateOfJoining">Date Of Joining</label>
+        <label htmlFor="dateOfJoining">Date</label>
         <input
-          id="dateOfJoining"
           type="date"
-          name="dateOfJoining"
-          value={dateOfJoining}
+          name="date"
+          value={date}
           onChange={(e) => setDate(e.target.value)}
-        /> */}
+        />
 
         <div style={{ marginTop: "30px" }}>
           <input type="submit" value="Add" />
@@ -125,4 +172,4 @@ function AddTask({ tasks, setTasks, setIsAdding }) {
   );
 }
 
-export default AddTask;
+export default UpdateTask;

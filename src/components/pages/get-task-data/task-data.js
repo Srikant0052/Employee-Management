@@ -3,30 +3,30 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import moment from "moment";
 // import { Link } from "react-router-dom";
-import customStyle from "./project-details.module.css";
+import customStyle from "./task-data.module.css";
 
-function ProjectData() {
-  const [projectData, setProjectData] = useState([]);
-  const [status, setStatus] = useState("");
+function TaskData() {
+  const [taskData, setTaskData] = useState([]);
+  const [status, setStatus] = useState("Pending");
   const [isLoading, setIsLoading] = useState(true);
-  let projectCode = localStorage.getItem("projectCode");
   let userName = localStorage.getItem("userName");
   let userId = localStorage.getItem("userId");
-
-  console.log(status);
+  let taskId = localStorage.getItem("taskId");
+  //   console.log(status);
+//   console.log(taskId);
 
   //get all tasks
-  async function getProjectDetails() {
+  async function getTaskDetails() {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getProjectById/${projectCode}`,
+        url: `http://localhost:4000/getTask/${taskId}`,
       });
 
       if (resp.data.data) {
-        setProjectData(resp.data.data);
+        setTaskData(resp.data.data);
       }
-      // console.log(resp.data.data);
+    //   console.log(resp.data.data);
     } catch (error) {
       console.log(error.response.data.message);
     } finally {
@@ -34,12 +34,12 @@ function ProjectData() {
     }
   }
 
-  //Update Project Status
-  async function updateProjectStatus() {
+  //Update Task Status
+  async function updateTaskStatus() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `http://localhost:4000/${projectCode}`,
+        url: `http://localhost:4000/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
       console.log(resp2.data.data);
@@ -59,8 +59,31 @@ function ProjectData() {
     }
   }
 
+  //Delete Task 
+  async function deleteTask() {
+    try {
+      let resp3 = await axios({
+        method: "delete",
+        url: `http://localhost:4000/task/${taskId}`,
+      });
+        // console.log(resp3.data.data);
+
+      if (resp3.data.status == true) {
+        Swal.fire({
+          icon: "success",
+          title: "Task Deleted Successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        const reload = window.location.reload();
+        setTimeout(reload, 2000);
+      }
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  }
   useEffect(() => {
-    getProjectDetails();
+    getTaskDetails();
   }, []);
   let options1 = [
     { value: "Pending", label: "Pending" },
@@ -72,32 +95,32 @@ function ProjectData() {
   }
   return (
     <>
-      <div className="contain-table">
+      <div className={customStyle.form}>
         <div className={customStyle.dateContainer}>
           <div>Date: {moment().format("LLL")} </div>
           <div>
             {userName}({userId})
           </div>
         </div>
-        <hr></hr>
+        <u><h5>Task Details</h5></u>
         <table className="striped-table">
           <thead>
             <tr>
               {/* <th>Att</th> */}
+              <th>Task ID</th>
               <th>Project Code</th>
-              <th>Name</th>
               <th>Description</th>
               <th>Status</th>
-              <th>CustomerId</th>
-              <th>Date</th>
+              <th>DM Also</th>
+              <th>Duration</th>
             </tr>
           </thead>
           <tbody>
-            {Object.keys(projectData).length > 0 ? (
+            {Object.keys(taskData).length > 0 ? (
               <tr>
-                <td>{projectData.projectCode}</td>
-                <td>{projectData.name}</td>
-                <td>{projectData.description}</td>
+                <td>{taskData.taskId}</td>
+                <td>{taskData.projectCode}</td>
+                <td>{taskData.description}</td>
                 <td>
                   <select onChange={(e) => setStatus(e.target.value)}>
                     {options1.map((option, index) => (
@@ -107,12 +130,12 @@ function ProjectData() {
                     ))}
                   </select>
                 </td>
-                <td>{projectData.customerId}</td>
-                <td>{projectData.date}</td>
+                <td>{taskData.DM_To}</td>
+                <td>{taskData.spendTime}</td>
               </tr>
             ) : (
               <tr>
-                <td colSpan={7}>No Project</td>
+                <td colSpan={7}>No Task</td>
               </tr>
             )}
           </tbody>
@@ -120,9 +143,12 @@ function ProjectData() {
       </div>
       <div>
         <button className="btn mb-2">Edit</button>&nbsp;
-        <button className="btn mb-2">Delete</button>&nbsp;
+        <button onClick={() => deleteTask()} className="btn mb-2">
+          Delete
+        </button>
+        &nbsp;
         <button className="btn mb-2">Add Note</button>&nbsp;
-        <button onClick={() => updateProjectStatus()} className="btn mb-2">
+        <button onClick={() => updateTaskStatus()} className="btn mb-2">
           Change Status
         </button>
       </div>
@@ -130,4 +156,4 @@ function ProjectData() {
   );
 }
 
-export default ProjectData;
+export default TaskData;

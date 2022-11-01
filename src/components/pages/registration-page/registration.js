@@ -1,6 +1,6 @@
 import React, { useState, setState } from "react";
-import { Link } from "react-router-dom";
-import customStyle from './registration.module.css'
+// import { Link } from "react-router-dom";
+import customStyle from "./registration.module.css";
 
 // import "./style.css";
 function RegistrationForm() {
@@ -111,13 +111,6 @@ function RegistrationForm() {
           Register
         </button>
       </div>
-      <p>
-        Have an Account?
-        <br />
-        <span className="line">
-          <Link to="/login">Sign In</Link>
-        </span>
-      </p>
     </div>
   );
 }

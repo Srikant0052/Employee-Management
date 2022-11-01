@@ -4,7 +4,7 @@ import Header from "./header";
 import Dashboard from "./dashboard";
 import Add from "./addEmployee";
 import Edit from "./updateEmployee";
-import AddTask from "./addTask";
+import AddTask from "./updateTask";
 import WorkLog from "./workLog";
 
 function Nav() {

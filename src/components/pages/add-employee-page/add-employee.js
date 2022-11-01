@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import customStyle from "./add-employee.module.css";
+import { Link, useNavigate } from "react-router-dom";
 
 function AddEmployee({}) {
   const [employeeId, setEmployeeId] = useState("");
@@ -12,12 +13,26 @@ function AddEmployee({}) {
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [dateOfJoining, setDate] = useState("");
+  const [role, setRole] = useState("");
   localStorage.setItem("employeeId", employeeId);
   const textInput = useRef(null);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+    }
+  }, []);
+  console.log(role);
   useEffect(() => {
     textInput.current.focus();
   }, []);
+
+  let options1 = [
+    { value: "Select", label: "Select" },
+    { value: "Admin", label: "Admin" },
+    { value: "Employee", label: "Employee" },
+  ];
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -28,7 +43,8 @@ function AddEmployee({}) {
       !userName ||
       !email ||
       !designation ||
-      !password
+      !password ||
+      !role
     ) {
       return Swal.fire({
         icon: "error",
@@ -47,6 +63,7 @@ function AddEmployee({}) {
       dateOfJoining,
       userName,
       password,
+      role,
     };
 
     async function saveDataInDb() {
@@ -84,107 +101,119 @@ function AddEmployee({}) {
   };
 
   return (
-    <div className={customStyle.form}>
-      <form onSubmit={handleAdd}>
-        <div className={customStyle.form_body}>
-          <div
-            style={{
-              marginTop: "30px",
-              marginBottom: "18px",
-              textAlign: "center",
-            }}
-          >
-            <h1>Add Employee </h1>
-          </div>
-          <label htmlFor="employeeId">Employee ID</label>
-          <input
-            id="employeeId"
-            type="text"
-            ref={textInput}
-            name="employeeId"
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
-            placeholder="Employee ID"
-          />
-          <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            type="text"
-            ref={textInput}
-            name="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name"
-          />
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder="Last Name"
-          />
-          <label htmlFor="Designation">Designation</label>
-          <input
-            id="designation"
-            type="text"
-            name="designation"
-            value={designation}
-            onChange={(e) => setDesignation(e.target.value)}
-            placeholder="Description"
-          />
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-
-          <label htmlFor="dateOfJoining">Date Of Joining</label>
-          <input
-            id="dateOfJoining"
-            type="date"
-            name="dateOfJoining"
-            value={dateOfJoining}
-            onChange={(e) => setDate(e.target.value)}
-            // placeholder="Date"
-          />
-
-          <label htmlFor="username">UserName</label>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            placeholder="User Name"
-          />
-
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <div style={{ marginTop: "30px" }}>
-            <input type="submit" value="Add" />
+    <div className={customStyle.parent}>
+      <div className={customStyle.form}>
+        <form onSubmit={handleAdd}>
+          <div className={customStyle.form_body}>
+            <div
+              style={{
+                // marginTop: "30px",
+                // marginBottom: "18px",
+                textAlign: "center",
+              }}
+            >
+              <h3>
+                <u> Add Employee </u>
+              </h3>
+            </div>
+            <label htmlFor="employeeId">Employee ID<sup style={{color:"red"}}>*</sup></label>
             <input
-              style={{ marginLeft: "12px" }}
-              className={customStyle.footer}
-              type="button"
-              value="Cancel"
-              // onClick={() => setIsAdding(false)}
+              id="employeeId"
+              type="text"
+              ref={textInput}
+              name="employeeId"
+              value={employeeId}
+              onChange={(e) => setEmployeeId(e.target.value)}
+              placeholder="Employee ID"
             />
+            <label htmlFor="firstName">First Name<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="firstName"
+              type="text"
+              ref={textInput}
+              name="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First Name"
+            />
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              name="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Last Name"
+            />
+            <label htmlFor="Designation">Designation<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="designation"
+              type="text"
+              name="designation"
+              value={designation}
+              onChange={(e) => setDesignation(e.target.value)}
+              placeholder="Description"
+            />
+            <label htmlFor="email">Email<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+
+            <label htmlFor="role">Role<sup style={{color:"red"}}>*</sup></label>
+            <select onChange={(e) => setRole(e.target.value)}>
+              {options1.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="dateOfJoining">Date Of Joining<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="dateOfJoining"
+              type="date"
+              name="dateOfJoining"
+              value={dateOfJoining}
+              onChange={(e) => setDate(e.target.value)}
+              // placeholder="Date"
+            />
+
+            <label htmlFor="username">UserName<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="User Name"
+            />
+
+            <label htmlFor="password">Password<sup style={{color:"red"}}>*</sup></label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
+            <div style={{ marginTop: "30px" }}>
+              <input type="submit" value="Add" />
+              <input
+                style={{ marginLeft: "12px" }}
+                className={customStyle.footer}
+                type="button"
+                value="Cancel"
+                // onClick={() => setIsAdding(false)}
+              />
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

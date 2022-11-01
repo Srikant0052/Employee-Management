@@ -1,9 +1,11 @@
 import React from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
-export default function logout() {
+export default function Logout() {
   const navigate = useNavigate();
+  const cookies = new Cookies();
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -12,6 +14,9 @@ export default function logout() {
       setTimeout(reload, 2000);
     }
   }, []);
+  // if (!cookies.get("accessToken")) {
+  //   <Navigate replace to="/login" />;
+  // }
 
   return <div>{localStorage.clear()}</div>;
 }

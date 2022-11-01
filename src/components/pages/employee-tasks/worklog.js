@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import customStyle from "./worklog.module.css";
+import moment from "moment";
 
 function WorkLog() {
   const [employeeTask, setTask] = useState("");
@@ -12,7 +14,10 @@ function WorkLog() {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
-  },[]);
+  }, []);
+  let userName = localStorage.getItem("userName");
+  // let userId = localStorage.getItem("userId")
+
   //get all tasks
   async function getTask() {
     try {
@@ -41,13 +46,21 @@ function WorkLog() {
   }
 
   return (
-    <div className="contain-table">
+    <div className={customStyle.form}>
+      <div className={customStyle.dateContainer}>
+        <div>Date: {moment().format("LLL")} </div>
+        <div>{userName}</div>
+      </div>
+      <u>
+        <h4>Task</h4>
+      </u>
       <table className="striped-table">
         <thead>
           <tr>
             <th>Sl. No.</th>
             <th>Employee ID</th>
             <th>Project Code</th>
+            <th>Task ID</th>
             <th>Description</th>
             <th>Start Time</th>
             <th>Status</th>
@@ -64,6 +77,7 @@ function WorkLog() {
                 <td>{index + 1}</td>
                 <td>{task.employeeId}</td>
                 <td>{task.projectCode}</td>
+                <td>{task.taskId}</td>
                 <td>{task.description}</td>
                 <td>{task.startingTime}</td>
                 <td>{task.status} </td>

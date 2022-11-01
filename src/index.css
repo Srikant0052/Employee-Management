@@ -1143,8 +1143,8 @@ body {
 }
 
 .nav {
-  background-color: rgb(74, 62, 181);
-  color: rgb(219, 195, 195);
+  background-color: rgb(74 67 141);
+  color:white;
   display: flex;
   justify-content: space-between;
   align-items: stretch;

@@ -1,6 +1,6 @@
 import React from "react";
-import UpdateTask from "../components/pages/update-task/update-task";
+import AddTask from "../components/pages/update-task-page/update-task";
 
-export default function UpdateTaskPage() {
-  return <UpdateTask />;
+export default function addTask() {
+  return <AddTask />;
 }
