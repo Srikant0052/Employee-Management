@@ -38,6 +38,7 @@ const employeeSchema = new Schema(
 
     email: {
       type: String,
+      unique: true,
       trim: true,
     },
 
@@ -45,19 +46,27 @@ const employeeSchema = new Schema(
       type: String,
     },
 
+    mobile: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+
     password: {
       type: String,
       required: true,
       trim: true,
-      match:
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/,
       minlength: 8,
       maxlength: 15,
     },
-    
+
     role: {
       type: String,
       enum: ["Employee", "Admin"],
+    },
+
+    address: {
+      type: String,
     },
 
     isDeleted: {

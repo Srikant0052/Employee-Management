@@ -42,8 +42,8 @@ const worklogSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["Pending", "Completed", "Failed"],
-      default: "Pending",
+      enum: ["Pend", "Comp"],
+      default: "Pend",
       trim: true,
     },
 

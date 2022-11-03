@@ -3,16 +3,22 @@ const createError = require("http-errors");
 const empCollection = require("../models/employee");
 const projects = require("../models/projects");
 const moment = require("moment");
-const { isValidRequestBody } = require("../utils/validator");
+const { isValidRequestBody, isValid } = require("../utils/validator");
 const { generateId } = require("../utils/helpers");
 let now = moment();
 
 const addTask = async (req, res, next) => {
   try {
-    let { employeeId, projectCode, description, spendTime, status, DM_To } =
-      req.body;
+    const requestBody = req.body;
 
-    if (!employeeId) {
+    if (!isValidRequestBody(requestBody)) {
+      throw createError(400, `All fields are Mandatory!`);
+    }
+
+    let { employeeId, projectCode, description, spendTime, status, DM_To } =
+      requestBody;
+
+    if (!isValid(employeeId)) {
       throw createError(400, "Employee id is required");
     }
 
@@ -22,7 +28,7 @@ const addTask = async (req, res, next) => {
       throw createError(404, `Employee Not Exist`);
     }
 
-    if (!projectCode) {
+    if (!isValid(projectCode)) {
       throw createError(400, "Project Code is required");
     }
 
@@ -32,8 +38,14 @@ const addTask = async (req, res, next) => {
       throw createError(404, `Project Not Exist`);
     }
 
-    if (!description) {
+    if (!isValid(description)) {
       throw createError(400, "Description is required");
+    }
+
+    if (["Pend", "Comp"].indexOf(status) === -1) {
+      return res
+        .status(400)
+        .send({ status: false, msg: "Please choose vaild status" });
     }
 
     let taskId = generateId();
@@ -185,7 +197,10 @@ const getTaskByProjectCode = async (req, res, next) => {
   try {
     const projectCode = req.params.projectCode;
 
-    const task = await workLog.find({ projectCode: projectCode , isDeleted: false});
+    const task = await workLog.find({
+      projectCode: projectCode,
+      isDeleted: false,
+    });
 
     if (!task) {
       throw createError(404, "Data Not Found");
@@ -205,7 +220,7 @@ const getTaskByTaskId = async (req, res, next) => {
   try {
     const taskId = req.params.taskId;
 
-    const task = await workLog.findOne({ taskId: taskId , isDeleted: false});
+    const task = await workLog.findOne({ taskId: taskId, isDeleted: false });
 
     if (!task) {
       throw createError(404, "Data Not Found");

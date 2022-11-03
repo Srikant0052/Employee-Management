@@ -2,6 +2,8 @@ const createError = require("http-errors");
 const empCollection = require("../models/employee");
 const { isValid, isValidRequestBody } = require("../utils/validator");
 const jwt = require("jsonwebtoken");
+const phoneRegex = /^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[6789]\d{9}$/;
+const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
 
 const addEmployee = async (req, res, next) => {
   try {
@@ -18,59 +20,73 @@ const addEmployee = async (req, res, next) => {
       email,
       userName,
       designation,
+      mobile,
       dateOfJoining,
       password,
       role,
+      address,
     } = requestBody;
 
     if (!isValid(employeeId)) {
       throw createError(400, `Please Enter employee Id`);
     }
 
-    const isemployeeIdExist = await empCollection.findOne({ employeeId });
+    const isemployeeIdExist = await empCollection.findOne({
+      employeeId: employeeId,
+      email: email,
+      isDeleted: false,
+    });
 
     if (isemployeeIdExist) {
-      throw createError(400, `This Employee id is Already In Use`);
+      throw createError(400, `This EmployeeId or Email is Already In Use`);
     }
 
     if (!isValid(firstName)) {
       throw createError(400, `Please Enter firstName`);
     }
 
-    // if (!isValid(lastName)) {
-    //   throw createError(400, `Please Enter lastname`)
-    // }
-
     if (!userName || !isValid(userName)) {
       throw createError(400, `Please Enter useranme`);
     }
 
-    const isUserNameExist = await empCollection.findOne({ userName });
+    const isUserNameExist = await empCollection.findOne({ userName: userName });
 
     if (isUserNameExist) {
-      throw createError(409, `username already exist`);
+      throw createError(409, `Username already exist`);
     }
 
     if (!isValid(password)) {
       throw createError(400, `Please Enter Password`);
     }
 
+    if (!passRegex.test(password)) {
+      throw createError(400, `Please Enter a valid Password`);
+    }
+    
     if (!isValid(designation)) {
       throw createError(400, `Please Enter Designation`);
     }
+    if (!isValid(mobile)) {
+      throw createError(400, `Please Enter Mobile No.`);
+    }
+
+    if (!phoneRegex.test(mobile)) {
+      throw createError(400, `Please Enter a valid Mobile No.`);
+    }
+
     if (!isValid(role)) {
       throw createError(400, `Please Enter Role`);
     }
     if (["Employee", "Admin"].indexOf(role) === -1) {
       throw createError(400, "Please choose a vaild Role");
     }
-    const employeeExists = await empCollection.findOne({
-      employeeId: employeeId,
-    });
+    // const employeeExists = await empCollection.findOne({
+    //   employeeId: employeeId,
+    // });
 
-    if (employeeExists) {
-      throw createError(400, `Employee already registerd`);
-    }
+    // if (employeeExists) {
+    //   throw createError(400, `Employee already registerd`);
+    // }
 
     let slNo = (await empCollection.find().count()) + 1;
 
@@ -82,8 +98,10 @@ const addEmployee = async (req, res, next) => {
       userName,
       password,
       role,
+      mobile,
       designation,
       email,
+      address,
       dateOfJoining: dateOfJoining || null,
     };
 
