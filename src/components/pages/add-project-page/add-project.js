@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-project.module.css";
 
 function AddProject() {
@@ -12,6 +12,7 @@ function AddProject() {
   const [date, setDate] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [customer, setCustomerData] = useState("");
+  let [err, setErr] = useState(null);
   //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   const navigate = useNavigate();
@@ -36,7 +37,8 @@ function AddProject() {
       }
       // console.log(resp1);
     } catch (error) {
-      console.log(error);
+      setErr(error.response.data);
+      // console.log(error);
     }
   }
   useEffect(() => {
@@ -78,7 +80,8 @@ function AddProject() {
         }
         console.log(resp);
       } catch (error) {
-        console.log(error);
+        setErr(error.response.data);
+        // console.log(error);
       }
     }
     saveDataInDb();
@@ -93,7 +96,12 @@ function AddProject() {
     });
   };
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/addProject">Go Back</Link>
+    </div>
+  ) : (
     <div className={customStyle.form}>
       <form onSubmit={handleAdd}>
         <u>

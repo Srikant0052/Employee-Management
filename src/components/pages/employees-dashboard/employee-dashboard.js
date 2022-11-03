@@ -6,6 +6,8 @@ import customStyle from "./employee-dashboard.module.css";
 function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  let [err, setErr] = useState(null);
+
   const navigate = useNavigate();
 
   // const formatter = new Intl.NumberFormat('en-US', {
@@ -32,7 +34,8 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
         setEmployeeData(resp.data.data);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +48,12 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
     return null;
   }
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/">Go To Home</Link>
+    </div>
+  ) : (
     <div className={customStyle.form}>
       <u>
         <h4>Employee</h4>

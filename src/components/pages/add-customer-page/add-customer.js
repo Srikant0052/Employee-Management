@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import customStyle from "./add-customer.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function AddCustomer({ setIsAdding }) {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  let [err, setErr] = useState(null);
+
   const navigate = useNavigate();
 
   //   const [customerId, setCustomerId] = useState("");
@@ -55,7 +57,7 @@ function AddCustomer({ setIsAdding }) {
 
         // console.log(resp);
       } catch (error) {
-        console.log(error);
+        setErr(error.response.data);
       }
     }
     saveDataInDb();
@@ -71,7 +73,12 @@ function AddCustomer({ setIsAdding }) {
     });
   };
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/addCustomer">Go Back</Link>
+    </div>
+  ) : (
     <div className={customStyle.form}>
       <form onSubmit={handleAdd}>
         <div className={customStyle.form_body}>

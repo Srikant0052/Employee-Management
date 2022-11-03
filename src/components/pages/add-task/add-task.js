@@ -17,6 +17,7 @@ function AddTask() {
   const [user, setUserName] = useState("n/a");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
+  let [err, setErr] = useState(null);
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
@@ -27,9 +28,7 @@ function AddTask() {
   // console.log(employeeData);
   // console.log(userName);
   // console.log(cookies.get("accessToken"))
-  // if (!cookies.get("accessToken")) {
-  //   <Navigate replace to="/login" />;
-  // }
+
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
@@ -66,7 +65,8 @@ function AddTask() {
       }
       // console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -118,7 +118,8 @@ function AddTask() {
       }
       console.log(resp3);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     }
   }
 
@@ -133,24 +134,26 @@ function AddTask() {
   if (isLoading) {
     return null;
   }
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/addTask">Go Back</Link>
+    </div>
+  ) : (
     <>
       {/* <div className="col-2"></div> */}
       {/* <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}> */}
       <div className={customStyle.containTable}>
         <div className={customStyle.dateContainer}>
           <div className={customStyle}>Date: {moment().format("LLL")} </div>
-          <Link to="/user"
-                          // onClick={() =>
-                          //   localStorage.setItem("taskId", task.taskId)
-                          // }
+          <Link
+            to="/user"
             onMouseEnter={() => setDisplayed(true)}
             onMouseLeave={() => setDisplayed(false)}
           >
             {userName}({userId}){displayed && <div>Go to Profile</div>}
           </Link>
         </div>
-        {/* <hr></hr> */}
         <table className="striped-table">
           <thead>
             <tr>

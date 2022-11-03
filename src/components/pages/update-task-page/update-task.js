@@ -10,6 +10,7 @@ function UpdateTask({ setIsAdding }) {
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [date, setDate] = useState(true);
+  let [err, setErr] = useState(null);
 
   // const textInput = useRef(null);
   // const { register, handleSubmit, reset } = useForm();
@@ -40,7 +41,8 @@ function UpdateTask({ setIsAdding }) {
       // }
       // console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -83,9 +85,10 @@ function UpdateTask({ setIsAdding }) {
           setTimeout(reload, 2000);
         }
 
-        console.log(resp);
+        // console.log(resp);
       } catch (error) {
-        console.log(error.response.data.message);
+        setErr(error.response.data);
+        // console.log(error.response.data.message);
       }
     }
     saveDataInDb();
@@ -101,7 +104,11 @@ function UpdateTask({ setIsAdding }) {
     });
   };
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+    </div>
+  ) : (
     <div className={customStyle.form}>
       <form onSubmit={handleAdd}>
         <h1>Add Task</h1>

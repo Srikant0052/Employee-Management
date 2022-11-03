@@ -15,9 +15,7 @@ import TaskData from "./pages/taskDataPage";
 import AddTaskPage from "./pages/addTask";
 // import ReactDataTable from "./components/pages/table/react-data-table";
 
-
 export const ADMIN_NAV_DATA = [
-  
   {
     path: "/employees",
     heading: "Employee Dashboard",
@@ -79,6 +77,10 @@ export const ADMIN_ROUTES = [
   //   path: "/register",
   //   page: <Register />,
   // },
+  {
+    path: "/user",
+    page: <UserProfile />,
+  },
 
   {
     path: "/employees",

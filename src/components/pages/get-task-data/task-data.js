@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import moment from "moment";
-// import { Link } from "react-router-dom";
 import customStyle from "./task-data.module.css";
+import { Link } from "react-router-dom";
 
 function TaskData() {
   const [taskData, setTaskData] = useState([]);
   const [status, setStatus] = useState("Pending");
   const [isLoading, setIsLoading] = useState(true);
+  let [err, setErr] = useState(null);
+  const [displayed, setDisplayed] = useState(false);
   let userName = localStorage.getItem("userName");
   let userId = localStorage.getItem("userId");
   let taskId = localStorage.getItem("taskId");
@@ -28,7 +30,8 @@ function TaskData() {
       }
       //   console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +58,8 @@ function TaskData() {
         // setTimeout(reload, 2000);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     }
   }
 
@@ -85,7 +89,8 @@ function TaskData() {
         url: `http://localhost:4000/task/${taskId}`,
       });
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     }
   }
 
@@ -119,14 +124,23 @@ function TaskData() {
   if (isLoading) {
     return null;
   }
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/addTask">Go To Home</Link>
+    </div>
+  ) : (
     <>
       <div className={customStyle.form}>
         <div className={customStyle.dateContainer}>
           <div>Date: {moment().format("LLL")} </div>
-          <div>
-            {userName}({userId})
-          </div>
+          <Link
+            to="/user"
+            onMouseEnter={() => setDisplayed(true)}
+            onMouseLeave={() => setDisplayed(false)}
+          >
+            {userName}({userId}){displayed && <div>Go to Profile</div>}
+          </Link>
         </div>
         <u>
           <h5>Task Details</h5>

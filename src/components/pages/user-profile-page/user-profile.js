@@ -6,6 +6,7 @@ import customStyle from "./user-profile.module.css";
 function UserProfile() {
   const [user, setUser] = useState("");
   const navigate = useNavigate();
+  let [err, setErr] = useState(null);
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
 
@@ -23,9 +24,9 @@ function UserProfile() {
       if (resp.data.data) {
         setUser(resp.data.data);
       }
-      //   console.log(resp.data.data);
+      // console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
     }
   }
 
@@ -35,7 +36,11 @@ function UserProfile() {
   // console.log(status);
   // console.log(projectCode);
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+    </div>
+  ) : (
     <div className={customStyle.containTable}>
       <section style={{ backgroundColor: "#eee" }}>
         <div className="container py-5">
@@ -53,7 +58,7 @@ function UserProfile() {
                   />
                   <h5 className="my-3">{user.firstName}</h5>
                   <p className="text-muted mb-1">{user.designation}</p>
-                  <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                  <p className="text-muted mb-4">{user.address}</p>
                   <div className="d-flex justify-content-center mb-2">
                     <button type="button" className="btn btn-primary">
                       Update
@@ -103,7 +108,7 @@ function UserProfile() {
                       <p className="mb-0">Mobile</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">(098) 765-4321</p>
+                      <p className="text-muted mb-0">{user.mobile}</p>
                     </div>
                   </div>
                   <hr></hr>
@@ -121,9 +126,7 @@ function UserProfile() {
                       <p className="mb-0">Address</p>
                     </div>
                     <div className="col-sm-9">
-                      <p className="text-muted mb-0">
-                        Bay Area, San Francisco, CA
-                      </p>
+                      <p className="text-muted mb-0">{user.address}</p>
                     </div>
                   </div>
                 </div>

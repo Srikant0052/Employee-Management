@@ -9,6 +9,7 @@ function ProjectData() {
   const [projectData, setProjectData] = useState([]);
   const [status, setStatus] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  let [err, setErr] = useState(null);
   let projectCode = localStorage.getItem("projectCode");
   let userName = localStorage.getItem("userName");
   let userId = localStorage.getItem("userId");
@@ -28,7 +29,8 @@ function ProjectData() {
       }
       // console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +57,8 @@ function ProjectData() {
         // setTimeout(reload, 2000);
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     }
   }
 
@@ -70,7 +73,11 @@ function ProjectData() {
   if (isLoading) {
     return null;
   }
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+    </div>
+  ) : (
     <>
       <div className="contain-table">
         <div className={customStyle.dateContainer}>

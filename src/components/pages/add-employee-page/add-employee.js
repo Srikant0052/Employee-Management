@@ -16,6 +16,8 @@ function AddEmployee({}) {
   const [dateOfJoining, setDate] = useState("");
   const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
+  let [err, setErr] = useState(null);
+
   localStorage.setItem("employeeId", employeeId);
   const textInput = useRef(null);
   const navigate = useNavigate();
@@ -43,7 +45,8 @@ function AddEmployee({}) {
       !employeeId ||
       !firstName ||
       !userName ||
-      !email || !mobile ||
+      !email ||
+      !mobile ||
       !designation ||
       !password ||
       !role
@@ -86,25 +89,31 @@ function AddEmployee({}) {
         }
         console.log(resp);
       } catch (error) {
-        console.log(error.response.data.message);
+        setErr(error.response.data);
+        // console.log(error);
       }
     }
 
     saveDataInDb();
-
-    // setEmployees(employees);
-    // setIsAdding(false);
-
-    Swal.fire({
-      icon: "success",
-      title: "Added!",
-      text: `${firstName} ${lastName}'s data has been Added.`,
-      showConfirmButton: false,
-      timer: 1000,
-    });
+    
+    if (!err) {
+      Swal.fire({
+        icon: "success",
+        title: "Added!",
+        text: `${firstName} ${lastName}'s data has been Added.`,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+    }
   };
+  // console.log(err);
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+      <Link to="/addEmployee">Go Back</Link>
+    </div>
+  ) : (
     <div className={customStyle.parent}>
       <div className={customStyle.form}>
         <form onSubmit={handleAdd}>

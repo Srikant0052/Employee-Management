@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import customStyle from "./worklog.module.css";
 import moment from "moment";
@@ -7,8 +7,10 @@ import moment from "moment";
 function WorkLog() {
   const [employeeTask, setTask] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [displayed, setDisplayed] = useState(false);
+  let [err, setErr] = useState(null);
+
   const navigate = useNavigate();
-  // console.log(employeeTask);
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -31,7 +33,8 @@ function WorkLog() {
       }
       // console.log(resp.data.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      setErr(error.response.data);
+      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -45,11 +48,22 @@ function WorkLog() {
     return null;
   }
 
-  return (
+  return err ? (
+    <div>
+      <h1>{err.error.message} </h1>
+    </div>
+  ) : (
     <div className={customStyle.form}>
       <div className={customStyle.dateContainer}>
         <div>Date: {moment().format("LLL")} </div>
-        <div>{userName}</div>
+        <Link
+          to="/user"
+          onMouseEnter={() => setDisplayed(true)}
+          onMouseLeave={() => setDisplayed(false)}
+        >
+          {userName}
+          {displayed && <div>Go to Profile</div>}
+        </Link>
       </div>
       <u>
         <h4>Task</h4>
