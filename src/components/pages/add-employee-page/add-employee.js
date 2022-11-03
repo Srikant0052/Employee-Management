@@ -10,9 +10,11 @@ function AddEmployee({}) {
   const [lastName, setLastName] = useState("");
   const [designation, setDesignation] = useState("");
   const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
   const [dateOfJoining, setDate] = useState("");
+  const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
   localStorage.setItem("employeeId", employeeId);
   const textInput = useRef(null);
@@ -41,7 +43,7 @@ function AddEmployee({}) {
       !employeeId ||
       !firstName ||
       !userName ||
-      !email ||
+      !email || !mobile ||
       !designation ||
       !password ||
       !role
@@ -60,7 +62,9 @@ function AddEmployee({}) {
       lastName,
       designation,
       email,
+      mobile,
       dateOfJoining,
+      address,
       userName,
       password,
       role,
@@ -116,7 +120,9 @@ function AddEmployee({}) {
                 <u> Add Employee </u>
               </h3>
             </div>
-            <label htmlFor="employeeId">Employee ID<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="employeeId">
+              Employee ID<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="employeeId"
               type="text"
@@ -126,7 +132,9 @@ function AddEmployee({}) {
               onChange={(e) => setEmployeeId(e.target.value)}
               placeholder="Employee ID"
             />
-            <label htmlFor="firstName">First Name<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="firstName">
+              First Name<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="firstName"
               type="text"
@@ -145,7 +153,9 @@ function AddEmployee({}) {
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Last Name"
             />
-            <label htmlFor="Designation">Designation<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="Designation">
+              Designation<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="designation"
               type="text"
@@ -154,7 +164,9 @@ function AddEmployee({}) {
               onChange={(e) => setDesignation(e.target.value)}
               placeholder="Description"
             />
-            <label htmlFor="email">Email<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="email">
+              Email<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="email"
               type="email"
@@ -164,7 +176,21 @@ function AddEmployee({}) {
               placeholder="Email"
             />
 
-            <label htmlFor="role">Role<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="phone">
+              Mobile<sup style={{ color: "red" }}>*</sup>
+            </label>
+            <input
+              id="mobile"
+              type="tel"
+              name="phone"
+              value={mobile}
+              onChange={(e) => setMobile(e.target.value)}
+              placeholder="Mobile No."
+            />
+
+            <label htmlFor="role">
+              Role<sup style={{ color: "red" }}>*</sup>
+            </label>
             <select onChange={(e) => setRole(e.target.value)}>
               {options1.map((option, index) => (
                 <option key={index} value={option.value}>
@@ -172,7 +198,9 @@ function AddEmployee({}) {
                 </option>
               ))}
             </select>
-            <label htmlFor="dateOfJoining">Date Of Joining<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="dateOfJoining">
+              Date Of Joining<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="dateOfJoining"
               type="date"
@@ -182,7 +210,19 @@ function AddEmployee({}) {
               // placeholder="Date"
             />
 
-            <label htmlFor="username">UserName<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="address">Address</label>
+            <input
+              id="address"
+              type="text"
+              name="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Type your Address here"
+            />
+
+            <label htmlFor="username">
+              UserName<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="username"
               type="text"
@@ -192,7 +232,9 @@ function AddEmployee({}) {
               placeholder="User Name"
             />
 
-            <label htmlFor="password">Password<sup style={{color:"red"}}>*</sup></label>
+            <label htmlFor="password">
+              Password<sup style={{ color: "red" }}>*</sup>
+            </label>
             <input
               id="password"
               type="password"
@@ -205,10 +247,11 @@ function AddEmployee({}) {
               <input type="submit" value="Add" />
               <input
                 style={{ marginLeft: "12px" }}
-                className={customStyle.footer}
-                type="button"
+                // className={customStyle.footer}
+                className="btn btn-primary"
+                type="reset"
                 value="Cancel"
-                // onClick={() => setIsAdding(false)}
+                onClick={() => navigate("/")}
               />
             </div>
           </div>

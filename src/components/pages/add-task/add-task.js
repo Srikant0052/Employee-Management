@@ -13,9 +13,11 @@ function AddTask() {
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("0");
   const [projectCode, setProjectCode] = useState("");
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Pend");
   const [user, setUserName] = useState("n/a");
   const [isLoading, setIsLoading] = useState(true);
+  const [displayed, setDisplayed] = useState(false);
+
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
   let userId = localStorage.getItem("userId");
@@ -121,8 +123,8 @@ function AddTask() {
   }
 
   let options1 = [
-    { value: "Pending", label: "Pending" },
-    { value: "Completed", label: "Completed" },
+    { value: "Pend", label: "Pend.." },
+    { value: "Comp", label: "Comp.." },
   ];
 
   // console.log(status);
@@ -133,127 +135,180 @@ function AddTask() {
   }
   return (
     <>
-      <div className="col-2"></div>
-      <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}>
-        <div className="contain-table" style={{ fontSize: "x-small" }}>
-          <div className={customStyle.dateContainer}>
-            <div className={customStyle}>Date: {moment().format("LLL")} </div>
-            <Link>
-              {userName}({userId})
-            </Link>
-          </div>
-          {/* <hr></hr> */}
-          <table className="striped-table">
-            <thead>
-              <tr>
-                <th>Att</th>
-                <th>Project Code</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Duration(hr)</th>
-                <th>DM Also</th>
-                {/* <th colSpan={2} className="text-center">
+      {/* <div className="col-2"></div> */}
+      {/* <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}> */}
+      <div className={customStyle.containTable}>
+        <div className={customStyle.dateContainer}>
+          <div className={customStyle}>Date: {moment().format("LLL")} </div>
+          <Link to="/user"
+                          // onClick={() =>
+                          //   localStorage.setItem("taskId", task.taskId)
+                          // }
+            onMouseEnter={() => setDisplayed(true)}
+            onMouseLeave={() => setDisplayed(false)}
+          >
+            {userName}({userId}){displayed && <div>Go to Profile</div>}
+          </Link>
+        </div>
+        {/* <hr></hr> */}
+        <table className="striped-table">
+          <thead>
+            <tr>
+              <th>Att</th>
+              <th>Project Code</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Duration(hr)</th>
+              <th>DM Also</th>
+              {/* <th colSpan={2} className="text-center">
                 Actions
               </th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {projectData.length > 0 ? (
-                // employeeTask.map((task, index) => (
-                <tr>
-                  <td>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        // checked
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="flexCheckChecked"
-                      ></label>
-                    </div>{" "}
-                  </td>
-                  {/* <td>{task.employeeId}</td> */}
-                  <td>
-                    <select
-                      className={customStyle.projectCode}
-                      defaultValue="n/a"
-                      onChange={(e) => setProjectCode(e.target.value)}
-                    >
-                      <option value="n/a"> n/a </option>
-                      {projectData.map((option, index) => (
-                        <option key={index} value={option.projectCode}>
-                          {option.projectCode}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td>
-                    <textarea
-                      // id="description"
+            </tr>
+          </thead>
+          <tbody>
+            {projectData.length > 0 ? (
+              // employeeTask.map((task, index) => (
+              <tr>
+                <td>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      value=""
+                      // checked
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexCheckChecked"
+                    ></label>
+                  </div>{" "}
+                </td>
+                {/* <td>{task.employeeId}</td> */}
+                <td>
+                  <select
+                    className={customStyle.projectCode}
+                    defaultValue="n/a"
+                    onChange={(e) => setProjectCode(e.target.value)}
+                  >
+                    <option value="n/a"> n/a </option>
+                    {projectData.map((option, index) => (
+                      <option key={index} value={option.projectCode}>
+                        {option.projectCode}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <textarea
+                    // id="description"
+                    type="text"
+                    name="description"
+                    className={customStyle.description}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="Project Description"
+                    rows={1}
+                  ></textarea>
+                </td>
+
+                <td>
+                  <select
+                    className={customStyle.status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
+                    {options1.map((option, index) => (
+                      <option key={index} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <div className={customStyle.duration}>
+                    <input
                       type="text"
-                      name="description"
-                      className={customStyle.description}
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Project Description"
-                      rows={1}
-                    ></textarea>
-                  </td>
+                      name="duration"
+                      value={duration}
+                      onChange={(e) => setDuration(e.target.value)}
+                      placeholder="Time"
+                      inputMode="NumberFormat"
+                    />{" "}
+                  </div>
+                </td>
 
-                  <td>
-                    <select
-                      className={customStyle.status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      {options1.map((option, index) => (
-                        <option key={index} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td>
-                    <div className={customStyle.duration}>
-                      <input
-                        type="text"
-                        name="duration"
-                        value={duration}
-                        onChange={(e) => setDuration(e.target.value)}
-                        placeholder="Time"
-                        inputMode="NumberFormat"
-                      />{" "}
-                    </div>
-                  </td>
+                <td>
+                  <select
+                    className={customStyle.dmTo}
+                    defaultValue="n/a"
+                    onChange={(e) => setUserName(e.target.value)}
+                  >
+                    <option value="n/a"> n/a </option>
+                    {employeeData.map((option, index) => (
+                      <option key={index} value={option.userName}>
+                        {option.userName}
+                      </option>
+                    ))}
+                  </select>
+                </td>
 
-                  <td>
-                    <select
-                      className={customStyle.dmTo}
-                      defaultValue="n/a"
-                      onChange={(e) => setUserName(e.target.value)}
-                    >
-                      <option value="n/a"> n/a </option>
-                      {employeeData.map((option, index) => (
-                        <option key={index} value={option.firstName}>
-                          {option.firstName}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
+                <td className="text-right">
+                  <button onClick={() => addTask()} className="btn btn-primary">
+                    Submit
+                  </button>
+                </td>
+              </tr>
+            ) : (
+              // ))
+              <tr>
+                <td colSpan={7}>No Project</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      {/* </div> */}
+      {/* <div className="col-2"></div> */}
 
-                  <td className="text-right">
-                    <button
-                      onClick={() => addTask()}
-                      className="btn btn-primary"
-                    >
-                      Submit
-                    </button>
-                  </td>
-                </tr>
+      <div>
+        <hr></hr>
+      </div>
+      <div className="Row">
+        {/* <div className="col-2"></div> */}
+        {/* <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}> */}
+        <div className={customStyle.containTable}>
+          <table className="striped-table">
+            <tbody>
+              {employeeTask.length > 0 ? (
+                employeeTask.map((task, index) => (
+                  <tr key={index}>
+                    <td className={customStyle.sl}>
+                      {
+                        // <a placeholder="fgdgyfvghguhg" href="/task">{task.taskId}</a>
+                        <Link
+                          to="/task"
+                          onClick={() =>
+                            localStorage.setItem("taskId", task.taskId)
+                          }
+                          // placeholder={"fgdgyfvghguhg"}
+                          // onMouseEnter={() => setDisplayed(true)}
+                          // onMouseLeave={() => setDisplayed(false)}
+                        >
+                          {task.taskId}
+                        </Link>
+                      }
+                    </td>
+                    {/* {displayed && <div>See Task.</div>} */}
+                    <td className={customStyle.projectCode}>
+                      {task.projectCode}
+                    </td>
+                    <td className={customStyle.desc}>{task.description}</td>
+                    <td className={customStyle.status}>{task.status} </td>
+                    <td className={customStyle.duration}>{task.spendTime} </td>
+                    <td className={customStyle.dmTo}>{task.DM_To}</td>
+                    {/* <td></td> */}
+                  </tr>
+                ))
               ) : (
-                // ))
                 <tr>
                   <td colSpan={7}>No Project</td>
                 </tr>
@@ -261,55 +316,8 @@ function AddTask() {
             </tbody>
           </table>
         </div>
-      </div>
-      <div className="col-2"></div>
-
-      <div>
-        <hr></hr>
-      </div>
-      <div className="Row">
-        <div className="col-2"></div>
-        <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}>
-          <div className="contain-table" style={{ fontSize: "x-small" }}>
-            <table className="striped-table">
-              <tbody>
-                {employeeTask.length > 0 ? (
-                  employeeTask.map((task, index) => (
-                    <tr key={index}>
-                      <td className={customStyle.sl}>
-                        {
-                          <Link
-                            to="/task"
-                            onClick={() =>
-                              localStorage.setItem("taskId", task.taskId)
-                            }
-                          >
-                            {task.taskId}
-                          </Link>
-                        }
-                      </td>
-                      <td className={customStyle.projectCode}>
-                        {task.projectCode}
-                      </td>
-                      <td className={customStyle.desc}>{task.description}</td>
-                      <td className={customStyle.status}>{task.status} </td>
-                      <td className={customStyle.duration}>
-                        {task.spendTime}{" "}
-                      </td>
-                      <td className={customStyle.dmTo}>{task.DM_To}</td>
-                      {/* <td></td> */}
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>No Project</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="col-2"></div>
+        {/* </div> */}
+        {/* <div className="col-2"></div> */}
       </div>
     </>
   );

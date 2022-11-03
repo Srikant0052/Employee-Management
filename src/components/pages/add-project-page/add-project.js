@@ -189,7 +189,7 @@ function AddProject() {
             className="muted-button"
             type="button"
             value="Cancel"
-            onClick={() => navigate("/updatetask")}
+            onClick={() => navigate("/")}
           />
         </div>
       </form>

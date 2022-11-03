@@ -116,7 +116,7 @@ function AddCustomer({ setIsAdding }) {
               className="muted-button"
               type="button"
               value="Cancel"
-              onClick={() => setIsAdding(false)}
+              onClick={() => navigate("/")}
             />
           </div>
         </div>

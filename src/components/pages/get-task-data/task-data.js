@@ -13,7 +13,7 @@ function TaskData() {
   let userId = localStorage.getItem("userId");
   let taskId = localStorage.getItem("taskId");
   //   console.log(status);
-//   console.log(taskId);
+  //   console.log(taskId);
 
   //get all tasks
   async function getTaskDetails() {
@@ -26,7 +26,7 @@ function TaskData() {
       if (resp.data.data) {
         setTaskData(resp.data.data);
       }
-    //   console.log(resp.data.data);
+      //   console.log(resp.data.data);
     } catch (error) {
       console.log(error.response.data.message);
     } finally {
@@ -59,35 +59,61 @@ function TaskData() {
     }
   }
 
-  //Delete Task 
+  const handlleUpdate = () => {
+    Swal.fire({
+      title: "Do you want to save the changes?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      denyButtonText: `Don't save`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Saved!", "", "success");
+        updateTaskStatus();
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
+  };
+
+  //Delete Task
   async function deleteTask() {
     try {
       let resp3 = await axios({
         method: "delete",
         url: `http://localhost:4000/task/${taskId}`,
       });
-        // console.log(resp3.data.data);
-
-      if (resp3.data.status == true) {
-        Swal.fire({
-          icon: "success",
-          title: "Task Deleted Successfully!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        const reload = window.location.reload();
-        setTimeout(reload, 2000);
-      }
     } catch (error) {
       console.log(error.response.data.message);
     }
   }
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        deleteTask();
+        const reload = window.location.reload();
+        setTimeout(reload, 2000);
+      }
+    });
+  };
+
   useEffect(() => {
     getTaskDetails();
   }, []);
   let options1 = [
-    { value: "Pending", label: "Pending" },
-    { value: "Completed", label: "Completed" },
+    { value: "Pend", label: "Pend.." },
+    { value: "Comp", label: "Comp.." },
   ];
 
   if (isLoading) {
@@ -102,7 +128,9 @@ function TaskData() {
             {userName}({userId})
           </div>
         </div>
-        <u><h5>Task Details</h5></u>
+        <u>
+          <h5>Task Details</h5>
+        </u>
         <table className="striped-table">
           <thead>
             <tr>
@@ -143,12 +171,12 @@ function TaskData() {
       </div>
       <div>
         <button className="btn mb-2">Edit</button>&nbsp;
-        <button onClick={() => deleteTask()} className="btn mb-2">
+        <button onClick={() => handleDelete()} className="btn mb-2">
           Delete
         </button>
         &nbsp;
         <button className="btn mb-2">Add Note</button>&nbsp;
-        <button onClick={() => updateTaskStatus()} className="btn mb-2">
+        <button onClick={() => handlleUpdate()} className="btn mb-2">
           Change Status
         </button>
       </div>

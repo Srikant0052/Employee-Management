@@ -1,12 +1,12 @@
 import Home from "./pages/workLog";
-import Register from "./pages/registration";
+// import Register from "./pages/registration";
 import Login from "./pages/login";
 import Logout from "./components/pages/logout";
 import AddEmployee from "./pages/addEmployee";
 import EmployeeDashboard from "./pages/employeeDashboard";
-import Task from "./pages/updateTask";
+// import Task from "./pages/updateTask";
 import AddProject from "./pages/addProject";
-// import UserProfile from "./pages/userProfile";
+import UserProfile from "./pages/userProfile";
 import AddCustomer from "./pages/addCustomer";
 // import UpdateTaskPage from "./pages/addTask";
 // import GetTask from "./components/pages/get-project-data/project-details";
@@ -117,10 +117,10 @@ export const ROUTES = [
     page: <AddTaskPage />,
   },
 
-  // {
-  //   path: "/user",
-  //   page: <UserProfile />,
-  // },
+  {
+    path: "/user",
+    page: <UserProfile />,
+  },
 
   {
     path: "/project",
