@@ -51,7 +51,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   return err ? (
     <div>
       <h1>{err.error.message} </h1>
-      <Link to="/">Go To Home</Link>
+      <Link to="/employees">Go To Home</Link>
     </div>
   ) : (
     <div className={customStyle.form}>

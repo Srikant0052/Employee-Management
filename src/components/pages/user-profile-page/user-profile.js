@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import customStyle from "./user-profile.module.css";
 
 function UserProfile() {
   const [user, setUser] = useState("");
-  const navigate = useNavigate();
   let [err, setErr] = useState(null);
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");

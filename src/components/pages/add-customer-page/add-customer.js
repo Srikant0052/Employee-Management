@@ -110,7 +110,7 @@ function AddCustomer({ setIsAdding }) {
               className="muted-button"
               type="button"
               value="Cancel"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/addCustomer")}
             />
           </div>
         </div>

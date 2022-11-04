@@ -260,7 +260,7 @@ function AddEmployee({}) {
                 className="btn btn-primary"
                 type="reset"
                 value="Cancel"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/addEmployee")}
               />
             </div>
           </div>

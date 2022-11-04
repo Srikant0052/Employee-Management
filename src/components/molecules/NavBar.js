@@ -7,9 +7,9 @@ export default function Navbar() {
   const cookies = new Cookies();
   let role = cookies.get("userRole");
 
-  if (!cookies.get("accessToken")) {
-    <Navigate replace to="/login" />;
-  }
+  // if (!cookies.get("accessToken")) {
+  //   <Navigate replace to="/login" />;
+  // }
 
   return (
     <div style={{ fontWeight: "600", fontSize: "medium" }}>

@@ -45,7 +45,7 @@ function TaskData() {
         url: `https://backend.worklog.tech/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
-      console.log(resp2.data.data);
+      // console.log(resp2.data.data);
 
       if (resp2.data.status == true) {
         Swal.fire({
@@ -73,8 +73,8 @@ function TaskData() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Saved!", "", "success");
         updateTaskStatus();
+        Swal.fire("Saved!", "", "success");
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
       }
@@ -86,7 +86,7 @@ function TaskData() {
     try {
       let resp3 = await axios({
         method: "delete",
-        url: `https://backend.worklog.tech/task/${taskId}`,
+        url: `https://backend.worklog.tech/task/${taskData.taskId}`,
       });
     } catch (error) {
       setErr(error.response.data);

@@ -88,7 +88,7 @@ const Login = () => {
           <section>
             <h1>You are logged in!</h1>
             <br />
-            <Navigate replace to="/" />;
+            {/* <Navigate replace to="/" />; */}
             {/* <p>
             <Link to="/user">Go to Profile</Link>
           </p> */}
