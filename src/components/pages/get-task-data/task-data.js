@@ -22,7 +22,7 @@ function TaskData() {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getTask/${taskId}`,
+        url: `https://backend.worklog.tech/getTask/${taskId}`,
       });
 
       if (resp.data.data) {
@@ -42,7 +42,7 @@ function TaskData() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `http://localhost:4000/updateTask/${taskData.taskId}/${taskData.employeeId}`,
+        url: `https://backend.worklog.tech/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
       console.log(resp2.data.data);
@@ -86,7 +86,7 @@ function TaskData() {
     try {
       let resp3 = await axios({
         method: "delete",
-        url: `http://localhost:4000/task/${taskId}`,
+        url: `https://backend.worklog.tech/task/${taskId}`,
       });
     } catch (error) {
       setErr(error.response.data);

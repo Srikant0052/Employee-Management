@@ -31,7 +31,7 @@ function Edit({ employees, selectedEmployee, setEmployees, setIsEditing }) {
       try {
         let resp = await axios({
           method: "put",
-          url: "http://localhost:4000/update",
+          url: "https://backend.worklog.tech/update",
           data: {
             // ...employee,
             employeeId,

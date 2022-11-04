@@ -10,10 +10,6 @@ function AddCustomer({ setIsAdding }) {
   let [err, setErr] = useState(null);
 
   const navigate = useNavigate();
-
-  //   const [customerId, setCustomerId] = useState("");
-  //   const [description, setDescription] = useState("");
-  //   const [date, setDate] = useState("");
   //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   useEffect(() => {
@@ -37,18 +33,11 @@ function AddCustomer({ setIsAdding }) {
       });
     }
 
-    // const newCustomer = {
-    //   name,
-    //   //   customerId,
-    //   //   description,
-    //   //   date,
-    // };
-
     async function saveDataInDb() {
       try {
         let resp = await axios({
           method: "post",
-          url: "http://localhost:4000/addCustomer",
+          url: "https://backend.worklog.tech/addCustomer",
           data: {
             name,
             address,
@@ -61,9 +50,7 @@ function AddCustomer({ setIsAdding }) {
       }
     }
     saveDataInDb();
-    // setTasks(tasks);
-    // setIsAdding(false);
-
+    
     Swal.fire({
       icon: "success",
       title: "Added!",

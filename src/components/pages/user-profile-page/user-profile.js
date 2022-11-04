@@ -18,7 +18,7 @@ function UserProfile() {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getEmployee/${employeeId}`,
+        url: `https://backend.worklog.tech/getEmployee/${employeeId}`,
       });
 
       if (resp.data.data) {
@@ -33,8 +33,6 @@ function UserProfile() {
   useEffect(() => {
     getEmployeeData();
   }, []);
-  // console.log(status);
-  // console.log(projectCode);
 
   return err ? (
     <div>

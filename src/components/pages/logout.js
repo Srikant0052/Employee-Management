@@ -14,9 +14,6 @@ export default function Logout() {
       setTimeout(reload, 2000);
     }
   }, []);
-  // if (!cookies.get("accessToken")) {
-  //   <Navigate replace to="/login" />;
-  // }
 
   return <div>{localStorage.clear()}</div>;
 }

@@ -25,7 +25,7 @@ function WorkLog() {
     try {
       let resp = await axios({
         method: "get",
-        url: "http://localhost:4000/getTask",
+        url: "https://backend.worklog.tech/getTask",
       });
 
       if (resp.data.data) {

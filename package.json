@@ -1,5 +1,6 @@
 {
   "name": "employee-management",
+  "homepage":"https://worklog.tech",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

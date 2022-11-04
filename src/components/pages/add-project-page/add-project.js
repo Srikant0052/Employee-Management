@@ -16,7 +16,6 @@ function AddProject() {
   //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   const navigate = useNavigate();
-  // console.log(customerId)
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
@@ -30,7 +29,7 @@ function AddProject() {
     try {
       let resp1 = await axios({
         method: "get",
-        url: "http://localhost:4000/getCustomer",
+        url: "https://backend.worklog.tech/getCustomer",
       });
       if (resp1.data.data) {
         setCustomerData(resp1.data.data);
@@ -69,7 +68,7 @@ function AddProject() {
       try {
         let resp = await axios({
           method: "post",
-          url: "http://localhost:4000/addProject",
+          url: "https://backend.worklog.tech/addProject",
           data: {
             ...newProject,
           },

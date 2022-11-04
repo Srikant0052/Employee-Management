@@ -77,7 +77,7 @@ function AddEmployee({}) {
       try {
         let resp = await axios({
           method: "post",
-          url: "http://localhost:4000/employee",
+          url: "https://backend.worklog.tech/employee",
           data: {
             ...newEmployee,
           },

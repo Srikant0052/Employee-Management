@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import moment from "moment";
-// import { Link } from "react-router-dom";
 import customStyle from "./project-details.module.css";
 
 function ProjectData() {
@@ -21,7 +20,7 @@ function ProjectData() {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getProjectById/${projectCode}`,
+        url: `https://backend.worklog.tech/getProjectById/${projectCode}`,
       });
 
       if (resp.data.data) {
@@ -41,7 +40,7 @@ function ProjectData() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `http://localhost:4000/${projectCode}`,
+        url: `https://backend.worklog.tech/${projectCode}`,
         data: { status },
       });
       console.log(resp2.data.data);

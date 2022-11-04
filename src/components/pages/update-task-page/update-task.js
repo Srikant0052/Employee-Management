@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { useForm } from "react-hook-form";
 import customStyle from "./update-task.module.css";
 
 function UpdateTask({ setIsAdding }) {
@@ -24,7 +23,7 @@ function UpdateTask({ setIsAdding }) {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getAllProject`,
+        url: `https://backend.worklog.tech/getAllProject`,
       });
 
       if (resp.data.data) {
@@ -33,7 +32,7 @@ function UpdateTask({ setIsAdding }) {
 
       // let resp2 = await axios({
       //   method: "get",
-      //   url: "http://localhost:4000/employeeList",
+      //   url: "https://backend.worklog.tech/employeeList",
       // });
 
       // if (resp2.data.data) {
@@ -75,7 +74,7 @@ function UpdateTask({ setIsAdding }) {
       try {
         let resp = await axios({
           method: "post",
-          url: "http://localhost:4000/UpdateTask",
+          url: "https://backend.worklog.tech/UpdateTask",
           data: {
             ...newTask,
           },

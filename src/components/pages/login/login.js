@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import {  Navigate } from "react-router-dom";
 import axios from "axios";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import customStyle from "./login.module.css";
 import Cookies from "universal-cookie";
 
@@ -10,11 +10,9 @@ const Login = () => {
   const errRef = useRef();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  // const [isLogined, setIsLogined] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
   const [accessToken, setAccessToken] = useState("");
-  const nav = useNavigate();
   const cookies = new Cookies();
 
   useEffect(() => {
@@ -28,7 +26,7 @@ const Login = () => {
     try {
       const response = await axios({
         method: "post",
-        url: "http://localhost:4000/login",
+        url: "https://backend.worklog.tech/login",
         data: {
           email: user,
           password,

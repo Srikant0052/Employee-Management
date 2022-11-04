@@ -1,5 +1,4 @@
 import React, { useState, setState } from "react";
-// import { Link } from "react-router-dom";
 import customStyle from "./registration.module.css";
 
 // import "./style.css";
