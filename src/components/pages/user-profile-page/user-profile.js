@@ -130,7 +130,7 @@ function UserProfile() {
                 </div>
               </div>
 
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-6">
                   <div className="card mb-4 mb-md-0">
                     <div className="card-body">
@@ -223,7 +223,7 @@ function UserProfile() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
