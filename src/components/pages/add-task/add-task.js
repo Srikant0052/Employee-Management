@@ -39,7 +39,7 @@ function AddTask() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getTaskById/${employeeId}`,
+        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}`,
       });
 
       if (resp.data.data) {
@@ -48,7 +48,7 @@ function AddTask() {
 
       let resp2 = await axios({
         method: "get",
-        url: "https://backend.worklog.tech/employeeList",
+        url: "https://bworklogtech.herokuapp.com/employeeList",
       });
 
       if (resp2.data.data) {
@@ -57,7 +57,7 @@ function AddTask() {
 
       let resp3 = await axios({
         method: "get",
-        url: "https://backend.worklog.tech/getAllProject",
+        url: "https://bworklogtech.herokuapp.com/getAllProject",
       });
 
       if (resp3.data.data) {
@@ -99,7 +99,7 @@ function AddTask() {
     try {
       let resp3 = await axios({
         method: "post",
-        url: `https://backend.worklog.tech/addTask`,
+        url: `https://bworklogtech.herokuapp.com/addTask`,
         data: {
           ...newTask,
         },

@@ -25,7 +25,7 @@ function WorkLog() {
     try {
       let resp = await axios({
         method: "get",
-        url: "https://backend.worklog.tech/getTask",
+        url: "https://bworklogtech.herokuapp.com/getTask",
       });
 
       if (resp.data.data) {

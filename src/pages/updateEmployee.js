@@ -31,7 +31,7 @@ function Edit({ employees, selectedEmployee, setEmployees, setIsEditing }) {
       try {
         let resp = await axios({
           method: "put",
-          url: "https://backend.worklog.tech/update",
+          url: "https://bworklogtech.herokuapp.com/update",
           data: {
             // ...employee,
             employeeId,

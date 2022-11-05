@@ -27,7 +27,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
     try {
       let resp = await axios({
         method: "get",
-        url: "https://backend.worklog.tech/employeeList",
+        url: "https://bworklogtech.herokuapp.com/employeeList",
       });
 
       if (resp.data.data) {

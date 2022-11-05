@@ -16,7 +16,7 @@ function UserProfile() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getEmployee/${employeeId}`,
+        url: `https://bworklogtech.herokuapp.com/getEmployee/${employeeId}`,
       });
 
       if (resp.data.data) {

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 import Header from "./header";
 import Dashboard from "./dashboard";
 import Add from "./addEmployee";
 import Edit from "./updateEmployee";
-import AddTask from "./updateTask";
+// import AddTask from "./updateTask";
 import WorkLog from "./workLog";
 
 function Nav() {
   const [employees, setEmployees] = useState(null);
-  const [tasks, setTasks] = useState(null);
+  // const [tasks, setTasks] = useState(null);
 
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isAdding, setIsAdding] = useState(false);

@@ -20,7 +20,7 @@ function ProjectData() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getProjectById/${projectCode}`,
+        url: `https://bworklogtech.herokuapp.com/${projectCode}`,
       });
 
       if (resp.data.data) {

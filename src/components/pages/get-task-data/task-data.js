@@ -22,7 +22,7 @@ function TaskData() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getTask/${taskId}`,
+        url: `https://bworklogtech.herokuapp.com/getTask/${taskId}`,
       });
 
       if (resp.data.data) {
@@ -42,7 +42,7 @@ function TaskData() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `https://backend.worklog.tech/updateTask/${taskData.taskId}/${taskData.employeeId}`,
+        url: `https://bworklogtech.herokuapp.com/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
       // console.log(resp2.data.data);
@@ -86,8 +86,12 @@ function TaskData() {
     try {
       let resp3 = await axios({
         method: "delete",
-        url: `https://backend.worklog.tech/task/${taskData.taskId}`,
+        url: `https://bworklogtech.herokuapp.com/task/${taskData.taskId}`,
+        data: {
+          isDeleted: true,
+        },
       });
+      // console.log(resp3)
     } catch (error) {
       setErr(error.response.data);
       // console.log(error.response.data.message);
@@ -105,8 +109,8 @@ function TaskData() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
         deleteTask();
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
         const reload = window.location.reload();
         setTimeout(reload, 2000);
       }
