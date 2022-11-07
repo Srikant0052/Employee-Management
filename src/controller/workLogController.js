@@ -312,7 +312,7 @@ const taskData = async (req, res, next) => {
         },
       ])
       .sort({ slNo: -1 })
-      .limit(1);
+      .limit(3);
 
     return res.status(200).send({
       status: true,
