@@ -24,6 +24,11 @@ const employeeSchema = new Schema(
       trim: true,
     },
 
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Others"],
+    },
+
     userName: {
       type: String,
       required: true,

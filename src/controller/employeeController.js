@@ -18,6 +18,7 @@ const addEmployee = async (req, res, next) => {
       employeeId,
       firstName,
       lastName,
+      gender,
       email,
       userName,
       designation,
@@ -120,6 +121,7 @@ const addEmployee = async (req, res, next) => {
       employeeId,
       firstName,
       lastName,
+      gender,
       userName,
       password,
       role,
@@ -257,7 +259,7 @@ const updatePassword = async (req, res, next) => {
       .lean();
 
     if (!employee) {
-      throw createError(404, "Data Not Found");
+      throw createError(404, "Password Doesn,t Matched");
     }
 
     const updatedPassword = await empCollection.findOneAndUpdate(

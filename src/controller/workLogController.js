@@ -260,6 +260,71 @@ const deleteTaskByTaskId = async (req, res, next) => {
   }
 };
 
+const taskData = async (req, res, next) => {
+  try {
+    const task = await workLog
+      .aggregate([
+        {
+          $match: {
+            isDeleted: false,
+          },
+        },
+        {
+          $lookup: {
+            from: "employees",
+            localField: "employeeId",
+            foreignField: "employeeId",
+            as: "employeeData",
+          },
+        },
+        {
+          $unwind: "$employeeData",
+        },
+        {
+          $lookup: {
+            from: "projects",
+            localField: "projectCode",
+            foreignField: "projectCode",
+            as: "projectData",
+          },
+        },
+        {
+          $unwind: "$projectData",
+        },
+
+        {
+          $project: {
+            _id: 1,
+            slNo: 1,
+            taskId: 1,
+            description: 1,
+            startingTime: 1,
+            status: 1,
+            spendTime: 1,
+            DM_To: 1,
+            isDeleted: 1,
+            deletedAt: 1,
+            createdAt:1,
+            updatedAt:1,
+            ProjectName: "$projectData.name",
+            employeeName: "$employeeData.firstName",
+          },
+        },
+      ])
+      .sort({ slNo: -1 })
+      .limit(1);
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: task,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 module.exports = {
   addTask,
   updateTask,
@@ -268,4 +333,5 @@ module.exports = {
   getTaskByProjectCode,
   getTaskByTaskId,
   deleteTaskByTaskId,
+  taskData,
 };

@@ -7,6 +7,7 @@ const {
   getTaskByProjectCode,
   getTaskByTaskId,
   deleteTaskByTaskId,
+  taskData,
 } = require("../controller/workLogController");
 const { authorization } = require("../middleware/auth");
 
@@ -19,6 +20,7 @@ router
   .get("/getTaskById/:employeeId", getTaskByEmployeeId)
   .get("/getTaskById/:projectCode", getTaskByProjectCode)
   .get("/getTask/:taskId", getTaskByTaskId)
-  .delete("/task/:taskId", deleteTaskByTaskId);
+  .delete("/task/:taskId", deleteTaskByTaskId)
+  .get("/task", taskData);
 
 module.exports = router;
