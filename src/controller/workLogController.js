@@ -5,6 +5,7 @@ const projects = require("../models/projects");
 const moment = require("moment");
 const { isValidRequestBody, isValid } = require("../utils/validator");
 const { generateId } = require("../utils/helpers");
+const nodemailer = require("nodemailer");
 let now = moment();
 
 const addTask = async (req, res, next) => {
@@ -15,14 +16,24 @@ const addTask = async (req, res, next) => {
       throw createError(400, `All fields are Mandatory!`);
     }
 
-    let { employeeId, projectCode, description, spendTime, status, DM_To } =
-      requestBody;
+    let {
+      employeeId,
+      projectCode,
+      description,
+      spendTime,
+      status,
+      DM_To,
+      toMail,
+    } = requestBody;
 
     if (!isValid(employeeId)) {
       throw createError(400, "Employee id is required");
     }
 
-    const isEmployee = await empCollection.findOne({ employeeId: employeeId });
+    const isEmployee = await empCollection.findOne({
+      employeeId: employeeId,
+      isDeleted: false,
+    });
 
     if (!isEmployee) {
       throw createError(404, `Employee Not Exist`);
@@ -32,7 +43,10 @@ const addTask = async (req, res, next) => {
       throw createError(400, "Project Code is required");
     }
 
-    const isProjectExist = await projects.findOne({ projectCode: projectCode });
+    const isProjectExist = await projects.findOne({
+      projectCode: projectCode,
+      isDeleted: false,
+    });
 
     if (!isProjectExist) {
       throw createError(404, `Project Not Exist`);
@@ -68,6 +82,30 @@ const addTask = async (req, res, next) => {
       status,
       DM_To,
     });
+
+    var transport = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+    var mailOptions = {
+      from: "alert@worklog.tech",
+      to: "srikant0052@gmail.com",
+      subject: `${isEmployee.firstName}/Task Ref Mail`,
+      text: `Msg : ${description}`,
+    };
+    // console.log(mailOptions);
+
+    transport.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Email sent: " + info.response);
+    });
+
     return res.status(201).send({
       status: true,
       data: worklogAdded,
@@ -304,8 +342,8 @@ const taskData = async (req, res, next) => {
             DM_To: 1,
             isDeleted: 1,
             deletedAt: 1,
-            createdAt:1,
-            updatedAt:1,
+            createdAt: 1,
+            updatedAt: 1,
             ProjectName: "$projectData.name",
             employeeName: "$employeeData.firstName",
           },
@@ -323,7 +361,6 @@ const taskData = async (req, res, next) => {
     next(error);
   }
 };
-
 
 module.exports = {
   addTask,
