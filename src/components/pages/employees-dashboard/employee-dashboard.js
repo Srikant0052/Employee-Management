@@ -7,15 +7,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
   const [employeeData, setEmployeeData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   let [err, setErr] = useState(null);
-
   const navigate = useNavigate();
-
-  // const formatter = new Intl.NumberFormat('en-US', {
-  //     style: 'currency',
-  //     currency: 'USD',
-  //     minimumFractionDigits: null
-  // });
-  // console.log(employeeData);
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -35,7 +27,6 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
       }
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -63,15 +54,16 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
           <tr>
             <th>Sl. No.</th>
             <th>Employee ID</th>
-            <th>First Name</th>
+            <th>Name</th>
             <th>Designation</th>
             <th>Email</th>
+            <th>Mobile</th>
             <th>DOJ</th>
-            <th>User Name</th>
+            <th>Address</th>
 
-            <th colSpan={2} className="text-center">
+            {/* <th colSpan={2} className="text-center">
               Actions
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody>
@@ -80,13 +72,16 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{employee.employeeId}</td>
-                <td>{employee.firstName}</td>
+                <td>
+                  {employee.firstName} {employee.lastName}
+                </td>
                 <td>{employee.designation}</td>
                 <td>{employee.email}</td>
+                <td>{employee.mobile}</td>
                 <td>{employee.dateOfJoining} </td>
-                <td>{employee.userName} </td>
+                <td>{employee.address} </td>
 
-                <td className="text-right">
+                {/* <td className="text-right">
                   <button
                     // onClick={() =>
                     //   handleEdit(employeeData, employee.employeeId)
@@ -95,7 +90,7 @@ function EmployeeDashboard({ employees, handleEdit, handleDelete }) {
                   >
                     Edit
                   </button>
-                </td>
+                </td> */}
                 {/* <td className="text-left">
                   <button
                     onClick={() => handleDelete(employee.id)}

@@ -3,7 +3,7 @@
 .form{
     background-color: white;
     border-radius: 5px;
-    width: 450px;
+    width: 400px;
     margin: 20px auto;
     padding: 20px;
     font-size: small;
@@ -11,23 +11,4 @@
     /* height: 600px; */
 }
 
-/* .form_body{
-    text-align: left;
-    padding: 20px 10px;
-}
 
-.form_body > *{
-    padding: 5px;
-}
-
-.form__label{
-    width: 40%;
-}
-
-.form_input{
-    width: 60%;
-}
-
-.footer{
-    text-align: center;
-} */

@@ -87,9 +87,6 @@ function TaskData() {
       let resp3 = await axios({
         method: "delete",
         url: `https://bworklogtech.herokuapp.com/task/${taskData.taskId}`,
-        data: {
-          isDeleted: true,
-        },
       });
       // console.log(resp3)
     } catch (error) {

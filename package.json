@@ -23,8 +23,7 @@
     "web-vitals": "^3.0.3"
   },
   "scripts": {
-    "dev": "react-scripts start",
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
@@ -33,7 +32,7 @@
   "engines": {
     "node": "16.18.0",
     "npm": "8.19.2"
-},
+  },
   "browserslist": {
     "production": [
       ">0.2%",

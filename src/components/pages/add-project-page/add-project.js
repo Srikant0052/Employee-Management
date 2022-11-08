@@ -13,7 +13,6 @@ function AddProject() {
   const [companyName, setCompanyName] = useState("");
   const [customer, setCustomerData] = useState("");
   let [err, setErr] = useState(null);
-  //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
@@ -34,10 +33,8 @@ function AddProject() {
       if (resp1.data.data) {
         setCustomerData(resp1.data.data);
       }
-      // console.log(resp1);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error);
     }
   }
   useEffect(() => {
@@ -80,12 +77,10 @@ function AddProject() {
         console.log(resp);
       } catch (error) {
         setErr(error.response.data);
-        // console.log(error);
       }
     }
     saveDataInDb();
-    // setTasks(tasks);
-    // setIsAdding(false);
+
     Swal.fire({
       icon: "success",
       title: "Added!",

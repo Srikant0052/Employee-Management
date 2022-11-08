@@ -1,15 +1,11 @@
 import { Link, useMatch, useResolvedPath, Navigate } from "react-router-dom";
 import { NAV_DATA, ADMIN_NAV_DATA } from "../../const";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Cookies from "universal-cookie";
 
 export default function Navbar() {
   const cookies = new Cookies();
   let role = cookies.get("userRole");
-
-  // if (!cookies.get("accessToken")) {
-  //   <Navigate replace to="/login" />;
-  // }
 
   return (
     <div style={{ fontWeight: "600", fontSize: "medium" }}>
@@ -21,7 +17,7 @@ export default function Navbar() {
           <ul>
             {ADMIN_NAV_DATA.map(({ path, heading }, index) => {
               return (
-                <CustomLink to={path} key={index}>
+                <CustomLink replace to={path} key={index}>
                   {heading}
                 </CustomLink>
               );
@@ -30,13 +26,17 @@ export default function Navbar() {
         </nav>
       ) : (
         <nav className="nav">
-          <Link to="/addTask" className="site-title"style={{ fontWeight: "600" }}>
+          <Link
+            to="/addTask"
+            className="site-title"
+            style={{ fontWeight: "600" }}
+          >
             Home
           </Link>
           <ul>
             {NAV_DATA.map(({ path, heading }, index) => {
               return (
-                <CustomLink to={path} key={index}>
+                <CustomLink replace to={path} key={index}>
                   {heading}
                 </CustomLink>
               );

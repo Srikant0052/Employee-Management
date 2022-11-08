@@ -26,10 +26,8 @@ function ProjectData() {
       if (resp.data.data) {
         setProjectData(resp.data.data);
       }
-      // console.log(resp.data.data);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +55,6 @@ function ProjectData() {
       }
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     }
   }
 

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useContext } from "react";
-import {  Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import customStyle from "./login.module.css";
 import Cookies from "universal-cookie";
 
@@ -13,6 +13,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
   const [accessToken, setAccessToken] = useState("");
+  const [role, setRole] = useState("");
   const cookies = new Cookies();
 
   useEffect(() => {
@@ -31,11 +32,6 @@ const Login = () => {
           email: user,
           password,
         },
-
-        // {
-        //   headers: { "Content-Type": "application/json" },
-        //   withCredentials: true,
-        // }
       });
       setAccessToken(response?.data?.token);
       cookies.set("accessToken", response.data.token, { path: "/" });
@@ -46,15 +42,9 @@ const Login = () => {
       localStorage.setItem("employeeId", response.data.data.employeeId);
       localStorage.setItem("accessToken", response?.data?.token);
 
-      // sessionStorage.setItem("accessToken", response?.data?.token);
       // setAuth({ user, password,  accessToken });
-      if (response.data.data.role === "Admin") {
-        <Navigate replace to="/worklog" />;
-        window.location.reload();
-      } else {
-        <Navigate replace to="/addTask" />;
-        window.location.reload();
-      }
+
+      setRole(response.data.data.role);
       setUser("");
       setPassword("");
       setSuccess(true);
@@ -69,25 +59,32 @@ const Login = () => {
         setErrMsg("Login Failed");
       }
       errRef.current.focus();
-      // console.log(err)
     }
   };
 
-  // if (success == true) {
-  //   Swal.fire({
-  //     icon: "success",
-  //     title: "Login Successfully!",
-  //     showConfirmButton: false,
-  //     timer: 2000,
-  //   });
-  // }
+  if (success == true) {
+    Swal.fire({
+      icon: "success",
+      title: "Login!",
+      text: `Login Successfully`,
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    // const reload = window.location.reload();
+    // setTimeout(reload, 1500);
+  }
   return (
     <>
       <div className={customStyle.form}>
         {success ? (
           <section>
-            <h1>You are logged in!</h1>
-            <br />
+            {role && role === "Admin" ? (
+              <Navigate replace to="/" />
+            ) : (
+              <Navigate replace to="/addTask" />
+            )}
+            {/* <h1>You are logged in!</h1> */}
+            {/* <br /> */}
             {/* <Navigate replace to="/" />; */}
             {/* <p>
             <Link to="/user">Go to Profile</Link>
@@ -115,7 +112,7 @@ const Login = () => {
             </u>
 
             <form onSubmit={handleSubmit}>
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="username">Email:</label>
               <input
                 type="text"
                 id="username"
@@ -134,7 +131,7 @@ const Login = () => {
                 required
               />
 
-              <button >Sign In</button>
+              <button>Sign In</button>
             </form>
           </section>
         )}

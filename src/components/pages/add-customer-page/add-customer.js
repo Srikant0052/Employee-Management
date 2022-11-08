@@ -4,13 +4,12 @@ import axios from "axios";
 import customStyle from "./add-customer.module.css";
 import { Link, useNavigate } from "react-router-dom";
 
-function AddCustomer({ setIsAdding }) {
+function AddCustomer() {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   let [err, setErr] = useState(null);
 
   const navigate = useNavigate();
-  //   let employeeId = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -43,14 +42,12 @@ function AddCustomer({ setIsAdding }) {
             address,
           },
         });
-
-        // console.log(resp);
       } catch (error) {
         setErr(error.response.data);
       }
     }
     saveDataInDb();
-    
+
     Swal.fire({
       icon: "success",
       title: "Added!",

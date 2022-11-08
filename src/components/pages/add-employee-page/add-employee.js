@@ -16,6 +16,7 @@ function AddEmployee({}) {
   const [dateOfJoining, setDate] = useState("");
   const [address, setAddress] = useState("");
   const [role, setRole] = useState("");
+  const [gender, setGender] = useState("");
   let [err, setErr] = useState(null);
 
   localStorage.setItem("employeeId", employeeId);
@@ -27,7 +28,7 @@ function AddEmployee({}) {
       navigate("/login");
     }
   }, []);
-  console.log(role);
+  // console.log(gender);
   useEffect(() => {
     textInput.current.focus();
   }, []);
@@ -36,6 +37,13 @@ function AddEmployee({}) {
     { value: "Select", label: "Select" },
     { value: "Admin", label: "Admin" },
     { value: "Employee", label: "Employee" },
+  ];
+
+  let options2 = [
+    { value: "Select", label: "Select" },
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+    { value: "Others", label: "Others" },
   ];
 
   const handleAdd = (e) => {
@@ -63,6 +71,7 @@ function AddEmployee({}) {
       employeeId,
       firstName,
       lastName,
+      gender,
       designation,
       email,
       mobile,
@@ -95,7 +104,7 @@ function AddEmployee({}) {
     }
 
     saveDataInDb();
-    
+
     if (!err) {
       Swal.fire({
         icon: "success",
@@ -162,6 +171,16 @@ function AddEmployee({}) {
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Last Name"
             />
+            <label htmlFor="gender">
+              Gender<sup style={{ color: "red" }}>*</sup>
+            </label>
+            <select onChange={(e) => setGender(e.target.value)}>
+              {options2.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
             <label htmlFor="Designation">
               Designation<sup style={{ color: "red" }}>*</sup>
             </label>
@@ -252,6 +271,10 @@ function AddEmployee({}) {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
             />
+            <span className="form-text small text-muted">
+              The password must be 8-20 characters,1 UpperCase, 1 LowerCase and
+              1 Special characters.
+            </span>
             <div style={{ marginTop: "30px" }}>
               <input type="submit" value="Add" />
               <input

@@ -18,7 +18,6 @@ function WorkLog() {
     }
   }, []);
   let userName = localStorage.getItem("userName");
-  // let userId = localStorage.getItem("userId")
 
   //get all tasks
   async function getTask() {
@@ -31,10 +30,8 @@ function WorkLog() {
       if (resp.data.data) {
         setTask(resp.data.data);
       }
-      // console.log(resp.data.data);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -96,22 +93,6 @@ function WorkLog() {
                 <td>{task.startingTime}</td>
                 <td>{task.status} </td>
                 <td>{task.spendTime} </td>
-                {/* <td className="text-right">
-                  <button
-                    onClick={() => navigate("/updateTask")}
-                    className="button muted-button"
-                  >
-                    Update Task
-                  </button>
-                </td>
-                <td className="text-left">
-                  <button
-                    onClick={() => navigate("/addProject")}
-                    className="button muted-button"
-                  >
-                    Add Project
-                  </button>
-                </td> */}
               </tr>
             ))
           ) : (

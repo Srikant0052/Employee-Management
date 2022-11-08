@@ -14,7 +14,7 @@ function AddTask() {
   const [duration, setDuration] = useState("0");
   const [projectCode, setProjectCode] = useState("");
   const [status, setStatus] = useState("Pend");
-  const [user, setUserName] = useState("n/a");
+  const [email, setEmail] = useState("n/a");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
   let [err, setErr] = useState(null);
@@ -24,10 +24,7 @@ function AddTask() {
   let userId = localStorage.getItem("userId");
   const cookies = new Cookies();
   const navigate = useNavigate();
-
-  // console.log(employeeData);
-  // console.log(userName);
-  // console.log(cookies.get("accessToken"))
+  // console.log(email);
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -63,15 +60,12 @@ function AddTask() {
       if (resp3.data.data) {
         setProjectData(resp3.data.data);
       }
-      // console.log(resp.data.data);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
   }
-  // console.log(projectData)
   useEffect(() => {
     getTask();
   }, []);
@@ -93,7 +87,8 @@ function AddTask() {
       description,
       spendTime: duration,
       status,
-      DM_To: user,
+      DM_To: userId,
+      toMail: email,
     };
 
     try {
@@ -105,7 +100,7 @@ function AddTask() {
         },
       });
 
-      if (resp3.data.status == true) {
+      if (resp3.status === 201) {
         // setTask(resp3.data.data);
         Swal.fire({
           icon: "success",
@@ -113,13 +108,13 @@ function AddTask() {
           showConfirmButton: false,
           timer: 1500,
         });
+
         const reload = window.location.reload();
         setTimeout(reload, 2000);
       }
       console.log(resp3);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     }
   }
 
@@ -128,21 +123,17 @@ function AddTask() {
     { value: "Comp", label: "Comp.." },
   ];
 
-  // console.log(status);
-  // console.log(projectCode);
-
   if (isLoading) {
     return null;
   }
   return err ? (
     <div>
       <h1>{err.error.message} </h1>
-      <Link to="/addTask">Go Back</Link>
+      {/* <Link to="/addTask">Go Back</Link> */}
+      Please Refresh the Page!
     </div>
   ) : (
     <>
-      {/* <div className="col-2"></div> */}
-      {/* <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}> */}
       <div className={customStyle.containTable}>
         <div className={customStyle.dateContainer}>
           <div className={customStyle}>Date: {moment().format("LLL")} </div>
@@ -163,14 +154,10 @@ function AddTask() {
               <th>Status</th>
               <th>Duration(hr)</th>
               <th>DM Also</th>
-              {/* <th colSpan={2} className="text-center">
-                Actions
-              </th> */}
             </tr>
           </thead>
           <tbody>
             {projectData.length > 0 ? (
-              // employeeTask.map((task, index) => (
               <tr>
                 <td>
                   <div className="form-check">
@@ -178,7 +165,6 @@ function AddTask() {
                       className="form-check-input"
                       type="checkbox"
                       value=""
-                      // checked
                     />
                     <label
                       className="form-check-label"
@@ -186,7 +172,6 @@ function AddTask() {
                     ></label>
                   </div>{" "}
                 </td>
-                {/* <td>{task.employeeId}</td> */}
                 <td>
                   <select
                     className={customStyle.projectCode}
@@ -203,7 +188,6 @@ function AddTask() {
                 </td>
                 <td>
                   <textarea
-                    // id="description"
                     type="text"
                     name="description"
                     className={customStyle.description}
@@ -243,11 +227,11 @@ function AddTask() {
                   <select
                     className={customStyle.dmTo}
                     defaultValue="n/a"
-                    onChange={(e) => setUserName(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                   >
                     <option value="n/a"> n/a </option>
                     {employeeData.map((option, index) => (
-                      <option key={index} value={option.userName}>
+                      <option key={index} value={option.email}>
                         {option.userName}
                       </option>
                     ))}
@@ -269,15 +253,11 @@ function AddTask() {
           </tbody>
         </table>
       </div>
-      {/* </div> */}
-      {/* <div className="col-2"></div> */}
 
       <div>
         <hr></hr>
       </div>
       <div className="Row">
-        {/* <div className="col-2"></div> */}
-        {/* <div className="col-10" style={{ width: "80%", marginLeft: "10%" }}> */}
         <div className={customStyle.containTable}>
           <table className="striped-table">
             <tbody>
@@ -286,7 +266,6 @@ function AddTask() {
                   <tr key={index}>
                     <td className={customStyle.sl}>
                       {
-                        // <a placeholder="fgdgyfvghguhg" href="/task">{task.taskId}</a>
                         <Link
                           to="/task"
                           onClick={() =>
@@ -308,7 +287,6 @@ function AddTask() {
                     <td className={customStyle.status}>{task.status} </td>
                     <td className={customStyle.duration}>{task.spendTime} </td>
                     <td className={customStyle.dmTo}>{task.DM_To}</td>
-                    {/* <td></td> */}
                   </tr>
                 ))
               ) : (
@@ -319,8 +297,6 @@ function AddTask() {
             </tbody>
           </table>
         </div>
-        {/* </div> */}
-        {/* <div className="col-2"></div> */}
       </div>
     </>
   );
