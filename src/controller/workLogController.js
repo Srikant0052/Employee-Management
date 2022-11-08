@@ -63,7 +63,18 @@ const addTask = async (req, res, next) => {
     let taskId = generateId();
     const slNo = (await workLog.find().count()) + 1;
 
-    const startingTime = now.format("lll");
+    let options = {
+        timeZone: "Asia/Calcutta",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      },
+      formatter = new Intl.DateTimeFormat([], options);
+
+    const startingTime = formatter.format(new Date());
 
     // if (req.employee != isEmployee.userId) {
     //   throw createError(401, "Unauthorized Access");
@@ -81,28 +92,29 @@ const addTask = async (req, res, next) => {
       DM_To,
     });
 
-    var transport = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
-      auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
-    var mailOptions = {
-      from: "alert@worklog.tech",
-      to: toMail,
-      subject: `${isEmployee.firstName}/Task Ref Mail`,
-      text: `Msg : ${description}`,
-    };
-    // console.log(mailOptions);
+    if (toMail != "n/a") {
+      var transport = nodemailer.createTransport({
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
+        auth: {
+          user: process.env.MAIL_USERNAME,
+          pass: process.env.MAIL_PASSWORD,
+        },
+      });
+      var mailOptions = {
+        from: "alert@worklog.tech",
+        to: toMail,
+        subject: `${isEmployee.firstName}/Task Ref Mail`,
+        text: `Msg : ${description}`,
+      };
 
-    transport.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return console.log(error);
-      }
-      console.log("Email sent: " + info.response);
-    });
+      transport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log("Email sent: " + info.response);
+      });
+    }
 
     return res.status(201).send({
       status: true,
