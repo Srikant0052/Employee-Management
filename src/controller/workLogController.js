@@ -93,7 +93,7 @@ const addTask = async (req, res, next) => {
     });
     var mailOptions = {
       from: "alert@worklog.tech",
-      to: "srikant0052@gmail.com",
+      to: toMail,
       subject: `${isEmployee.firstName}/Task Ref Mail`,
       text: `Msg : ${description}`,
     };
