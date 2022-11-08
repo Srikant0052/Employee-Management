@@ -57,9 +57,7 @@ const addTask = async (req, res, next) => {
     }
 
     if (["Pend", "Comp"].indexOf(status) === -1) {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please choose vaild status" });
+      throw createError(400, "Please choose vaild status");
     }
 
     let taskId = generateId();
