@@ -70,7 +70,6 @@ const addTask = async (req, res, next) => {
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
-        second: "numeric",
       },
       formatter = new Intl.DateTimeFormat([], options);
 
