@@ -371,6 +371,81 @@ const taskData = async (req, res, next) => {
   }
 };
 
+const filterTask = async (req, res, next) => {
+  try {
+    const requestQuery = req.query;
+    let filterQUery = { isDeleted: false, deletedAt: null };
+
+    const isValidRequestQuery = (requestQuery) => {
+      if (Object.keys(requestQuery).length != 0) return true;
+      return false;
+    };
+
+    const {
+      startingTime,
+      toDate,
+      projectCode,
+      employeeId,
+      spendTime,
+      status,
+      DM_To,
+      description,
+    } = requestQuery;
+
+    if (isValidRequestQuery(requestQuery)) {
+      if (isValid(startingTime) && isValid(toDate)) {
+        filterQUery["createdAt"] = {
+          $gte: new Date(startingTime).toISOString(),
+          $lte: new Date(toDate).toISOString(),
+        };
+      }
+
+      // if (isValid(toDate)) {
+      //   filterQUery["createdAt"] = toDate;
+      // }
+
+      if (isValid(projectCode)) {
+        filterQUery["projectCode"] = projectCode;
+      }
+
+      if (isValid(employeeId)) {
+        filterQUery["employeeId"] = employeeId;
+      }
+
+      if (isValid(spendTime)) {
+        filterQUery["spendTime"] = spendTime;
+      }
+
+      if (isValid(status)) {
+        if (["Pend", "Comp"].indexOf(status) === -1) {
+          throw createError(400, "Please choose vaild status");
+        }
+        filterQUery["status"] = status;
+      }
+
+      if (isValid(DM_To)) {
+        filterQUery["DM_To"] = DM_To;
+      }
+
+      if (isValid(description)) {
+        filterQUery["description"] = { $regex: description ,$options:'i'};
+      }
+    }
+
+    const task = await workLog.find(filterQUery).sort({ slNo: -1 });
+
+    if (task.length === 0) {
+      throw createError(404, "Data Not Found");
+    }
+
+    return res
+      .status(200)
+      .send({ status: true, message: "Success", data: task });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   addTask,
   updateTask,
@@ -380,4 +455,5 @@ module.exports = {
   getTaskByTaskId,
   deleteTaskByTaskId,
   taskData,
+  filterTask,
 };
