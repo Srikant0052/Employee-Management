@@ -36,13 +36,9 @@ const Login = () => {
       setAccessToken(response?.data?.token);
       cookies.set("accessToken", response.data.token, { path: "/" });
       cookies.set("userRole", response.data.data.role, { path: "/" });
-
       localStorage.setItem("userName", response.data.data.firstName);
-      localStorage.setItem("userId", response.data.data.userName);
       localStorage.setItem("employeeId", response.data.data.employeeId);
       localStorage.setItem("accessToken", response?.data?.token);
-
-      // setAuth({ user, password,  accessToken });
 
       setRole(response.data.data.role);
       setUser("");
@@ -84,11 +80,6 @@ const Login = () => {
               <Navigate replace to="/addTask" />
             )}
             {/* <h1>You are logged in!</h1> */}
-            {/* <br /> */}
-            {/* <Navigate replace to="/" />; */}
-            {/* <p>
-            <Link to="/user">Go to Profile</Link>
-          </p> */}
           </section>
         ) : (
           <section>

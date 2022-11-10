@@ -114,6 +114,7 @@ function UserProfile() {
                         value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}
                         placeholder="Password"
+                        required
                       />
                       <label htmlFor="password">
                         New Password<sup style={{ color: "red" }}>*</sup>
@@ -125,6 +126,7 @@ function UserProfile() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="Password"
+                        required
                       />
                       <span className="form-text small text-muted">
                         The password must be 8-20 characters,1 UpperCase, 1
@@ -140,6 +142,7 @@ function UserProfile() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Password"
+                        required
                       />
                       <button
                         type="button"

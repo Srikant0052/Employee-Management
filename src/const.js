@@ -13,6 +13,7 @@ import AddCustomer from "./pages/addCustomer";
 import ProjectDataPage from "./pages/projectDetails";
 import TaskData from "./pages/taskDataPage";
 import AddTaskPage from "./pages/addTask";
+import TaskReport from "./pages/taskReport";
 // import ReactDataTable from "./components/pages/table/react-data-table";
 
 export const ADMIN_NAV_DATA = [
@@ -80,6 +81,10 @@ export const ADMIN_ROUTES = [
   {
     path: "/user",
     page: <UserProfile />,
+  },
+  {
+    path: "/report",
+    page: <TaskReport />,
   },
 
   {

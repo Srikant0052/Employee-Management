@@ -53,6 +53,7 @@ function WorkLog() {
     <div className={customStyle.form}>
       <div className={customStyle.dateContainer}>
         <div>Date: {moment().format("LLL")} </div>
+        <Link to="/report">Task Report</Link>
         <Link
           to="/user"
           onMouseEnter={() => setDisplayed(true)}

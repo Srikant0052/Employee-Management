@@ -1,0 +1,68 @@
+.filter{
+  background-color: white;
+  border-radius: 5px;
+  width: 100%;
+  margin: 10px auto;
+  padding: 5px;
+  font-size: small;
+}
+
+.stripedTable{
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  width: 95%;
+  margin: 10px auto;
+  padding: 2px;
+  font-size:small;
+}
+
+.date{
+  width: 175px !important;
+  margin:  auto;
+}
+
+.input1{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  margin:  10px auto;
+  width: 90%;
+  font-size: small;
+}
+
+.input2{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  margin: 5px auto;
+  width: 95%;
+  font-size: small;
+}
+
+.description{
+  width: 280px !important;
+}
+
+.custName{
+  width: 200px !important;
+}
+
+.duration{
+  width: 100px !important;
+}
+
+.status{
+  width: 120px !important;
+}
+
+.employeeId{
+  width: 165px !important;
+}
+
+.projectCode{
+  width: 130px !important;
+}
+
+.dmAlso{
+  width: 150px !important;
+}

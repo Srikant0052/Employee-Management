@@ -12,9 +12,7 @@ function TaskData() {
   let [err, setErr] = useState(null);
   const [displayed, setDisplayed] = useState(false);
   let userName = localStorage.getItem("userName");
-  let userId = localStorage.getItem("userId");
   let taskId = localStorage.getItem("taskId");
-  //   console.log(status);
   //   console.log(taskId);
 
   //get all tasks
@@ -28,10 +26,8 @@ function TaskData() {
       if (resp.data.data) {
         setTaskData(resp.data.data);
       }
-      //   console.log(resp.data.data);
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +41,6 @@ function TaskData() {
         url: `https://bworklogtech.herokuapp.com/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
-      // console.log(resp2.data.data);
 
       if (resp2.data.status == true) {
         Swal.fire({
@@ -59,7 +54,6 @@ function TaskData() {
       }
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     }
   }
 
@@ -71,7 +65,6 @@ function TaskData() {
       confirmButtonText: "Save",
       denyButtonText: `Don't save`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         updateTaskStatus();
         Swal.fire("Saved!", "", "success");
@@ -88,10 +81,8 @@ function TaskData() {
         method: "delete",
         url: `https://bworklogtech.herokuapp.com/task/${taskData.taskId}`,
       });
-      // console.log(resp3)
     } catch (error) {
       setErr(error.response.data);
-      // console.log(error.response.data.message);
     }
   }
 
@@ -140,7 +131,8 @@ function TaskData() {
             onMouseEnter={() => setDisplayed(true)}
             onMouseLeave={() => setDisplayed(false)}
           >
-            {userName}({userId}){displayed && <div>Go to Profile</div>}
+            {userName}
+            {displayed && <div>Go to Profile</div>}
           </Link>
         </div>
         <u>
@@ -149,7 +141,6 @@ function TaskData() {
         <table className="striped-table">
           <thead>
             <tr>
-              {/* <th>Att</th> */}
               <th>Task ID</th>
               <th>Project Code</th>
               <th>Description</th>
@@ -165,7 +156,7 @@ function TaskData() {
                 <td>{taskData.projectCode}</td>
                 <td>{taskData.description}</td>
                 <td>
-                  <select onChange={(e) => setStatus(e.target.value)}>
+                  <select onChange={(e) => setStatus(e.target.value)} required>
                     {options1.map((option, index) => (
                       <option key={index} value={option.value}>
                         {option.label}

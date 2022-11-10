@@ -11,7 +11,6 @@ function ProjectData() {
   let [err, setErr] = useState(null);
   let projectCode = localStorage.getItem("projectCode");
   let userName = localStorage.getItem("userName");
-  let userId = localStorage.getItem("userId");
 
   console.log(status);
 
@@ -78,9 +77,7 @@ function ProjectData() {
       <div className="contain-table">
         <div className={customStyle.dateContainer}>
           <div>Date: {moment().format("LLL")} </div>
-          <div>
-            {userName}({userId})
-          </div>
+          <div>{userName}</div>
         </div>
         <hr></hr>
         <table className="striped-table">

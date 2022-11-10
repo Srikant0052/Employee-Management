@@ -4,9 +4,8 @@ import axios from "axios";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-task.module.css";
-import Cookies from "universal-cookie";
 
-function AddTask() {
+function AddTask(props) {
   const [employeeTask, setTask] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
   const [projectData, setProjectData] = useState([]);
@@ -14,23 +13,24 @@ function AddTask() {
   const [duration, setDuration] = useState("0");
   const [projectCode, setProjectCode] = useState("");
   const [status, setStatus] = useState("Pend");
-  const [email, setEmail] = useState("n/a");
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
   let [err, setErr] = useState(null);
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
-  let userId = localStorage.getItem("userId");
-  const cookies = new Cookies();
   const navigate = useNavigate();
-  // console.log(email);
+
+  let emp = employeeData.filter((employee) => employee.email === email);
+  //  console.log(emp[0])
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
   }, []);
+
   //get all tasks
   async function getTask() {
     try {
@@ -87,7 +87,7 @@ function AddTask() {
       description,
       spendTime: duration,
       status,
-      DM_To: userId,
+      DM_To: emp[0]["userName"],
       toMail: email,
     };
 
@@ -142,7 +142,7 @@ function AddTask() {
             onMouseEnter={() => setDisplayed(true)}
             onMouseLeave={() => setDisplayed(false)}
           >
-            {userName}({userId}){displayed && <div>Go to Profile</div>}
+            {userName}{displayed && <div>Go to Profile</div>}
           </Link>
         </div>
         <table className="striped-table">

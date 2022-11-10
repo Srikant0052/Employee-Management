@@ -149,6 +149,7 @@ function AddEmployee({}) {
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
               placeholder="Employee ID"
+              required
             />
             <label htmlFor="firstName">
               First Name<sup style={{ color: "red" }}>*</sup>
@@ -161,6 +162,7 @@ function AddEmployee({}) {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="First Name"
+              required
             />
             <label htmlFor="lastName">Last Name</label>
             <input
@@ -191,6 +193,7 @@ function AddEmployee({}) {
               value={designation}
               onChange={(e) => setDesignation(e.target.value)}
               placeholder="Description"
+              required
             />
             <label htmlFor="email">
               Email<sup style={{ color: "red" }}>*</sup>
@@ -202,6 +205,7 @@ function AddEmployee({}) {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
+              required
             />
 
             <label htmlFor="phone">
@@ -214,6 +218,7 @@ function AddEmployee({}) {
               value={mobile}
               onChange={(e) => setMobile(e.target.value)}
               placeholder="Mobile No."
+              required
             />
 
             <label htmlFor="role">
@@ -270,6 +275,7 @@ function AddEmployee({}) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
+              required
             />
             <span className="form-text small text-muted">
               The password must be 8-20 characters,1 UpperCase, 1 LowerCase and
