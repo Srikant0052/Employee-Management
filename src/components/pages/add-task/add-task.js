@@ -142,7 +142,8 @@ function AddTask(props) {
             onMouseEnter={() => setDisplayed(true)}
             onMouseLeave={() => setDisplayed(false)}
           >
-            {userName}{displayed && <div>Go to Profile</div>}
+            {userName}
+            {displayed && <div>Go to Profile</div>}
           </Link>
         </div>
         <table className="striped-table">
