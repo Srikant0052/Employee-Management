@@ -38,7 +38,7 @@ function AddTask() {
     try {
       let resp = await axios({
         method: "get",
-        url: `http://localhost:4000/getTaskById/${employeeId}?limit=${limit}`,
+        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}?limit=${limit}`,
       });
 
       if (resp.data.data) {
@@ -80,7 +80,7 @@ function AddTask() {
     try {
       const res = await axios({
         method: "get",
-        url: `http://localhost:4000/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
+        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
       });
       const data = res.data.data;
       // console.log(data);
@@ -126,7 +126,7 @@ function AddTask() {
     try {
       let resp3 = await axios({
         method: "post",
-        url: `http://localhost:4000/addTask`,
+        url: `https://bworklogtech.herokuapp.com/addTask`,
         data: {
           ...newTask,
         },
