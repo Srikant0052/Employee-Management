@@ -201,10 +201,19 @@ const updateTask = async (req, res, next) => {
 
 const getTaskList = async (req, res, next) => {
   try {
+    const pageSize = req.query.pageSize;
+    const limit = req.query.limit;
+
+    //all task
+    const allTask = await workLog.find({ isDeleted: false }).count();
+    // console.log(allTask);
+
     const taskList = await workLog
       .find({ isDeleted: false })
-      .sort({ slNo: -1 });
-    // console.log(taskList);
+      .sort({ slNo: -1 })
+      .limit(limit)
+      .skip(limit * pageSize);
+
     if (!taskList) {
       throw createError(404, "Data Not Found");
     }
@@ -213,6 +222,7 @@ const getTaskList = async (req, res, next) => {
       status: true,
       message: "Success",
       data: taskList,
+      totalTask: allTask,
     });
   } catch (error) {
     next(error);
@@ -222,9 +232,18 @@ const getTaskList = async (req, res, next) => {
 const getTaskByEmployeeId = async (req, res, next) => {
   try {
     const employeeId = req.params.employeeId;
+    const pageSize = req.query.pageSize;
+    const limit = req.query.limit;
+
+    const taskCount = await workLog
+      .find({ employeeId: employeeId, isDeleted: false })
+      .count();
+
     const task = await workLog
       .find({ employeeId: employeeId, isDeleted: false })
-      .sort({ slNo: -1 });
+      .sort({ slNo: -1 })
+      .limit(limit)
+      .skip(limit * pageSize);
 
     if (!task) {
       throw createError(404, "Data Not Found");
@@ -234,6 +253,7 @@ const getTaskByEmployeeId = async (req, res, next) => {
       status: true,
       message: "Success",
       data: task,
+      count: taskCount,
     });
   } catch (error) {
     next(error);
@@ -428,7 +448,7 @@ const filterTask = async (req, res, next) => {
       }
 
       if (isValid(description)) {
-        filterQUery["description"] = { $regex: description ,$options:'i'};
+        filterQUery["description"] = { $regex: description, $options: "i" };
       }
     }
 
