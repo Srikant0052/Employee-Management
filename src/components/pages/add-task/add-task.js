@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import moment from "moment";
+import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-task.module.css";
 
-function AddTask(props) {
+function AddTask() {
   const [employeeTask, setTask] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
   const [projectData, setProjectData] = useState([]);
@@ -16,14 +17,15 @@ function AddTask(props) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
+  const [pageCount, setpageCount] = useState(0);
   let [err, setErr] = useState(null);
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
   const navigate = useNavigate();
+  let limit = 10;
 
   let emp = employeeData.filter((employee) => employee.email === email);
-  //  console.log(emp[0])
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -36,12 +38,15 @@ function AddTask(props) {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}`,
+        url: `http://localhost:4000/getTaskById/${employeeId}?limit=${limit}`,
       });
 
       if (resp.data.data) {
         setTask(resp.data.data);
       }
+      const total = resp.data.count;
+      setpageCount(Math.ceil(total / limit));
+      // console.log(total)
 
       let resp2 = await axios({
         method: "get",
@@ -66,9 +71,36 @@ function AddTask(props) {
       setIsLoading(false);
     }
   }
+
   useEffect(() => {
     getTask();
   }, []);
+
+  const fetchTask = async (currentPage) => {
+    try {
+      const res = await axios({
+        method: "get",
+        url: `http://localhost:4000/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
+      });
+      const data = res.data.data;
+      // console.log(data);
+
+      return data;
+    } catch (error) {
+      setErr(error.response.data);
+    }
+  };
+
+  const handlePageClick = async (data) => {
+    try {
+      let currentPage = data.selected;
+      const task = await fetchTask(currentPage);
+
+      setTask(task);
+    } catch (error) {
+      setErr(error.response.data);
+    }
+  };
 
   //Add a Task
   async function addTask() {
@@ -87,14 +119,14 @@ function AddTask(props) {
       description,
       spendTime: duration,
       status,
-      DM_To: emp[0]["userName"],
+      DM_To: emp && emp.length == 1 ? emp[0]["userName"] : "n/a",
       toMail: email,
     };
 
     try {
       let resp3 = await axios({
         method: "post",
-        url: `https://bworklogtech.herokuapp.com/addTask`,
+        url: `http://localhost:4000/addTask`,
         data: {
           ...newTask,
         },
@@ -297,6 +329,27 @@ function AddTask(props) {
               )}
             </tbody>
           </table>
+        </div>
+        <div>
+          <ReactPaginate
+            previousLabel={"previous"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination justify-content-center"}
+            pageClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousClassName={"page-item"}
+            previousLinkClassName={"page-link"}
+            nextClassName={"page-item"}
+            nextLinkClassName={"page-link"}
+            breakClassName={"page-item"}
+            breakLinkClassName={"page-link"}
+            activeClassName={"active"}
+          />
         </div>
       </div>
     </>

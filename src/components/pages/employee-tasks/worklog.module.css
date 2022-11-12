@@ -9,7 +9,7 @@
 .dateContainer{
     display: flex;
     justify-content: space-between;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     border-bottom: 1px solid;
     color: rgb(31, 13, 193);
     text-decoration: solid underline ;

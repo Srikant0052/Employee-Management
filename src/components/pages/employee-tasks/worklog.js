@@ -3,33 +3,38 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import customStyle from "./worklog.module.css";
 import moment from "moment";
+import ReactPaginate from "react-paginate";
 
 function WorkLog() {
-  const [employeeTask, setTask] = useState("");
+  const [employeeTask, setTask] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
   let [err, setErr] = useState(null);
+  const [pageCount, setpageCount] = useState(0);
 
   const navigate = useNavigate();
+  let userName = localStorage.getItem("userName");
+  let limit = 13;
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
     }
   }, []);
-  let userName = localStorage.getItem("userName");
 
   //get all tasks
   async function getTask() {
     try {
       let resp = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/getTask",
+        url: `http://localhost:4000/getTask?limit=${limit}`,
       });
 
       if (resp.data.data) {
         setTask(resp.data.data);
       }
+      const total = resp.data.totalTask;
+      setpageCount(Math.ceil(total / limit));
     } catch (error) {
       setErr(error.response.data);
     } finally {
@@ -39,7 +44,33 @@ function WorkLog() {
 
   useEffect(() => {
     getTask();
-  }, []);
+  }, [limit]);
+
+  const fetchTask = async (currentPage) => {
+    try {
+      const res = await axios({
+        method: "get",
+        url: `http://localhost:4000/getTask?pageSize=${currentPage}&limit=${limit}`,
+      });
+      const data = res.data.data;
+      // console.log(data);
+
+      return data;
+    } catch (error) {
+      setErr(error.response.data);
+    }
+  };
+
+  const handlePageClick = async (data) => {
+    try {
+      let currentPage = data.selected;
+      const task = await fetchTask(currentPage);
+
+      setTask(task);
+    } catch (error) {
+      setErr(error.response.data);
+    }
+  };
 
   if (isLoading) {
     return null;
@@ -77,9 +108,6 @@ function WorkLog() {
             <th>Start Time</th>
             <th>Status</th>
             <th>Duration(hr)</th>
-            {/* <th colSpan={2} className="text-center">
-              Actions
-            </th> */}
           </tr>
         </thead>
         <tbody>
@@ -103,6 +131,27 @@ function WorkLog() {
           )}
         </tbody>
       </table>
+      <div>
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={"..."}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+      </div>
     </div>
   );
 }
