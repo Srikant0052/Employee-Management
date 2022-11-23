@@ -23,6 +23,7 @@ const addTask = async (req, res, next) => {
       spendTime,
       status,
       DM_To,
+      date,
       toMail,
     } = requestBody;
 
@@ -73,7 +74,7 @@ const addTask = async (req, res, next) => {
       },
       formatter = new Intl.DateTimeFormat([], options);
 
-    const startingTime = formatter.format(new Date());
+    const startingTime = formatter.format(new Date(date));
 
     // if (req.employee != isEmployee.userId) {
     //   throw createError(401, "Unauthorized Access");
