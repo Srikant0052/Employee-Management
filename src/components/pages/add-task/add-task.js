@@ -127,7 +127,7 @@ function AddTask() {
     try {
       let resp3 = await axios({
         method: "post",
-        url: `http://localhost:4000/addTask`,
+        url: `https://bworklogtech.herokuapp.com/addTask`,
         data: {
           ...newTask,
         },
