@@ -8,6 +8,14 @@
     /* font-size: larger; */
 }
 
+.date{
+    width: 10%;
+    height: 50px;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    /* border-bottom-style: groove; */
+}
 .containTable{
      background-color: rgb(255, 255, 255);
     border-radius: 5px;
@@ -18,7 +26,6 @@
 }
 
 .description{
-
   width: 303px !important;
 }
 

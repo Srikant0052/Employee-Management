@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
-import moment from "moment";
 import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-task.module.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AddTask() {
   const [employeeTask, setTask] = useState([]);
@@ -19,6 +20,7 @@ function AddTask() {
   const [displayed, setDisplayed] = useState(false);
   const [pageCount, setpageCount] = useState(0);
   let [err, setErr] = useState(null);
+  const [date, setDate] = useState(new Date());
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
@@ -46,7 +48,6 @@ function AddTask() {
       }
       const total = resp.data.count;
       setpageCount(Math.ceil(total / limit));
-      // console.log(total)
 
       let resp2 = await axios({
         method: "get",
@@ -83,7 +84,6 @@ function AddTask() {
         url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
       });
       const data = res.data.data;
-      // console.log(data);
 
       return data;
     } catch (error) {
@@ -119,6 +119,7 @@ function AddTask() {
       description,
       spendTime: duration,
       status,
+      date,
       DM_To: emp && emp.length == 1 ? emp[0]["userName"] : "n/a",
       toMail: email,
     };
@@ -126,14 +127,13 @@ function AddTask() {
     try {
       let resp3 = await axios({
         method: "post",
-        url: `https://bworklogtech.herokuapp.com/addTask`,
+        url: `http://localhost:4000/addTask`,
         data: {
           ...newTask,
         },
       });
 
       if (resp3.status === 201) {
-        // setTask(resp3.data.data);
         Swal.fire({
           icon: "success",
           title: "Added Successfully!",
@@ -168,7 +168,10 @@ function AddTask() {
     <>
       <div className={customStyle.containTable}>
         <div className={customStyle.dateContainer}>
-          <div className={customStyle}>Date: {moment().format("LLL")} </div>
+          <div className={customStyle.date}>
+            Date:
+            {<DatePicker selected={date} onChange={(date) => setDate(date)} />}
+          </div>
           <Link
             to="/user"
             onMouseEnter={() => setDisplayed(true)}
