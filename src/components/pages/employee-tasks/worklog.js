@@ -27,7 +27,7 @@ function WorkLog() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTask?limit=${limit}`,
+        url: `https://backend.worklog.tech/getTask?limit=${limit}`,
       });
 
       if (resp.data.data) {
@@ -50,7 +50,7 @@ function WorkLog() {
     try {
       const res = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTask?pageSize=${currentPage}&limit=${limit}`,
+        url: `https://backend.worklog.tech/getTask?pageSize=${currentPage}&limit=${limit}`,
       });
       const data = res.data.data;
       // console.log(data);

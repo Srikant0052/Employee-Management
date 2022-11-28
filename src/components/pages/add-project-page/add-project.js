@@ -28,7 +28,7 @@ function AddProject() {
     try {
       let resp1 = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/getCustomer",
+        url: "https://backend.worklog.tech/getCustomer",
       });
       if (resp1.data.data) {
         setCustomerData(resp1.data.data);
@@ -65,7 +65,7 @@ function AddProject() {
       try {
         let resp = await axios({
           method: "post",
-          url: "https://bworklogtech.herokuapp.com/addProject",
+          url: "https://backend.worklog.tech/addProject",
           data: {
             ...newProject,
           },

@@ -23,7 +23,7 @@ function UpdateTask({ setIsAdding }) {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getAllProject`,
+        url: `https://backend.worklog.tech/getAllProject`,
       });
 
       if (resp.data.data) {
@@ -32,7 +32,7 @@ function UpdateTask({ setIsAdding }) {
 
       // let resp2 = await axios({
       //   method: "get",
-      //   url: "https://bworklogtech.herokuapp.com/employeeList",
+      //   url: "https://backend.worklog.tech/employeeList",
       // });
 
       // if (resp2.data.data) {
@@ -74,7 +74,7 @@ function UpdateTask({ setIsAdding }) {
       try {
         let resp = await axios({
           method: "post",
-          url: "https://bworklogtech.herokuapp.com/UpdateTask",
+          url: "https://backend.worklog.tech/UpdateTask",
           data: {
             ...newTask,
           },

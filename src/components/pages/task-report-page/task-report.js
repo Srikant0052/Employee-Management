@@ -19,15 +19,6 @@ export default function TaskReport() {
   const [isLoading, setIsLoading] = useState(true);
   let [err, setErr] = useState(null);
 
-  // console.log(fromDate);
-  // console.log(toDate);
-  // console.log(projectCode);
-  // console.log(employeeId);
-  // console.log(description);
-  // console.log(duration);
-  // console.log(status);
-  // console.log(Array.isArray(filteredTask));
-
   let data = [filteredTask];
   const fileName = "task-data";
 
@@ -41,7 +32,7 @@ export default function TaskReport() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getFilteredTask?startingTime=${fromDate}&toDate=${toDate}&projectCode=${projectCode}&employeeId=${employeeId}&description=${description}&status=${status}&DM_To=${dmTo}&spendTime=${duration}`,
+        url: `https://backend.worklog.tech/getFilteredTask?startingTime=${fromDate}&toDate=${toDate}&projectCode=${projectCode}&employeeId=${employeeId}&description=${description}&status=${status}&DM_To=${dmTo}&spendTime=${duration}`,
       });
 
       if (resp.data.data) {
@@ -56,7 +47,7 @@ export default function TaskReport() {
     try {
       let resp2 = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/employeeList",
+        url: "https://backend.worklog.tech/employeeList",
       });
 
       if (resp2.data.data) {
@@ -65,7 +56,7 @@ export default function TaskReport() {
 
       let resp3 = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/getAllProject",
+        url: "https://backend.worklog.tech/getAllProject",
       });
 
       if (resp3.data.data) {

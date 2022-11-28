@@ -20,7 +20,7 @@ function UserProfile() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getEmployee/${employeeId}`,
+        url: `https://backend.worklog.tech/getEmployee/${employeeId}`,
       });
 
       // console.log(resp);
@@ -44,7 +44,7 @@ function UserProfile() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `https://bworklogtech.herokuapp.com/update`,
+        url: `https://backend.worklog.tech/update`,
         data: {
           email: user.email,
           oldPassword,

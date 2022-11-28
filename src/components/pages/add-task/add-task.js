@@ -40,7 +40,7 @@ function AddTask() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}?limit=${limit}`,
+        url: `https://backend.worklog.tech/getTaskById/${employeeId}?limit=${limit}`,
       });
 
       if (resp.data.data) {
@@ -51,7 +51,7 @@ function AddTask() {
 
       let resp2 = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/employeeList",
+        url: "https://backend.worklog.tech/employeeList",
       });
 
       if (resp2.data.data) {
@@ -60,7 +60,7 @@ function AddTask() {
 
       let resp3 = await axios({
         method: "get",
-        url: "https://bworklogtech.herokuapp.com/getAllProject",
+        url: "https://backend.worklog.tech/getAllProject",
       });
 
       if (resp3.data.data) {
@@ -81,7 +81,7 @@ function AddTask() {
     try {
       const res = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
+        url: `https://backend.worklog.tech/getTaskById/${employeeId}?pageSize=${currentPage}&limit=${limit}`,
       });
       const data = res.data.data;
 
@@ -127,7 +127,7 @@ function AddTask() {
     try {
       let resp3 = await axios({
         method: "post",
-        url: `https://bworklogtech.herokuapp.com/addTask`,
+        url: `https://backend.worklog.tech/addTask`,
         data: {
           ...newTask,
         },

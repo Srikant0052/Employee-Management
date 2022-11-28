@@ -36,7 +36,7 @@ function AddCustomer() {
       try {
         let resp = await axios({
           method: "post",
-          url: "https://bworklogtech.herokuapp.com/addCustomer",
+          url: "https://backend.worklog.tech/addCustomer",
           data: {
             name,
             address,

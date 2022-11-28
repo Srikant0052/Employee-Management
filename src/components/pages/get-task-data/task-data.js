@@ -20,7 +20,7 @@ function TaskData() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://bworklogtech.herokuapp.com/getTask/${taskId}`,
+        url: `https://backend.worklog.tech/getTask/${taskId}`,
       });
 
       if (resp.data.data) {
@@ -38,7 +38,7 @@ function TaskData() {
     try {
       let resp2 = await axios({
         method: "put",
-        url: `https://bworklogtech.herokuapp.com/updateTask/${taskData.taskId}/${taskData.employeeId}`,
+        url: `https://backend.worklog.tech/updateTask/${taskData.taskId}/${taskData.employeeId}`,
         data: { status },
       });
 
@@ -79,7 +79,7 @@ function TaskData() {
     try {
       let resp3 = await axios({
         method: "delete",
-        url: `https://bworklogtech.herokuapp.com/task/${taskData.taskId}`,
+        url: `https://backend.worklog.tech/task/${taskData.taskId}`,
       });
     } catch (error) {
       setErr(error.response.data);

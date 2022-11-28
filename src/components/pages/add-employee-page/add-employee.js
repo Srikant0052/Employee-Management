@@ -86,7 +86,7 @@ function AddEmployee({}) {
       try {
         let resp = await axios({
           method: "post",
-          url: "https://bworklogtech.herokuapp.com/employee",
+          url: "https://backend.worklog.tech/employee",
           data: {
             ...newEmployee,
           },

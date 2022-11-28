@@ -27,7 +27,7 @@ const Login = () => {
     try {
       const response = await axios({
         method: "post",
-        url: "https://bworklogtech.herokuapp.com/login",
+        url: "https://backend.worklog.tech/login",
         data: {
           email: user,
           password,
