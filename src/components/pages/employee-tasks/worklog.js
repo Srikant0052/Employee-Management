@@ -7,6 +7,7 @@ import ReactPaginate from "react-paginate";
 
 function WorkLog() {
   const [employeeTask, setTask] = useState([]);
+  // const [employeeId, setEmployeeId] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
   let [err, setErr] = useState(null);
@@ -14,7 +15,7 @@ function WorkLog() {
 
   const navigate = useNavigate();
   let userName = localStorage.getItem("userName");
-  let limit = 13;
+  let limit = parseInt(13);
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -27,12 +28,13 @@ function WorkLog() {
     try {
       let resp = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getTask?limit=${limit}`,
+        url: `https://backend.worklog.tech/task?limit=${limit}`,
       });
 
       if (resp.data.data) {
         setTask(resp.data.data);
       }
+
       const total = resp.data.totalTask;
       setpageCount(Math.ceil(total / limit));
     } catch (error) {
@@ -50,10 +52,9 @@ function WorkLog() {
     try {
       const res = await axios({
         method: "get",
-        url: `https://backend.worklog.tech/getTask?pageSize=${currentPage}&limit=${limit}`,
+        url: `https://backend.worklog.tech/task?pageSize=${currentPage}&limit=${limit}`,
       });
       const data = res.data.data;
-      // console.log(data);
 
       return data;
     } catch (error) {
@@ -64,6 +65,7 @@ function WorkLog() {
   const handlePageClick = async (data) => {
     try {
       let currentPage = data.selected;
+
       const task = await fetchTask(currentPage);
 
       setTask(task);
@@ -101,9 +103,9 @@ function WorkLog() {
         <thead>
           <tr>
             <th>Sl. No.</th>
-            <th>Employee ID</th>
+            <th>Employee Name</th>
             <th>Project Code</th>
-            <th>Task ID</th>
+            {/* <th>Task ID</th> */}
             <th>Description</th>
             <th>Start Time</th>
             <th>Status</th>
@@ -114,10 +116,10 @@ function WorkLog() {
           {employeeTask.length > 0 ? (
             employeeTask.map((task, index) => (
               <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{task.employeeId}</td>
-                <td>{task.projectCode}</td>
-                <td>{task.taskId}</td>
+                <td>{task.slNo}</td>
+                <td>{task.employeeName}</td>
+                <td>{task.ProjectCode}</td>
+                {/* <td>{task.taskId}</td> */}
                 <td>{task.description}</td>
                 <td>{task.startingTime}</td>
                 <td>{task.status} </td>

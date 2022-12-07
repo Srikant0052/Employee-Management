@@ -195,7 +195,7 @@ export default function TaskReport() {
                   </option>
                 ))}
               </select>
-              <label htmlFor="employeeId">Employee ID:</label>
+              <label htmlFor="employeeId">User ID:</label>
               <select
                 className={customStyle.employeeId}
                 defaultValue="n/a"
@@ -204,7 +204,7 @@ export default function TaskReport() {
                 <option value="n/a"> n/a </option>
                 {employeeData.map((option, index) => (
                   <option key={index} value={option.employeeId}>
-                    {option.employeeId}
+                    {option.userName}
                   </option>
                 ))}
               </select>
