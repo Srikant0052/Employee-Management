@@ -64,17 +64,26 @@ const addTask = async (req, res, next) => {
     let taskId = generateId();
     const slNo = (await workLog.find().count()) + 1;
 
-    let options = {
-        timeZone: "Asia/Calcutta",
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      },
-      formatter = new Intl.DateTimeFormat([], options);
+    // let options = {
+    //     timeZone: "Asia/Calcutta",
+    //     year: "numeric",
+    //     month: "numeric",
+    //     day: "numeric",
+    //     hour: "numeric",
+    //     minute: "numeric",
+    //   },
+    //   formatter = new Intl.DateTimeFormat([], options);
 
-    const startingTime = formatter.format(new Date(date));
+    let startingTime = new Date(date);
+    
+    startingTime = startingTime.toLocaleString("en-US", {
+      // weekday: "numeric",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
 
     // if (req.employee != isEmployee.userId) {
     //   throw createError(401, "Unauthorized Access");
@@ -330,12 +339,30 @@ const deleteTaskByTaskId = async (req, res, next) => {
 
 const taskData = async (req, res, next) => {
   try {
+    let pageSize = req.query.pageSize ? req.query.pageSize : 0;
+    const limit = parseInt(req.query.limit);
+
+    //all task
+    const allTask = await workLog.find({ isDeleted: false }).count();
+
     const task = await workLog
       .aggregate([
         {
           $match: {
             isDeleted: false,
           },
+        },
+
+        {
+          $lookup: {
+            from: "projects",
+            localField: "projectCode",
+            foreignField: "projectCode",
+            as: "projectData",
+          },
+        },
+        {
+          $unwind: "$projectData",
         },
         {
           $lookup: {
@@ -347,17 +374,6 @@ const taskData = async (req, res, next) => {
         },
         {
           $unwind: "$employeeData",
-        },
-        {
-          $lookup: {
-            from: "projects",
-            localField: "projectCode",
-            foreignField: "projectCode",
-            as: "projectData",
-          },
-        },
-        {
-          $unwind: "$projectData",
         },
 
         {
@@ -375,17 +391,20 @@ const taskData = async (req, res, next) => {
             createdAt: 1,
             updatedAt: 1,
             ProjectName: "$projectData.name",
+            ProjectCode: "$projectData.projectCode",
             employeeName: "$employeeData.firstName",
           },
         },
       ])
       .sort({ slNo: -1 })
-      .limit(3);
+      .skip(limit * pageSize)
+      .limit(limit);
 
     return res.status(200).send({
       status: true,
       message: "Success",
       data: task,
+      totalTask: allTask,
     });
   } catch (error) {
     next(error);
