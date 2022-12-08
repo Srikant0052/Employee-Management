@@ -4,6 +4,7 @@ import axios from "axios";
 import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-task.module.css";
+import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,6 +27,9 @@ function AddTask() {
   let userName = localStorage.getItem("userName");
   const navigate = useNavigate();
   let limit = 10;
+  let dateTime = moment().format("L, LT");
+  // let dateT = moment().format("L");
+  // console.log(dateT)
 
   let emp = employeeData.filter((employee) => employee.email === email);
 
@@ -119,7 +123,7 @@ function AddTask() {
       description,
       spendTime: duration,
       status,
-      date,
+      date: dateTime ? dateTime : date,
       DM_To: emp && emp.length == 1 ? emp[0]["userName"] : "n/a",
       toMail: email,
     };
