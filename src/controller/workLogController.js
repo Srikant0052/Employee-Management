@@ -74,16 +74,16 @@ const addTask = async (req, res, next) => {
     //   },
     //   formatter = new Intl.DateTimeFormat([], options);
 
-    let startingTime = new Date(date);
+    // let startingTime = new Date(date);
     
-    startingTime = startingTime.toLocaleString("en-US", {
-      // weekday: "numeric",
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-    });
+    // startingTime = startingTime.toLocaleString("en-US", {
+    //   // weekday: "numeric",
+    //   day: "numeric",
+    //   month: "numeric",
+    //   year: "numeric",
+    //   hour: "numeric",
+    //   minute: "numeric",
+    // });
 
     // if (req.employee != isEmployee.userId) {
     //   throw createError(401, "Unauthorized Access");
@@ -95,7 +95,7 @@ const addTask = async (req, res, next) => {
       projectCode,
       taskId,
       description,
-      startingTime,
+      startingTime:date,
       spendTime,
       status,
       DM_To,

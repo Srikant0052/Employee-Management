@@ -4,7 +4,7 @@ const worklogSchema = new Schema(
   {
     slNo: {
       type: Number,
-      unique:true
+      unique: true,
     },
 
     taskId: {
@@ -34,10 +34,11 @@ const worklogSchema = new Schema(
       required: true,
     },
 
-    // endingTime: {
-    //   type: String,
-    //   // required: true,
-    //   default: null,
+    // unixTime: {
+    //   type: Number,
+    //   default: (unixTime = function unixTimestamp() {
+    //     return Math.floor(Date.now() / 1000);
+    //   }),
     // },
 
     status: {
