@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "universal-cookie";
 import axios from "axios";
 import customStyle from "./user-profile.module.css";
 import Swal from "sweetalert2";
@@ -14,6 +15,8 @@ function UserProfile() {
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
+  const cookies = new Cookies();
+  let token = cookies.get('accessToken');
 
   //get all tasks
   async function getEmployeeData() {
@@ -49,6 +52,7 @@ function UserProfile() {
           email: user.email,
           oldPassword,
           newPassword,
+          token
         },
       });
       if (resp2.status === 200) {

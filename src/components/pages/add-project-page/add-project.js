@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import Cookies from "universal-cookie";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-project.module.css";
@@ -15,6 +16,11 @@ function AddProject() {
   let [err, setErr] = useState(null);
   const textInput = useRef(null);
   const navigate = useNavigate();
+
+  const logedInEmployee = localStorage.getItem("employeeId");
+  const cookies = new Cookies();
+  let token = cookies.get("accessToken");
+
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
@@ -59,6 +65,8 @@ function AddProject() {
       companyName,
       description,
       date,
+      logedInEmployee,
+      token,
     };
 
     async function saveDataInDb() {

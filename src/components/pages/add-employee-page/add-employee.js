@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import Cookies from "universal-cookie";
 import axios from "axios";
 import customStyle from "./add-employee.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,9 +20,11 @@ function AddEmployee({}) {
   const [gender, setGender] = useState("");
   let [err, setErr] = useState(null);
 
-  localStorage.setItem("employeeId", employeeId);
+  const logedInEmployee = localStorage.getItem("employeeId");
   const textInput = useRef(null);
   const navigate = useNavigate();
+  const cookies = new Cookies();
+  let token = cookies.get('accessToken');
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
@@ -80,6 +83,8 @@ function AddEmployee({}) {
       userName,
       password,
       role,
+      logedInEmployee,
+      token
     };
 
     async function saveDataInDb() {

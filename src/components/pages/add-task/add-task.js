@@ -5,6 +5,7 @@ import ReactPaginate from "react-paginate";
 import { Link, useNavigate } from "react-router-dom";
 import customStyle from "./add-task.module.css";
 import moment from "moment";
+import Cookies from "universal-cookie";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,12 +17,16 @@ function AddTask() {
   const [duration, setDuration] = useState("0");
   const [projectCode, setProjectCode] = useState("");
   const [status, setStatus] = useState("Pend");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("n/a");
   const [isLoading, setIsLoading] = useState(true);
   const [displayed, setDisplayed] = useState(false);
   const [pageCount, setpageCount] = useState(0);
   let [err, setErr] = useState(null);
   const [date, setDate] = useState(new Date());
+  const cookies = new Cookies();
+
+  let token = cookies.get('accessToken');
+  // console.log(token)
 
   let employeeId = localStorage.getItem("employeeId");
   let userName = localStorage.getItem("userName");
@@ -122,6 +127,7 @@ function AddTask() {
       projectCode,
       description,
       spendTime: duration,
+      token,
       status,
       date: dateTime ? dateTime : date,
       DM_To: emp && emp.length == 1 ? emp[0]["userName"] : "n/a",

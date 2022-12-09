@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Cookies from "universal-cookie";
 import moment from "moment";
 import customStyle from "./task-data.module.css";
 import { Link } from "react-router-dom";
@@ -14,6 +15,9 @@ function TaskData() {
   let userName = localStorage.getItem("userName");
   let taskId = localStorage.getItem("taskId");
   //   console.log(taskId);
+  
+  const cookies = new Cookies();
+  let token = cookies.get("accessToken");
 
   //get all tasks
   async function getTaskDetails() {
@@ -39,7 +43,7 @@ function TaskData() {
       let resp2 = await axios({
         method: "put",
         url: `https://backend.worklog.tech/updateTask/${taskData.taskId}/${taskData.employeeId}`,
-        data: { status },
+        data: { status, token },
       });
 
       if (resp2.data.status == true) {

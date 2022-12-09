@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import Cookies from "universal-cookie";
 import axios from "axios";
 import customStyle from "./add-customer.module.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,6 +12,11 @@ function AddCustomer() {
 
   const navigate = useNavigate();
   const textInput = useRef(null);
+  const cookies = new Cookies();
+
+  let token = cookies.get('accessToken');
+  const employeeId = localStorage.getItem("employeeId");
+
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
       navigate("/login");
@@ -40,6 +46,8 @@ function AddCustomer() {
           data: {
             name,
             address,
+            employeeId,
+            token
           },
         });
       } catch (error) {

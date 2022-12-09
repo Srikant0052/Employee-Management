@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
+import Cookies from "universal-cookie";
 import axios from "axios";
 import customStyle from "./update-task.module.css";
 
@@ -13,6 +14,8 @@ function UpdateTask({ setIsAdding }) {
 
   // const textInput = useRef(null);
   // const { register, handleSubmit, reset } = useForm();
+  const cookies = new Cookies();
+  let token = cookies.get('accessToken');
   const employeeId = localStorage.getItem("employeeId");
   // console.log(employeeId)
   // useEffect(() => {
@@ -68,6 +71,7 @@ function UpdateTask({ setIsAdding }) {
       projectCode,
       description,
       startingTime: date,
+      token
     };
 
     async function saveDataInDb() {
