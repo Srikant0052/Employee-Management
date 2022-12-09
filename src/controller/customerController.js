@@ -1,4 +1,5 @@
 const custCollection = require("../models/customer");
+const empCollection = require("../models/employee");
 const { isValidRequestBody, isValid } = require("../utils/validator");
 const createError = require("http-errors");
 const { generateId } = require("../utils/helpers");
@@ -9,7 +10,16 @@ const addCustomer = async (req, res, next) => {
       throw createError(400, `invalid request Parameters`);
     }
 
-    let { name, address } = req.body;
+    let { name, address, employeeId } = req.body;
+
+    const isEmployee = await empCollection.findOne({
+      employeeId: employeeId,
+      isDeleted: false,
+    });
+
+    if (req.employee != isEmployee._id && req.employeeRole != isEmployee.role) {
+      throw createError(401, "Unauthorized Access");
+    }
 
     if (!isValid(name)) {
       throw createError(400, `Name should not be empty`);

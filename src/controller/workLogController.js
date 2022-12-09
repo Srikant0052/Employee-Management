@@ -36,6 +36,10 @@ const addTask = async (req, res, next) => {
       isDeleted: false,
     });
 
+    if (req.employee != isEmployee._id) {
+      throw createError(401, "Unauthorized Access");
+    }
+
     if (!isEmployee) {
       throw createError(404, `Employee Not Exist`);
     }
@@ -75,7 +79,7 @@ const addTask = async (req, res, next) => {
     //   formatter = new Intl.DateTimeFormat([], options);
 
     // let startingTime = new Date(date);
-    
+
     // startingTime = startingTime.toLocaleString("en-US", {
     //   // weekday: "numeric",
     //   day: "numeric",
@@ -85,23 +89,19 @@ const addTask = async (req, res, next) => {
     //   minute: "numeric",
     // });
 
-    // if (req.employee != isEmployee.userId) {
-    //   throw createError(401, "Unauthorized Access");
-    // }
-
     const worklogAdded = await workLog.create({
       slNo,
       employeeId,
       projectCode,
       taskId,
       description,
-      startingTime:date,
+      startingTime: date,
       spendTime,
       status,
       DM_To,
     });
 
-    if (toMail != "n/a") {
+    if (toMail !== "n/a") {
       var transport = nodemailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -159,6 +159,15 @@ const updateTask = async (req, res, next) => {
 
     if (!task) {
       throw createError(404, "Data Not Found!");
+    }
+
+    const isEmployee = await empCollection.findOne({
+      employeeId: employeeId,
+      isDeleted: false,
+    });
+
+    if (req.employee != isEmployee._id) {
+      throw createError(401, "Unauthorized Access");
     }
 
     const updateData = {};

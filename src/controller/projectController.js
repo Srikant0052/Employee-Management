@@ -1,4 +1,5 @@
 const createError = require("http-errors");
+const empCollection = require("../models/employee");
 const projectColl = require("../models/projects");
 const { isValidRequestBody, isValid } = require("../utils/validator");
 
@@ -10,8 +11,24 @@ const addProject = async (req, res, next) => {
       throw createError(400, `Invalid request Data`);
     }
 
-    let { name, projectCode, description, customerId, companyName, date } =
-      req.body;
+    let {
+      name,
+      projectCode,
+      description,
+      customerId,
+      companyName,
+      date,
+      logedInEmployee,
+    } = requestBody;
+
+    const isAdmin = await empCollection.findOne({
+      employeeId: logedInEmployee,
+      isDeleted: false,
+    });
+
+    if (req.employee != isAdmin._id && req.employeeRole != isAdmin.role) {
+      throw createError(401, "Unauthorized Access");
+    }
 
     if (!isValid(name)) {
       throw createError(400, `Please Enter Project name`);

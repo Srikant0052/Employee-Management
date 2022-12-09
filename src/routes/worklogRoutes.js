@@ -15,8 +15,8 @@ const { authorization } = require("../middleware/auth");
 const router = Router();
 
 router
-  .post("/addTask", addTask)
-  .put("/updateTask/:taskId/:employeeId", updateTask)
+  .post("/addTask", authorization, addTask)
+  .put("/updateTask/:taskId/:employeeId", authorization, updateTask)
   .get("/getTask", getTaskList)
   .get("/getTaskById/:employeeId", getTaskByEmployeeId)
   .get("/getTaskById/:projectCode", getTaskByProjectCode)

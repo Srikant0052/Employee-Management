@@ -5,8 +5,9 @@ const {
   updateProject,
   getAllProjects,
 } = require("../controller/projectController");
+const { authorization } = require("../middleware/auth");
 
-router.post("/addProject", addProject);
+router.post("/addProject", authorization, addProject);
 router.get("/getProjectById/:projectCode", getProjectDataById);
 router.get("/getAllProject", getAllProjects);
 router.put("/:projectCode", updateProject);

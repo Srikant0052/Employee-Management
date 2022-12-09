@@ -27,6 +27,7 @@ const addEmployee = async (req, res, next) => {
       password,
       role,
       address,
+      logedInEmployee,
     } = requestBody;
 
     if (!isValid(employeeId)) {
@@ -40,6 +41,14 @@ const addEmployee = async (req, res, next) => {
 
     if (isEmployeeIdExist) {
       throw createError(400, `EmployeeId is Already Registered`);
+    }
+    const isAdmin = await empCollection.findOne({
+      employeeId: logedInEmployee,
+      isDeleted: false,
+    });
+
+    if (req.employee != isAdmin._id && req.employeeRole != isAdmin.role) {
+      throw createError(401, "Unauthorized Access");
     }
 
     if (!isValid(firstName)) {
@@ -178,11 +187,9 @@ const employeeLogin = async (req, res, next) => {
         userId: user._id,
         role: user.role,
       },
-      "Employee123",
+      "Employee123@28",
       { expiresIn: 60 * 60 }
     );
-    // res.setHeader("Authorization", token);
-    res.cookie(`token`, token);
 
     return res.status(200).send({
       status: true,
@@ -257,6 +264,10 @@ const updatePassword = async (req, res, next) => {
     const employee = await empCollection
       .findOne({ email: email, password: oldPassword })
       .lean();
+
+    if (req.employee != employee._id) {
+      throw createError(401, "Unauthorized Access");
+    }
 
     if (!employee) {
       throw createError(404, "Password Doesn,t Matched");
