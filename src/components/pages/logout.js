@@ -6,8 +6,8 @@ import Cookies from "universal-cookie";
 export default function Logout() {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  cookies.remove("accessToken", { path: "/", domain: "www.worklog.tech" });
-  cookies.remove("userRole", { path: "/", domain: "www.worklog.tech" });
+  cookies.remove("accessToken", { path: "/", domain: "worklog.tech" });
+  cookies.remove("userRole", { path: "/", domain: "worklog.tech" });
 
   useEffect(() => {
     if (!localStorage.getItem("accessToken")) {
