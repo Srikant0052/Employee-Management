@@ -25,7 +25,7 @@ function AddTask() {
   const [date, setDate] = useState(new Date());
   const cookies = new Cookies();
 
-  let token = cookies.get('accessToken');
+  let token = cookies.get("accessToken");
   // console.log(token)
 
   let employeeId = localStorage.getItem("employeeId");
@@ -172,7 +172,7 @@ function AddTask() {
     <div>
       <h1>{err.error.message} </h1>
       {/* <Link to="/addTask">Go Back</Link> */}
-      Please Refresh the Page!
+      Please Login Again!
     </div>
   ) : (
     <>

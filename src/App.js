@@ -1,9 +1,9 @@
 import React, { Component, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Navbar from "./components/molecules/NavBar";
-import "./App.css";
-import { ROUTES, ADMIN_ROUTES } from "./const";
 import Cookies from "universal-cookie";
+import Navbar from "./components/molecules/NavBar";
+import { ROUTES, ADMIN_ROUTES } from "./const";
+import "./App.css";
 
 function App() {
   const cookies = new Cookies();
@@ -12,6 +12,7 @@ function App() {
   if (!cookies.get("accessToken")) {
     <Navigate replace to="/login" />;
   }
+
   {
     return (
       <>
