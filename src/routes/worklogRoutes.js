@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const router = Router();
 const {
   addTask,
   updateTask,
@@ -11,8 +12,6 @@ const {
   filterTask,
 } = require("../controller/workLogController");
 const { authorization } = require("../middleware/auth");
-
-const router = Router();
 
 router
   .post("/addTask", authorization, addTask)

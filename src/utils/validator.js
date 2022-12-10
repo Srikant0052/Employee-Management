@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 
 const isValid = (value) => {
   if (typeof value === "undefined" || value === null) return false;
@@ -7,6 +6,7 @@ const isValid = (value) => {
     return false;
   return true;
 };
+
 const isValidRequestBody = (requestBody) => {
   if (Object.keys(requestBody).length > 0) return true;
   return false;

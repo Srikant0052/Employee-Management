@@ -9,6 +9,7 @@ const projectSchema = new Schema(
     projectCode: {
       type: String,
       requied: true,
+      trim: true,
     },
 
     name: {

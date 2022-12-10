@@ -188,7 +188,7 @@ const employeeLogin = async (req, res, next) => {
         role: user.role,
       },
       "Employee123@28",
-      { expiresIn: 60 * 60 }
+      { expiresIn: "24h" }
     );
 
     return res.status(200).send({

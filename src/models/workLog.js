@@ -61,6 +61,7 @@ const worklogSchema = new Schema(
 
     note: {
       type: String,
+      trim: true,
     },
 
     isDeleted: {
